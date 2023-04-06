@@ -3,7 +3,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -123,16 +122,6 @@ class DrawBoard extends JPanel {
 
     }
 
-    /* gets the length of a sqare for a layer */
-    private int getSquareLen(int layer){
-        return effectiveSize - gap*(layer*2);
-    }
-
-    /* gets the offset of a sqare for a layer */
-    private int getSquareOffset(int layer){
-        return effectiveSize - gap*(layer*2);
-    }
-
     
     // //Example of adding text
     // public void addShape() {
@@ -163,7 +152,7 @@ class DrawBoard extends JPanel {
 
                                             };
 
-        // Loop thorugh each button location and create a button there
+        // Loop through each button location and create a button there
 
         for (int i = 0; i < buttonsLocations.length; i++){
             //get row/column of button to be creates
