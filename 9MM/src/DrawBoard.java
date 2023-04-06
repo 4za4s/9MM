@@ -38,7 +38,7 @@ class DrawBoard extends JPanel {
 
 
         //make button size depend on board size
-        slotSize = minSize/20;
+        slotSize = minSize/20; //(Accessibility feature)
 
 
         setUpBoardSlots(); 
@@ -152,6 +152,12 @@ class DrawBoard extends JPanel {
     /* palces  a lot of different buttons. There is not much consistance is the location method. Should be fixed later */
     //^ Infact I think the function can be replaced with a fancy while loop
     private void setUpBoardSlots(){
+
+        int[]buttonsLocations = {};
+        
+
+
+
 
         int slotSizeOffset = slotSize / 2; //to account for slot being plcaes not centered on the point
 
