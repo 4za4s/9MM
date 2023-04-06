@@ -27,7 +27,9 @@ public class App{
         Board board = new Board();
     
         //Create board visual
-        DrawBoard panel = new DrawBoard(frame,100,board);
+        Display panel = new Display(frame,100,board);
+
+        board.setPanel(panel);
 
 
 
@@ -39,6 +41,15 @@ public class App{
 
         //Not sure why this line can't be earlier. It seems to get rid of non-determinism in the drawing
         frame.setVisible(true);
+
+
+        //testing ]
+        Piece piece = new Piece(0,0);
+
+        piece.movePiece(6,6);
+
+        board.updatePiece(piece);
+
 
 
         // //Fun resizing

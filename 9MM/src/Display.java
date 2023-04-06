@@ -1,15 +1,17 @@
-import javax.swing.JButton;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 
 
 
-class DrawBoard extends JPanel {
+class Display extends JPanel {
 
     int boardPadding = 100; //padding to each side of the board 
     int effectiveSize; //how mich room is left  in game (frame minus padding)
@@ -20,9 +22,13 @@ class DrawBoard extends JPanel {
     
     JFrame frame; //the board window
     Board board; //the game board this is displaying
+    ArrayList<GameButton> buttonArray = new ArrayList<GameButton>(); // array for storing the buttons
+
+     
+    Color defaultColour = Color.white;
    
 
-    public DrawBoard(JFrame frame, int boardPadding, Board board){
+    public Display(JFrame frame, int boardPadding, Board board){
         this.frame = frame;
         this.boardPadding = boardPadding;
         this.board = board;
@@ -142,6 +148,7 @@ class DrawBoard extends JPanel {
     //^ Infact I think the function can be replaced with a fancy while loop
     private void setUpBoardSlots(){
 
+
         int[][]buttonsLocations = new int[][]{{0,0},{0,3},{0,6}, //{row,column}
                                               {1,1},{1,3},{1,5},
                                               {2,2},{2,3},{2,4},
@@ -153,6 +160,8 @@ class DrawBoard extends JPanel {
                                             };
 
         // Loop through each button location and create a button there
+
+       
 
         for (int i = 0; i < buttonsLocations.length; i++){
             //get row/column of button to be creates
@@ -173,6 +182,10 @@ class DrawBoard extends JPanel {
             //Make the button clickable
             new GameButtonClicked(tempButtonVar,board);
 
+
+            buttonArray.add(tempButtonVar);
+
+
         }
 
 
@@ -185,4 +198,38 @@ class DrawBoard extends JPanel {
     }
 
 
+    public void updatePiece(Piece piece){
+        //sets old location to empty
+        setLocation(piece.getPrevRow(), piece.getPrevColumn(), defaultColour);
+
+        //override new location
+        setLocation(piece.getRow(), piece.getColumn(), piece.getColour());
+        
+
+        //override new location
+
+
+    }
+
+    /* Sets a button to match the colour of a player (or empty colour) */
+    private void setLocation(int row, int column, Color colour){
+        //find button at location
+        GameButton button = findButton(row,column);
+
+        //set its colour
+        button.setBackground(colour);
+    }
+
+    private GameButton findButton(int row, int column) {
+        for (int i=0; i< buttonArray.size();i++){
+            if (buttonArray.get(i).getRowPos() == row && buttonArray.get(i).getColumnPos() == column){
+                return buttonArray.get(i);
+            }
+
+        }
+
+        return null;
+       // throw new Exception("Button not found at row:" + row + ", column:" + column);
+
+    }
 }
