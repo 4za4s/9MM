@@ -22,8 +22,6 @@ public class GameButtonClicked implements ActionListener {
 
         board.buttonClicked(button.getRowPos(),button.getColumnPos());
 
-
-
     }
 
 

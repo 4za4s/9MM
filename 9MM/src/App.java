@@ -1,4 +1,6 @@
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -6,17 +8,13 @@ import javax.swing.JFrame;
 
 
 public class App{
+    //Set frame settings
+    static int frameWidth = 500;
+    static int frameHeight = 550;
 
     public static void main(String[] args) {  
-
         JFrame frame = new JFrame("9 Mans Morris");
-
-        
-
-        //Set frame settings
-        int frameWidth = 1000;
-        int frameHeight = 1100;
-
+        getWindowSize();
         frame.setSize(frameWidth, frameHeight);
 
         // frame.setResizable(false); //prevent resizing 
@@ -59,11 +57,18 @@ public class App{
 
         // frame.repaint(); //try this if rendering looks weird
        
+    }
 
+    private static void getWindowSize(){
+        // getScreenSize() returns the size
+        // of the screen in pixels
+        Dimension size
+        = Toolkit.getDefaultToolkit().getScreenSize();
         
-
-
-    }
-    }
+        // height will store the height of the screen
+        frameHeight = (int)size.getHeight()*4/5;
+        frameWidth = frameHeight + frameHeight/10;
+    } 
+}
 
 

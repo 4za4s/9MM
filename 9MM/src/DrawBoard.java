@@ -41,11 +41,7 @@ class DrawBoard extends JPanel {
         slotSize = minSize/20;
 
 
-
-
-        setUpBoardSlots();
-
-        
+        setUpBoardSlots(); 
     }
 
 
