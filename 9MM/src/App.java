@@ -43,12 +43,18 @@ public class App{
         frame.setVisible(true);
 
 
-        //testing ]
+        //testing moving pieces
         Piece piece = new Piece(0,0);
 
         piece.movePiece(6,6);
 
         board.updatePiece(piece);
+
+        piece.movePiece(0,6);
+
+        board.updatePiece(piece);
+
+
 
 
 
@@ -73,8 +79,7 @@ public class App{
     private static void getWindowSize(){
         // getScreenSize() returns the size
         // of the screen in pixels
-        Dimension size
-        = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         
         // height will store the height of the screen
         frameHeight = (int)size.getHeight()*4/5;

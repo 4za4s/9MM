@@ -49,9 +49,6 @@ class Display extends JPanel {
         setUpBoardSlots(); 
     }
 
-
-    // JFrame frame;
-
     @Override
     //This is run by default
     public void paintComponent(Graphics g) {
@@ -59,93 +56,24 @@ class Display extends JPanel {
 
 
         // Set stoke size
-        g2.setStroke(new BasicStroke(10));
+        g2.setStroke(new BasicStroke(slotSize / 4));
 
-    
-        
-        //Draw game squares
+        //Draw rectangles
+        g2.drawRect(boardPadding,boardPadding,gap*6,gap*6); // outer rectangle
+        g2.drawRect(boardPadding + gap, boardPadding + gap, gap*4, gap*4); //middle rectangle
+        g2.drawRect(boardPadding + gap*2, boardPadding + gap*2, gap*2, gap*2); //inner rectangle
 
-        //main info
+        //Make intesecting lines
+        g2.drawLine(boardPadding + gap*3, boardPadding, boardPadding + gap*3, boardPadding + gap*2 ); //top line
+        g2.drawLine(boardPadding + gap*3, boardPadding + gap*4, boardPadding + gap*3, boardPadding + gap*6 ); //bottom line
+        g2.drawLine(boardPadding, boardPadding + gap*3, boardPadding + gap*2, boardPadding + gap*3 ); //left line
+        g2.drawLine(boardPadding + gap*4, boardPadding + gap*3, boardPadding + gap*6, boardPadding + gap*3 ); //right line
 
-        //vars for effiecnt calculation of square sizes
-        int[] sizeValues;
-        int thisOffset;
-        int thisEffectiveSize;
-
-        //Make rectangles
-
-        //outer rectangle
-        sizeValues = getRectValues(0);
-        thisOffset =  sizeValues[0];
-        thisEffectiveSize = sizeValues[1];
-        g2.drawRect(thisOffset,thisOffset,thisEffectiveSize,thisEffectiveSize);
-
-        //middle rectangle
-        sizeValues = getRectValues(1);
-        thisOffset =  sizeValues[0];
-        thisEffectiveSize = sizeValues[1];
-        g2.drawRect(thisOffset,thisOffset,thisEffectiveSize,thisEffectiveSize);
-
-        //inner rectangle
-        sizeValues = getRectValues(2);
-        thisOffset =  sizeValues[0];
-        thisEffectiveSize = sizeValues[1];
-        g2.drawRect(thisOffset,thisOffset,thisEffectiveSize,thisEffectiveSize);
-
-
-
-        //Make verticle lines
-        int lineLen = getRectValues(0)[1] / 3;
-    
-
-
-        int topOffset = getRectValues(0)[0]; //top offset
-        int sideOffset = getRectValues(0)[0] + getRectValues(0)[1] / 2 ; // side offset
-        
-        //Top line
-        g2.drawLine(sideOffset, topOffset, sideOffset,topOffset+ lineLen);
-
-        //Bottom line
-        //+3 because it pokes out otherwise
-        g2.drawLine(sideOffset, topOffset + lineLen * 2 + 3, sideOffset,topOffset+ lineLen * 3); 
- 
-
-        //Left line
-        g2.drawLine(topOffset + lineLen * 2 + 3,sideOffset,topOffset+ lineLen * 3, sideOffset); 
-
-
-        //Right line
-        g2.drawLine(topOffset,sideOffset,topOffset+ lineLen , sideOffset);
 
     }
 
-    // function for calculating square locations. Later 0 is top, 1 middle, 2 bottom
-    //returns offset for square, length of square
-    private int[] getRectValues(int layer){
-        int[] array = {boardPadding + gap*(layer), effectiveSize - gap*(layer*2)};
-        return array;
-        
 
-    }
-
-    
-    // //Example of adding text
-    // public void addShape() {
-    //     // this.getGraphics();
-
-        
-    
-    //     // Graphics2D g2 = (Graphics2D) g;
-
-    //     // g2.setStroke(new BasicStroke(10));
-    
-    //     // g.drawString("qwe",20,20);
-    // }
-
-
-
-    /* palces  a lot of different buttons. Thgitere is not much consistance is the location method. Should be fixed later */
-    //^ Infact I think the function can be replaced with a fancy while loop
+    /* Creates the buttons to represent pieces/empty spaces */
     private void setUpBoardSlots(){
 
 
@@ -160,9 +88,6 @@ class Display extends JPanel {
                                             };
 
         // Loop through each button location and create a button there
-
-       
-
         for (int i = 0; i < buttonsLocations.length; i++){
             //get row/column of button to be creates
             int row = buttonsLocations[i][0];
@@ -175,8 +100,7 @@ class Display extends JPanel {
             //Make a corresponding button
             GameButton tempButtonVar = new GameButton(row,column);
             tempButtonVar.setBounds(x,y,slotSize,slotSize);
-
-            //Add the button to the board
+            tempButtonVar.setBackground(defaultColour);
             frame.add(tempButtonVar);
 
             //Make the button clickable
@@ -188,13 +112,6 @@ class Display extends JPanel {
 
         }
 
-
-
-        
-
-
-
-
     }
 
 
@@ -204,11 +121,6 @@ class Display extends JPanel {
 
         //override new location
         setLocation(piece.getRow(), piece.getColumn(), piece.getColour());
-        
-
-        //override new location
-
-
     }
 
     /* Sets a button to match the colour of a player (or empty colour) */
@@ -232,4 +144,20 @@ class Display extends JPanel {
        // throw new Exception("Button not found at row:" + row + ", column:" + column);
 
     }
+
+
+        // //Example of adding text
+    // public void addShape() {
+    //     // this.getGraphics();
+
+        
+    
+    //     // Graphics2D g2 = (Graphics2D) g;
+
+    //     // g2.setStroke(new BasicStroke(10));
+    
+    //     // g.drawString("qwe",20,20);
+    // }
+
+
 }
