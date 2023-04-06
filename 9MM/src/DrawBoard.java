@@ -28,12 +28,18 @@ class DrawBoard extends JPanel {
         this.boardPadding = boardPadding;
         this.board = board;
 
+   
 
         //work out some values for the spacing
         int minSize = Math.min(frame.getWidth(),frame.getHeight()); // Smallest of height and width
 
         effectiveSize = minSize - boardPadding * 2;
         gap = effectiveSize/6;
+
+
+        //make button size depend on board size
+        slotSize = minSize/20;
+
 
 
 
