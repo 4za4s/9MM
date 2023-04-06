@@ -149,7 +149,7 @@ class DrawBoard extends JPanel {
 
 
 
-    /* palces  a lot of different buttons. There is not much consistance is the location method. Should be fixed later */
+    /* palces  a lot of different buttons. Thgitere is not much consistance is the location method. Should be fixed later */
     //^ Infact I think the function can be replaced with a fancy while loop
     private void setUpBoardSlots(){
 
