@@ -180,7 +180,7 @@ class DrawBoard extends JPanel {
         //1st row left
         GameButton b11 = new GameButton(1,1);//creating instance of JButton  
         b11.setBounds(boardPadding - slotSize / 2 + gap ,boardPadding - slotSize / 2 + gap,slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b11);
+        frame.add(b11); 
 
 
         //make the rest of hte buttons GameButton later
