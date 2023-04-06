@@ -153,149 +153,39 @@ class DrawBoard extends JPanel {
     //^ Infact I think the function can be replaced with a fancy while loop
     private void setUpBoardSlots(){
 
-        int[]buttonsLocations = {};
-        
+        int[][]buttonsLocations = new int[][]{{0,0},{0,3},{0,6}, //{row,column}
+                                              {1,1},{1,3},{1,5},
+                                              {2,2},{2,3},{2,4},
+                                              {3,0},{3,1},{3,2},{3,4},{3,5},{3,6},
+                                              {4,2},{4,3},{4,4},
+                                              {5,1},{5,3},{5,5},
+                                              {6,0},{6,3},{6,6}
 
+                                            };
 
+        // Loop thorugh each button location and create a button there
 
+        for (int i = 0; i < buttonsLocations.length; i++){
+            //get row/column of button to be creates
+            int row = buttonsLocations[i][0];
+            int column = buttonsLocations[i][1];
 
-        int slotSizeOffset = slotSize / 2; //to account for slot being plcaes not centered on the point
+            //Work out what the row/column correstponds to in terms of x/y
+            int x = boardPadding - slotSize / 2 + gap * row;
+            int y = boardPadding - slotSize / 2 + gap * column;
 
-        //var names b[row][column]
-        //0th left
-        GameButton b00 = new GameButton(0,0);//creating instance of JButton  
-        b00.setBounds(boardPadding - slotSizeOffset, boardPadding - slotSizeOffset,slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b00);
+            //Make a corresponding button
+            GameButton tempButtonVar = new GameButton(row,column);
+            tempButtonVar.setBounds(x,y,slotSize,slotSize);
 
-        //0th row middle
-        GameButton b03= new GameButton(0,3);//creating instance of JButton  
-        b03.setBounds(boardPadding + getRectValues(0)[1] / 2 - slotSizeOffset, boardPadding - slotSizeOffset ,slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b03);
+            //Add the button to the board
+            frame.add(tempButtonVar);
 
-        //0th row right
-        GameButton b06 = new GameButton(0,6);//creating instance of JButton  
-        b06.setBounds(boardPadding + getRectValues(0)[1] - slotSize / 2,boardPadding - slotSize / 2,slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b06);
+            //Make the button clickable
+            new GameButtonClicked(tempButtonVar,board);
 
-        //1st row left
-        GameButton b11 = new GameButton(1,1);//creating instance of JButton  
-        b11.setBounds(boardPadding - slotSize / 2 + gap ,boardPadding - slotSize / 2 + gap,slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b11); 
+        }
 
-
-        //make the rest of hte buttons GameButton later
-
-        //1st row mid
-        GameButton b13 = new GameButton(1,3);//creating instance of JButton  
-        b13.setBounds(boardPadding - slotSize / 2 + getRectValues(0)[1]/2 ,boardPadding - slotSize / 2 + gap,slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b13);
-
-        //1st row right
-        GameButton b15 = new GameButton(1,5);//creating instance of JButton  
-        b15.setBounds(boardPadding - slotSize / 2 - gap + getRectValues(0)[1],boardPadding - slotSize / 2 + gap,slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b15);
-
-        // 2nd row 
-        GameButton b22 = new GameButton(2,2);//creating instance of JButton  
-        b22.setBounds(boardPadding + getSquareOffset(2) - slotSizeOffset,boardPadding + getSquareOffset(2) - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b22);
-
-        //2nd row mid
-        GameButton b23 = new GameButton(2,3);//creating instance of JButton  
-        b23.setBounds(boardPadding + getSquareOffset(2) + getSquareLen(2)/2 - slotSizeOffset, boardPadding + getSquareOffset(2) - slotSizeOffset,slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b23);
-
-        //2nd row right
-        GameButton b24 = new GameButton(2,4);//creating instance of JButton  
-        b24.setBounds(boardPadding + getSquareOffset(2) + getSquareLen(2) - slotSizeOffset, boardPadding + getSquareOffset(2) - slotSizeOffset,slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b24);
-
-        //3rd row left
-        GameButton b30 = new GameButton(3,0);//creating instance of JButton  
-        b30.setBounds(boardPadding -  slotSizeOffset, boardPadding + getSquareLen(0)/2 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b30);
-
-        //3rd row left
-        GameButton b31 = new GameButton(3,1);//creating instance of JButton  
-        b31.setBounds(boardPadding -  slotSizeOffset + gap, boardPadding + getSquareLen(0)/2 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b31);
-
-        //3rd row right
-        GameButton b32 = new GameButton(3,2);//creating instance of JButton  
-        b32.setBounds(boardPadding -  slotSizeOffset + gap*2, boardPadding + getSquareLen(0)/2 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b32);
-
-        //3rd row right -> left
-        GameButton b34 = new GameButton(3,4);//creating instance of JButton  
-        b34.setBounds(boardPadding -  slotSizeOffset + gap*4, boardPadding + getSquareLen(0)/2 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b34);
-
-        //3rd row right -> mid
-        GameButton b35 = new GameButton(3,5);//creating instance of JButton  
-        b35.setBounds(boardPadding -  slotSizeOffset + gap*5, boardPadding + getSquareLen(0)/2 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b35);
-
-
-        //3rd row right -> right
-        GameButton b36 = new GameButton(3,6);//creating instance of JButton  
-        b36.setBounds(boardPadding -  slotSizeOffset + gap*6, boardPadding + getSquareLen(0)/2 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b36);
-
-        //4th row left
-        GameButton b42 = new GameButton(4,2);//creating instance of JButton  
-        b42.setBounds(boardPadding -  slotSizeOffset + gap * 2, boardPadding + gap * 4 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b42);
-
-        //4th row mid
-        GameButton b43 = new GameButton(4,3);//creating instance of JButton  
-        b43.setBounds(boardPadding -  slotSizeOffset + gap * 3, boardPadding + gap * 4 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b43);
-         
-    
-        //4th row right
-        GameButton b44 = new GameButton(4,4);//creating instance of JButton  
-        b44.setBounds(boardPadding -  slotSizeOffset + gap * 4, boardPadding + gap * 4 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b44);
-
-        //5th row left
-        GameButton b51 = new GameButton(5,1);//creating instance of JButton  
-        b51.setBounds(boardPadding -  slotSizeOffset + gap * 1, boardPadding + gap * 5 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b51);
-
-        //5th row mid
-        GameButton b53 = new GameButton(5,3);//creating instance of JButton  
-        b53.setBounds(boardPadding -  slotSizeOffset + gap * 3, boardPadding + gap * 5 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b53);
-
-        //5th row right
-        GameButton b55 = new GameButton(5,5);//creating instance of JButton  
-        b55.setBounds(boardPadding -  slotSizeOffset + gap * 5, boardPadding + gap * 5 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b55);
-
-        //6th row left
-        GameButton b60 = new GameButton(6,0);//creating instance of JButton  
-        b60.setBounds(boardPadding -  slotSizeOffset + gap * 0, boardPadding + gap * 6 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b60);
-
-        //6th row mid
-        GameButton b63 = new GameButton(6,3);//creating instance of JButton  
-        b63.setBounds(boardPadding -  slotSizeOffset + gap * 3, boardPadding + gap * 6 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b63);
-
-        //6th row right
-        GameButton b66 = new GameButton(6,6);//creating instance of JButton  
-        b66.setBounds(boardPadding -  slotSizeOffset + gap * 6, boardPadding + gap * 6 - slotSizeOffset, slotSize, slotSize);//x axis, y axis, width, height 
-        frame.add(b66);
-          
-        //Make clicking the buttons notify the board
-        GameButtonClicked a = new GameButtonClicked(b00,board);
-        GameButtonClicked b = new GameButtonClicked(b03,board);
-        GameButtonClicked c = new GameButtonClicked(b06,board);
-        GameButtonClicked d = new GameButtonClicked(b11,board);
-        GameButtonClicked e = new GameButtonClicked(b13,board);
-        GameButtonClicked f = new GameButtonClicked(b15,board);
-        //TODO: rest later
-        
 
 
         

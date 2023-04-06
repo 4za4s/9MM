@@ -67,7 +67,7 @@ public class App{
         
         // height will store the height of the screen
         frameHeight = (int)size.getHeight()*4/5;
-        frameWidth = frameHeight + frameHeight/10;
+        frameWidth = frameHeight*9/10; //10;
     } 
 }
 
