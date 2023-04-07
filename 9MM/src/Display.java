@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 
@@ -18,20 +19,21 @@ class Display extends JPanel {
     int gap; // distance between concentric squares
     int slotSize = 50; // height/width of a button
     
+    
 
     
     JFrame frame; //the board window
-    Board board; //the game board this is displaying
+    BoardManager manager; //the game board this is displaying
     ArrayList<GameButton> buttonArray = new ArrayList<GameButton>(); // array for storing the buttons
 
      
     Color defaultColour = Color.white;
    
 
-    public Display(JFrame frame, int boardPadding, Board board){
+    public Display(JFrame frame, int boardPadding, BoardManager manager){
         this.frame = frame;
         this.boardPadding = boardPadding;
-        this.board = board;
+        this.manager = manager;
 
    
 
@@ -77,15 +79,15 @@ class Display extends JPanel {
     private void setUpBoardSlots(){
 
 
-        int[][]buttonsLocations = new int[][]{{0,0},{0,3},{0,6}, //{row,column}
-                                              {1,1},{1,3},{1,5},
-                                              {2,2},{2,3},{2,4},
-                                              {3,0},{3,1},{3,2},{3,4},{3,5},{3,6},
-                                              {4,2},{4,3},{4,4},
-                                              {5,1},{5,3},{5,5},
-                                              {6,0},{6,3},{6,6}
+        int[][]buttonsLocations =   new int[][]{{0,0},{0,3},{0,6}, //{row,column}
+                                                {1,1},{1,3},{1,5},
+                                                {2,2},{2,3},{2,4},
+                                                {3,0},{3,1},{3,2},{3,4},{3,5},{3,6},
+                                                {4,2},{4,3},{4,4},
+                                                {5,1},{5,3},{5,5},
+                                                {6,0},{6,3},{6,6}
 
-                                            };
+                            };
 
         // Loop through each button location and create a button there
         for (int i = 0; i < buttonsLocations.length; i++){
@@ -94,8 +96,8 @@ class Display extends JPanel {
             int column = buttonsLocations[i][1];
 
             //Work out what the row/column correstponds to in terms of x/y
-            int x = boardPadding - slotSize / 2 + gap * row;
-            int y = boardPadding - slotSize / 2 + gap * column;
+            int y = boardPadding - slotSize / 2 + gap * row; //y is row not column
+            int x = boardPadding - slotSize / 2 + gap * column;
 
             //Make a corresponding button
             GameButton tempButtonVar = new GameButton(row,column);
@@ -104,7 +106,7 @@ class Display extends JPanel {
             frame.add(tempButtonVar);
 
             //Make the button clickable
-            new GameButtonClicked(tempButtonVar,board);
+            new GameButtonClicked(tempButtonVar,manager);
 
 
             buttonArray.add(tempButtonVar);
@@ -142,6 +144,50 @@ class Display extends JPanel {
 
         return null;
        // throw new Exception("Button not found at row:" + row + ", column:" + column);
+
+    }
+
+    /* Prevents user from selecting buttons in location that aren't on this is.
+     * Locations on this list are NOT made selectable
+     */
+    public void deselectOtherButtons(ArrayList<int[]> boardLocations){
+
+        boolean locFound = false;
+
+        int[] buttonLocation = {0, 0};
+        
+
+        //Find locations not on the given list
+        for (GameButton button : buttonArray){
+            locFound = false;
+
+            //Check if a button matches any position
+            for(int[] boardLocation: boardLocations ){
+
+                buttonLocation[0] = button.getRowPos();
+                buttonLocation[1] = button.getColumnPos() ;
+
+                if (Arrays.equals(buttonLocation,boardLocation)){
+
+                    locFound = true;
+                }
+            }
+
+            //Deselect button
+            if (locFound == false){
+                button.setEnabled(false);
+
+            }
+
+
+        }
+
+
+
+        
+
+
+
 
     }
 

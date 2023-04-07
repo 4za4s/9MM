@@ -21,11 +21,7 @@ public class Board {
 
     
 
-    /* this is called whenever a button is pressed. In future it will do actual stuff.*/
-    public void buttonClicked(int rowPos, int columnPos){
-        System.out.println("Button was pressed. Row: " + rowPos + " Column: " + columnPos );
 
-    }
 
     /* Create a piece and adds it to the piece array. Then updates the board with it */
     public void createPiece(int row, int column, Player owner){
@@ -54,20 +50,32 @@ public class Board {
 
     }
 
+    /* restricts which pieces the user can click on. Only allows for the pieces bellonging to the player given*/
+    public void restrictPieceAccessToOnly(Player player){
 
-    //method idea:
-    // add piece- adds piece to the board, then tells display to update the board
 
-    //move piece. Moves a piece around the board, then tells display to move it
+        //work out which location have the pieces of the player
+
+        ArrayList<int[]> playersPieceLocs = new ArrayList<int[]>();
+
+
+
+        for (Piece piece : pieceArray ){
+            if (piece.getOwner() == player) {
+                int[] pieceLoc = {piece.getRow(),piece.getColumn() };
+                playersPieceLocs.add(pieceLoc);   
+
+            }
+
+        }
+
+
+
+        panel.deselectOtherButtons(playersPieceLocs);
+
+        //send these locations off to Display. Display will manage deselecting every other location
+    }
 }
 
 
 
-
-
-//has a list of of slots
-//each slot has a piece
-
-
-
-//need piece class

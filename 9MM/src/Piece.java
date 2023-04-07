@@ -50,4 +50,8 @@ public class Piece {
     public Color getColour(){
         return owner.getColour();
     }
+
+    public Player getOwner(){
+        return owner;
+    }
 }

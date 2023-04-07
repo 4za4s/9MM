@@ -26,9 +26,11 @@ public class App{
 
         //Create the board
         Board board = new Board();
+
+        BoardManager boardManager = new BoardManager(board);
     
         //Create board visual
-        Display panel = new Display(frame,100,board);
+        Display panel = new Display(frame,100,boardManager);
 
         board.setPanel(panel);
 
@@ -44,8 +46,10 @@ public class App{
         frame.setVisible(true);
 
 
+        boardManager.startGame();
 
-        new TurnManager(board);
+
+        
 
 
         //testing moving pieces
