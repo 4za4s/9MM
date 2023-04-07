@@ -28,8 +28,8 @@ public class Board {
     }
 
     /* Create a piece and adds it to the piece array. Then updates the board with it */
-    public void createPiece(int row, int column){
-        Piece tempPieceVar = new Piece(row, column);
+    public void createPiece(int row, int column, Player owner){
+        Piece tempPieceVar = new Piece(row, column, owner);
         pieceArray.add(tempPieceVar);
 
         updatePiece(tempPieceVar);

@@ -4,17 +4,21 @@ import java.awt.Color;
 
 public class Piece {
 
+    Player owner;
 
-    int prevRow = -1; //allows to keep track of prev positions so display can know what to change when moved
-    int prevColumn = -1;
+    
+    int prevRow; //allows to keep track of prev positions so display can know what to change when moved
+    int prevColumn;
 
     int row;   
     int column;
-    Color colour = Color.red; //TODO: make this dependant on a player somehow
 
-    public Piece(int row, int column){
+    public Piece(int row, int column,Player owner){
         this.row = row;
         this.column = column;
+        prevRow = row;
+        prevColumn = column;
+        this.owner = owner;
 
     }
 
@@ -44,6 +48,6 @@ public class Piece {
     }
 
     public Color getColour(){
-        return colour;
+        return owner.getColour();
     }
 }

@@ -1,8 +1,9 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+// import java.awt.event.ComponentAdapter;
+// import java.awt.event.ComponentEvent;
 
 import javax.swing.JFrame;
 
@@ -43,16 +44,20 @@ public class App{
         frame.setVisible(true);
 
 
+
+        new TurnManager(board);
+
+
         //testing moving pieces
-        Piece piece = new Piece(0,0);
+        // Piece piece = new Piece(0,0, new Player(Color.pink));
 
-        piece.movePiece(6,6);
+        // piece.movePiece(6,6);
 
-        board.updatePiece(piece);
+        // board.updatePiece(piece);
 
-        piece.movePiece(0,6);
+        // piece.movePiece(0,6);
 
-        board.updatePiece(piece);
+        // board.updatePiece(piece);
 
 
 
