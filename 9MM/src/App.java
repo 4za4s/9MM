@@ -1,11 +1,15 @@
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 // import java.awt.event.ComponentAdapter;
 // import java.awt.event.ComponentEvent;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+
+import Board.Board;
+import Board.BoardManager;
+import Display.Display;
 
 
 public class App{
@@ -24,32 +28,45 @@ public class App{
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Create the board
+        // //Create the board
         Board board = new Board();
-
         BoardManager boardManager = new BoardManager(board);
-    
-        //Create board visual
-        Display panel = new Display(frame,100,boardManager);
 
-        board.setPanel(panel);
-
-
-
-
-        panel.setLayout(new FlowLayout());
-
-        frame.add(panel);
-
-
-        //Not sure why this line can't be earlier. It seems to get rid of non-determinism in the drawing
-        frame.setVisible(true);
-
-
-        boardManager.startGame();
-
+        // Create and set up the content pane.
+        JComponent displayPane = new Display(100,boardManager, frameWidth, frameHeight);
+        displayPane.setOpaque(false); //content panes must be opaque
+        frame.setContentPane(displayPane);
 
         
+        // frame.setLayout(null);
+    
+        
+
+        //Display the window
+        frame.pack();
+        frame.setVisible(true);
+
+                // //Create board visual
+        // Display panel = new Display(frame,100,boardManager);
+
+        // board.setPanel(panel);
+
+
+
+
+        // frame.setLayout(new FlowLayout());
+
+        // frame.add(panel);
+
+
+
+
+        // boardManager.startGame();
+
+
+
+
+        // panel.displayAvailableLocation(1,1);
 
 
         //testing moving pieces
@@ -84,6 +101,8 @@ public class App{
         // frame.repaint(); //try this if rendering looks weird
        
     }
+
+    /* Set window size relative ot display */
 
     private static void getWindowSize(){
         // getScreenSize() returns the size

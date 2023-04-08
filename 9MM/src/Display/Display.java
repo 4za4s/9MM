@@ -1,28 +1,48 @@
+package Display;
 
+import javax.swing.Box;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import Board.BoardManager;
+import Board.GameButton;
+import Board.GameButtonClicked;
+import Board.Piece;
 
 
+public class Display extends JPanel{
 
-class Display extends JPanel {
-
-    int boardPadding = 100; //padding to each side of the board 
+    int boardPadding; //padding to each side of the board 
     int effectiveSize; //how mich room is left  in game (frame minus padding)
     int gap; // distance between concentric squares
+
+    int frameWidth;
+    int frameHeight;
     int slotSize = 50; // height/width of a button
+
+
+    private JLayeredPane layeredPaneSlots;
+    private JLayeredPane layeredPaneHighlights;
+    private Background layeredPaneBackground;
+
     
     
 
     
-    JFrame frame; //the board window
+    
     BoardManager manager; //the game board this is displaying
     ArrayList<GameButton> buttonArray = new ArrayList<GameButton>(); // array for storing the buttons
 
@@ -30,15 +50,18 @@ class Display extends JPanel {
     Color defaultColour = Color.white;
    
 
-    public Display(JFrame frame, int boardPadding, BoardManager manager){
-        this.frame = frame;
+    public Display(int boardPadding, BoardManager manager, int frameWidth, int frameHeight){
+     
+
+
         this.boardPadding = boardPadding;
         this.manager = manager;
+        this.frameWidth = frameWidth;
+        this.frameHeight = frameHeight;
 
-   
-
-        //work out some values for the spacing
-        int minSize = Math.min(frame.getWidth(),frame.getHeight()); // Smallest of height and width
+        //Work out values for the spacing
+        
+        int minSize = Math.min(frameWidth, frameHeight);
 
         effectiveSize = minSize - boardPadding * 2;
         gap = effectiveSize/6;
@@ -48,35 +71,71 @@ class Display extends JPanel {
         slotSize = minSize/20; //(Accessibility feature)
 
 
-        setUpBoardSlots(); 
+        //Create board
+        setLayout(new GridLayout());
+
+
+        //Create and set up the slots layered pane.
+        layeredPaneSlots = new JLayeredPane();
+        layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight)); //TODO: remove this later somehow
+        setUpLayeredPaneSlots();
+        // 
+
+        // //Create and set up the background layered pane.
+        // layeredPaneBackground = new JLayeredPane();
+        // layeredPaneBackground.setPreferredSize(new Dimension(frameWidth, frameHeight));
+        // layeredPaneBackground.setBounds(0,0,frameWidth, frameHeight);
+        
+        layeredPaneBackground = new Background(boardPadding, gap, slotSize);
+        // layeredPaneBackground.setPreferredSize(new Dimension(frameWidth, frameHeight));
+
+        
+        
+        add(layeredPaneBackground);
+        Dimension size = layeredPaneSlots.getPreferredSize();
+        
+
+       
+
+        
+        // layeredPaneSlots.setBounds(40,40,size.width,size.height);
+        // layeredPaneSlots.setSize(size);
+
+        // setSize(size);
+        // setBounds(40,40,size.width,size.height);
+
+
+
+        add(layeredPaneSlots );
+        
+        // repaint();
+
+
+        // setLayout( new BorderLayout());
+
+        // layeredPaneBackground.setBounds(0,0,100,100);
+
+        // System.out.println(layeredPaneBackground.getLayout())
+
+        // System.out.println(layeredPaneBackground.getPreferredSize());
+        System.out.println(size.toString());
+        // System.out.println(layeredPaneSlots.getBounds());
+        
+
+
+
+
+
+
+
+
+        // setUpBoardSlots(); 
     }
 
-    @Override
-    //This is run by default
-    public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-
-
-        // Set stoke size
-        g2.setStroke(new BasicStroke(slotSize / 4));
-
-        //Draw rectangles
-        g2.drawRect(boardPadding,boardPadding,gap*6,gap*6); // outer rectangle
-        g2.drawRect(boardPadding + gap, boardPadding + gap, gap*4, gap*4); //middle rectangle
-        g2.drawRect(boardPadding + gap*2, boardPadding + gap*2, gap*2, gap*2); //inner rectangle
-
-        //Make intesecting lines
-        g2.drawLine(boardPadding + gap*3, boardPadding, boardPadding + gap*3, boardPadding + gap*2 ); //top line
-        g2.drawLine(boardPadding + gap*3, boardPadding + gap*4, boardPadding + gap*3, boardPadding + gap*6 ); //bottom line
-        g2.drawLine(boardPadding, boardPadding + gap*3, boardPadding + gap*2, boardPadding + gap*3 ); //left line
-        g2.drawLine(boardPadding + gap*4, boardPadding + gap*3, boardPadding + gap*6, boardPadding + gap*3 ); //right line
-
-
-    }
 
 
     /* Creates the buttons to represent pieces/empty spaces */
-    private void setUpBoardSlots(){
+    private void setUpLayeredPaneSlots(){
 
 
         int[][]buttonsLocations =   new int[][]{{0,0},{0,3},{0,6}, //{row,column}
@@ -103,7 +162,7 @@ class Display extends JPanel {
             GameButton tempButtonVar = new GameButton(row,column);
             tempButtonVar.setBounds(x,y,slotSize,slotSize);
             tempButtonVar.setBackground(defaultColour);
-            frame.add(tempButtonVar);
+            layeredPaneSlots.add(tempButtonVar); //what to add, layer
 
             //Make the button clickable
             new GameButtonClicked(tempButtonVar,manager);
@@ -178,18 +237,35 @@ class Display extends JPanel {
                 button.setEnabled(false);
 
             }
-
-
         }
+    }
 
+    /* Highlite an available location the selected piece can move 
+     * Using buttons because it is easy.
+     * 
+     * TODO: redo whole rendering system?
+    */
 
+    public void displayAvailableLocation(int row, int column){
 
-        
+        // // frame.setLayout(new FlowLayout());
+        // GameButton tempButtonVar = new GameButton(row,column);
+        // tempButtonVar.setBounds(0,0,10,10);
+        // tempButtonVar.setBackground(Color.pink);
+        // frame.add(tempButtonVar);
 
+        // frame.repaint();
+        // // Set stoke size
+        // g2.setStroke(new BasicStroke(slotSize / 4));
+
+        // //Draw rectangles
+        // g2.drawRect(boardPadding,boardPadding,gap*6,gap*6); // outer rectangle
 
 
 
     }
+
+
 
 
         // //Example of adding text

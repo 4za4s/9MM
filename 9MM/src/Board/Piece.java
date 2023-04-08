@@ -1,3 +1,4 @@
+package Board;
 import java.awt.Color;
 
 /* represents a piece on the board */

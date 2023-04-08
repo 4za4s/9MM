@@ -1,3 +1,4 @@
+package Board;
 import javax.swing.JButton;
 
 /* like a normal button, but with a way to save some attributes */

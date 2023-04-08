@@ -1,5 +1,9 @@
+package Board;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+
+import Display.Display;
+
 import java.util.ArrayList;
 
 
@@ -74,6 +78,7 @@ public class Board {
         panel.deselectOtherButtons(playersPieceLocs);
 
         //send these locations off to Display. Display will manage deselecting every other location
+        
     }
 }
 
