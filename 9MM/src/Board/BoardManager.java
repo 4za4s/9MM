@@ -18,7 +18,7 @@ public class BoardManager {
     /* goes through all of the steps of a turn */
     public BoardManager(Board board){
 
-        // this.board = board;
+        this.board = board;
 
 
 
@@ -29,9 +29,9 @@ public class BoardManager {
     public void startGame(){
 
         ////add some pieces to the board for testing
-        // board.createPiece(0,0,player1);
-        // board.createPiece(0,3,player1);
-        // board.createPiece(6,6,player2);
+        board.createPiece(0,0,player1);
+        board.createPiece(0,3,player1);
+        board.createPiece(6,6,player2);
 
         // Player currentPlayer;
 
@@ -43,7 +43,7 @@ public class BoardManager {
         //     //run turn for that player
         //     currentPlayer = player1Turn ? player1 :  player2;
 
-        //     runTurn(currentPlayer);
+            runTurn(player1);
 
 
         // // }
@@ -77,6 +77,7 @@ public class BoardManager {
 
         /* this is called whenever a button is pressed. In future it will do actual stuff.*/
         public void buttonClicked(int rowPos, int columnPos){
+            board.displayAvailableLocation();
             System.out.println("Button was pressed. Row: " + rowPos + " Column: " + columnPos );
 
            

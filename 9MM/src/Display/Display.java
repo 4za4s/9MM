@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,20 +21,18 @@ public class Display extends JPanel{
     int boardPadding; //padding to each side of the board 
     int effectiveSize; //how mich room is left  in game (frame minus padding)
     int gap; // distance between concentric squares
+    
+    Frame frame;
 
     int frameWidth;
     int frameHeight;
     int slotSize = 50; // height/width of a button
+    Dimension size; //so all board parts are created the same size
 
 
     private JLayeredPane layeredPaneSlots;
-    private JLayeredPane layeredPaneHighlights;
+    private SelectionHighlights layeredPaneHighlights;
     private Background layeredPaneBackground;
-
-    
-    
-
-    
     
     BoardManager manager; //the game board this is displaying
     ArrayList<GameButton> buttonArray = new ArrayList<GameButton>(); // array for storing the buttons
@@ -42,14 +41,14 @@ public class Display extends JPanel{
     Color defaultColour = Color.white;
    
 
-    public Display(int boardPadding, BoardManager manager, int frameWidth, int frameHeight){
+    public Display(int boardPadding, BoardManager manager, Frame frame){
      
 
-
+        this.frame = frame;
         this.boardPadding = boardPadding;
         this.manager = manager;
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
+        this.frameWidth = frame.getWidth();
+        this.frameHeight = frame.getHeight();
 
         //Work out values for the spacing
         
@@ -64,40 +63,23 @@ public class Display extends JPanel{
 
 
         //Create board
-        // setLayout(new GridLayout());
-        setLayout(null);
+        setLayout(null); //try setLayout(new GridLayout()); if board
 
 
         //Create and set up the slots layered pane.
         layeredPaneSlots = new JLayeredPane();
         layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight)); //TODO: remove this later somehow
         setUpLayeredPaneSlots();
-        // 
-
-        // //Create and set up the background layered pane.
-        // layeredPaneBackground = new JLayeredPane();
-        // layeredPaneBackground.setPreferredSize(new Dimension(frameWidth, frameHeight));
-        // layeredPaneBackground.setBounds(0,0,frameWidth, frameHeight);
-        
+    
+        //Create and set up the background layered pane.
         layeredPaneBackground = new Background(boardPadding, gap, slotSize);
 
-
+        //Add both layers to the frame
         add(layeredPaneSlots);
         add(layeredPaneBackground);
 
-
-        // layeredPaneBackground.setPreferredSize(new Dimension(frameWidth, frameHeight));
-
+        size = layeredPaneSlots.getPreferredSize();
         
-        
-        // add(layeredPaneBackground, new Integer(3));
-        Dimension size = layeredPaneSlots.getPreferredSize();
-        
-
-       
-
-        
-        // layeredPaneSlots.setBounds(40,40,size.width,size.height);
         layeredPaneSlots.setSize(size);
         layeredPaneBackground.setSize(size);
 
@@ -217,7 +199,39 @@ public class Display extends JPanel{
      * TODO: redo whole rendering system?
     */
 
-    public void displayAvailableLocation(int row, int column){
+    public void displayAvailableLocation(ArrayList<int[]> availableLocations){ //eventually ArrayList<int[]> availableLocations -> as an input
+
+        // //hardcoding this for testing
+        // ArrayList<int[]>availableLocations = new ArrayList<int[]>();
+
+        // int[] pos1 = {0,0};
+        // int[] pos2 = {0,3};
+        // int[] pos3 = {0,6};
+
+        // availableLocations.add(pos1);
+        // availableLocations.add(pos2);
+        // availableLocations.add(pos3);
+
+        //remove old highlightes
+        if (layeredPaneHighlights != null){
+            remove(layeredPaneHighlights); 
+
+        }
+
+        layeredPaneHighlights = new SelectionHighlights(boardPadding, gap, slotSize, availableLocations);
+
+        add(layeredPaneHighlights);
+
+        
+
+
+        layeredPaneHighlights.setSize(size);
+
+        // repaint();
+        // revalidate();
+
+
+        }
 
         // // frame.setLayout(new FlowLayout());
         // GameButton tempButtonVar = new GameButton(row,column);
@@ -234,7 +248,7 @@ public class Display extends JPanel{
 
 
 
-    }
+ }
 
 
 
@@ -252,5 +266,3 @@ public class Display extends JPanel{
     //     // g.drawString("qwe",20,20);
     // }
 
-
-}

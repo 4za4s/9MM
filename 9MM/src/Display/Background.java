@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 
 
 /* Creates a draweing of the background. This drawing has to be added to a panel to be viewed */
@@ -20,12 +19,6 @@ class Background extends JLayeredPane { //prev JPanel
         this.gap = gap;
         this.slotSize = slotSize;
 
-
-
-
- 
-
-        
     }
 
     @Override

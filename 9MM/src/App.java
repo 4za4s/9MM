@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -9,6 +10,8 @@ import javax.swing.JFrame;
 
 import Board.Board;
 import Board.BoardManager;
+import Board.Piece;
+import Board.Player;
 import Display.Display;
 
 
@@ -31,48 +34,36 @@ public class App{
         // //Create the board
         Board board = new Board();
         BoardManager boardManager = new BoardManager(board);
+        
 
         // Create and set up the content pane.
-        JComponent displayPane = new Display(100,boardManager, frameWidth, frameHeight);
+        Display displayPane = new Display(100,boardManager, frame);
+        board.setPanel(displayPane);
+
+
         displayPane.setOpaque(false); //content panes must be opaque
         frame.setContentPane(displayPane);
 
 
         // frame.setLayout(null);
-    
-        
 
         //Display the window
         frame.pack();
-
-
         frame.setSize(new Dimension(frameWidth, frameHeight));
         frame.setVisible(true);
 
-                // //Create board visual
-        // Display panel = new Display(frame,100,boardManager);
-
-        // board.setPanel(panel);
 
 
 
 
-        // frame.setLayout(new FlowLayout());
-
-        // frame.add(panel);
 
 
-
-
-        // boardManager.startGame();
+        boardManager.startGame();
 
 
 
 
-        // panel.displayAvailableLocation(1,1);
-
-
-        //testing moving pieces
+        // // testing moving pieces
         // Piece piece = new Piece(0,0, new Player(Color.pink));
 
         // piece.movePiece(6,6);
@@ -105,8 +96,9 @@ public class App{
        
     }
 
-    /* Set window size relative ot display */
 
+
+    /* Set window size relative to display */
     private static void getWindowSize(){
         // getScreenSize() returns the size
         // of the screen in pixels

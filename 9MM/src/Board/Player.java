@@ -4,7 +4,7 @@ import java.awt.Color;
 public class Player {
     Color colour;
 
-    Player(Color colour){
+    public Player(Color colour){
         this.colour = colour;
     }
 
