@@ -37,13 +37,16 @@ public class App{
         displayPane.setOpaque(false); //content panes must be opaque
         frame.setContentPane(displayPane);
 
-        
+
         // frame.setLayout(null);
     
         
 
         //Display the window
         frame.pack();
+
+
+        frame.setSize(new Dimension(frameWidth, frameHeight));
         frame.setVisible(true);
 
                 // //Create board visual

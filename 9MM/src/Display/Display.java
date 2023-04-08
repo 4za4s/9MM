@@ -1,18 +1,10 @@
 package Display;
 
-import javax.swing.Box;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,7 +64,8 @@ public class Display extends JPanel{
 
 
         //Create board
-        setLayout(new GridLayout());
+        // setLayout(new GridLayout());
+        setLayout(null);
 
 
         //Create and set up the slots layered pane.
@@ -87,11 +80,17 @@ public class Display extends JPanel{
         // layeredPaneBackground.setBounds(0,0,frameWidth, frameHeight);
         
         layeredPaneBackground = new Background(boardPadding, gap, slotSize);
+
+
+        add(layeredPaneSlots);
+        add(layeredPaneBackground);
+
+
         // layeredPaneBackground.setPreferredSize(new Dimension(frameWidth, frameHeight));
 
         
         
-        add(layeredPaneBackground);
+        // add(layeredPaneBackground, new Integer(3));
         Dimension size = layeredPaneSlots.getPreferredSize();
         
 
@@ -99,37 +98,9 @@ public class Display extends JPanel{
 
         
         // layeredPaneSlots.setBounds(40,40,size.width,size.height);
-        // layeredPaneSlots.setSize(size);
+        layeredPaneSlots.setSize(size);
+        layeredPaneBackground.setSize(size);
 
-        // setSize(size);
-        // setBounds(40,40,size.width,size.height);
-
-
-
-        add(layeredPaneSlots );
-        
-        // repaint();
-
-
-        // setLayout( new BorderLayout());
-
-        // layeredPaneBackground.setBounds(0,0,100,100);
-
-        // System.out.println(layeredPaneBackground.getLayout())
-
-        // System.out.println(layeredPaneBackground.getPreferredSize());
-        System.out.println(size.toString());
-        // System.out.println(layeredPaneSlots.getBounds());
-        
-
-
-
-
-
-
-
-
-        // setUpBoardSlots(); 
     }
 
 
