@@ -6,14 +6,16 @@ public class GameButton extends JButton{
 
     private int rowPos; //column of the button
     private int columnPos; //column of the button
+    private String type = "SelectPiece"; //what the button is used for
 
 
-    public GameButton(int rowPos, int columnPos){
+    public GameButton(String type, int rowPos, int columnPos){
 
         super(); //run the super stuff
 
         this.rowPos = rowPos;
         this.columnPos = columnPos;
+        this.type = type;
 
         
     }
@@ -26,4 +28,7 @@ public class GameButton extends JButton{
         return columnPos;
     }
     
+    public String getType(){
+        return type;
+    }
 }

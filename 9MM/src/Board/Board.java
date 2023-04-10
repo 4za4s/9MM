@@ -15,8 +15,9 @@ public class Board {
 
     Display panel; 
     JButton[] slots;
-    JFrame frame;
+    BoardManager boardManager;
     ArrayList<Piece> pieceArray = new ArrayList<Piece>(); // array for storing the buttons
+    int[] lastButtonClicked = {0,0}; //location of last button clicked. row, column
 
 
     int[][]validLocations =  new int[][]{{0,0},{0,3},{0,6},  //so later can work out it a move is valid
@@ -28,13 +29,11 @@ public class Board {
                                         {6,0},{6,3},{6,6} };
 
 
-    public Board(){
-        
-    }
-
     
 
-
+    public void setBoardManager(BoardManager boardManager){
+        this.boardManager = boardManager;
+    }
 
     /* Create a piece and adds it to the piece array. Then updates the board with it */
     public void createPiece(int row, int column, Player owner){
@@ -90,20 +89,27 @@ public class Board {
         
     }
 
-    public void displayAvailableLocation(){
+    public void displayAvailableLocations(){
 
-        //Get position {row,column} of all locations since they are all valid moves for thins sprint
+        //Get position {row,column} of all locations since they are all valid moves for this sprint
         ArrayList<int[]> locationsArrayList = new ArrayList<int[]>();
 
         for (int[] location : validLocations){
             locationsArrayList.add(location);
 
         }
-
-
-
-        
         panel.displayAvailableLocation(locationsArrayList);
+    }
+
+    /* called when a button is clicked */
+    public void buttonClicked(String type, int row, int column){
+        //Tell what button was clicked
+        lastButtonClicked[0] = row;
+        lastButtonClicked[1] = column;
+
+        boardManager.buttonClicked(type);
+
+
     }
 }
 

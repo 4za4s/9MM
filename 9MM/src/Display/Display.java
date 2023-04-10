@@ -6,10 +6,10 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import Board.Board;
 import Board.BoardManager;
 import Board.GameButton;
 import Board.GameButtonClicked;
@@ -34,19 +34,19 @@ public class Display extends JPanel{
     private SelectionHighlights layeredPaneHighlights;
     private Background layeredPaneBackground;
     
-    BoardManager manager; //the game board this is displaying
+   Board board; //the game board this is displaying
     ArrayList<GameButton> buttonArray = new ArrayList<GameButton>(); // array for storing the buttons
 
      
     Color defaultColour = Color.white;
    
 
-    public Display(int boardPadding, BoardManager manager, Frame frame){
+    public Display(int boardPadding, Board board, Frame frame){
      
 
         this.frame = frame;
         this.boardPadding = boardPadding;
-        this.manager = manager;
+        this.board = board;
         this.frameWidth = frame.getWidth();
         this.frameHeight = frame.getHeight();
 
@@ -112,13 +112,13 @@ public class Display extends JPanel{
             int x = boardPadding - slotSize / 2 + gap * column;
 
             //Make a corresponding button
-            GameButton tempButtonVar = new GameButton(row,column);
+            GameButton tempButtonVar = new GameButton("SelectPiece", row,column);
             tempButtonVar.setBounds(x,y,slotSize,slotSize);
             tempButtonVar.setBackground(defaultColour);
             layeredPaneSlots.add(tempButtonVar); //what to add, layer
 
             //Make the button clickable
-            new GameButtonClicked(tempButtonVar,manager);
+            new GameButtonClicked(tempButtonVar,this);
 
 
             buttonArray.add(tempButtonVar);
@@ -230,6 +230,12 @@ public class Display extends JPanel{
         // repaint();
         // revalidate();
 
+
+        }
+
+        /* When a button on the display is clicked */
+        public void buttonClicked(GameButton gameButton){
+            board.buttonClicked(gameButton.getType(),gameButton.getRowPos(),gameButton.getColumnPos());
 
         }
 

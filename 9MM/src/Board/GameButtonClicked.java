@@ -3,16 +3,18 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import Display.Display;
+
 public class GameButtonClicked implements ActionListener {
     
     GameButton button;
-    BoardManager manager;
+    Display display;
     Color colour = Color.pink;
 
-    public GameButtonClicked(GameButton button,BoardManager manager){
+    public GameButtonClicked(GameButton button, Display display){
 
         this.button = button;
-        this.manager = manager;
+        this.display = display;
 
         button.addActionListener(this);
     }
@@ -21,7 +23,7 @@ public class GameButtonClicked implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        manager.buttonClicked(button.getRowPos(),button.getColumnPos());
+        display.buttonClicked(button);
 
     }
 

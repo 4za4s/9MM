@@ -1,11 +1,10 @@
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Toolkit;
 // import java.awt.event.ComponentAdapter;
 // import java.awt.event.ComponentEvent;
 
-import javax.swing.JComponent;
+
 import javax.swing.JFrame;
 
 import Board.Board;
@@ -34,10 +33,11 @@ public class App{
         // //Create the board
         Board board = new Board();
         BoardManager boardManager = new BoardManager(board);
+        board.setBoardManager(boardManager); //so it can report to its manager
         
 
         // Create and set up the content pane.
-        Display displayPane = new Display(100,boardManager, frame);
+        Display displayPane = new Display(100,board, frame);
         board.setPanel(displayPane);
 
 

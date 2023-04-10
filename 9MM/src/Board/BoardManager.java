@@ -15,11 +15,12 @@ public class BoardManager {
 
     //
 
-    /* goes through all of the steps of a turn */
+    /* managers the game for a board */
     public BoardManager(Board board){
 
         this.board = board;
 
+  
 
 
 
@@ -76,11 +77,27 @@ public class BoardManager {
     }
 
         /* this is called whenever a button is pressed. In future it will do actual stuff.*/
-        public void buttonClicked(int rowPos, int columnPos){
-            board.displayAvailableLocation();
-            System.out.println("Button was pressed. Row: " + rowPos + " Column: " + columnPos );
+        public void buttonClicked(String type){
+            System.out.println("Button was pressed. Type: " + type);
 
-           
-    
+            //Do appropriate turn action
+            switch(type){
+                case "SelectPiece":
+                    //TODO:
+                    // board.removeButtons
+                    // board.addNewButtons
+                    board.displayAvailableLocations();
+
+                    break;
+                case "ChangeSelection":
+                    //TODO: show new selection for positions available
+                    break;
+
+                default: System.out.println("Invalid button type given");
+                    break;
+
+
+
+            }
         }
 }
