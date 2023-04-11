@@ -1,7 +1,5 @@
 package Board;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-
 import Display.Display;
 
 import java.util.ArrayList;
@@ -21,12 +19,23 @@ public class Board {
 
 
     int[][]validLocations =  new int[][]{{0,0},{0,3},{0,6},  //so later can work out it a move is valid
-                                        {1,1},{1,3},{1,5},     //{row,column}
-                                        {2,2},{2,3},{2,4}, //TODO: this is duplicated in Display. Something is bad
-                                        {3,0},{3,1},{3,2},{3,4},{3,5},{3,6},
-                                        {4,2},{4,3},{4,4},
-                                        {5,1},{5,3},{5,5},
-                                        {6,0},{6,3},{6,6} };
+                                         {1,1},{1,3},{1,5},     //{row,column}
+                                         {2,2},{2,3},{2,4}, //TODO: this is duplicated in Display. Something is bad
+                                         {3,0},{3,1},{3,2},{3,4},{3,5},{3,6},
+                                         {4,2},{4,3},{4,4},
+                                         {5,1},{5,3},{5,5},
+                                         {6,0},{6,3},{6,6} };
+
+    GameButton[][] pieceLocations = {
+        {null,null,null,null,null,null,null},
+        {null,null,null,null,null,null,null},
+        {null,null,null,null,null,null,null},
+        {null,null,null,null,null,null,null},
+        {null,null,null,null,null,null,null},
+        {null,null,null,null,null,null,null},
+        {null,null,null,null,null,null,null}
+       };
+
 
 
     
@@ -35,59 +44,59 @@ public class Board {
         this.boardManager = boardManager;
     }
 
-    /* Create a piece and adds it to the piece array. Then updates the board with it */
-    public void createPiece(int row, int column, Player owner){
-        Piece tempPieceVar = new Piece(row, column, owner);
-        pieceArray.add(tempPieceVar);
+    // /* Create a piece and adds it to the piece array. Then updates the board with it */
+    // public void createPiece(int row, int column, Player owner){
+    //     Piece tempPieceVar = new Piece(row, column, owner);
+    //     pieceArray.add(tempPieceVar);
 
-        updatePiece(tempPieceVar);
+    //     updatePiece(tempPieceVar);
 
 
 
-    }
+    // }
 
     public void setPanel(Display panel){
         this.panel = panel;
     }
 
-    //updates a pieces location on the board
-    public void updatePiece(Piece piece){
+    // //updates a pieces location on the board
+    // public void updatePiece(Piece piece){
 
-        //not sure how this works yet
-        //TODO: stuff here?
+    //     //not sure how this works yet
+    //     //TODO: stuff here?
 
 
 
-        panel.updatePiece(piece); //make the visual changes as well
+    //     panel.updatePiece(piece); //make the visual changes as well
 
-    }
+    // }
 
     /* restricts which pieces the user can click on. Only allows for the pieces bellonging to the player given*/
-    public void restrictPieceAccessToOnly(Player player){
+    // public void restrictPieceAccessToOnly(Player player){
 
 
-        //work out which location have the pieces of the player
+    //     //work out which location have the pieces of the player
 
-        ArrayList<int[]> playersPieceLocs = new ArrayList<int[]>();
-
-
-
-        for (Piece piece : pieceArray ){
-            if (piece.getOwner() == player) {
-                int[] pieceLoc = {piece.getRow(),piece.getColumn() };
-                playersPieceLocs.add(pieceLoc);   
-
-            }
-
-        }
+    //     ArrayList<int[]> playersPieceLocs = new ArrayList<int[]>();
 
 
 
-        panel.deselectOtherButtons(playersPieceLocs);
+    //     for (Piece piece : pieceArray ){
+    //         if (piece.getOwner() == player) {
+    //             int[] pieceLoc = {piece.getRow(),piece.getColumn() };
+    //             playersPieceLocs.add(pieceLoc);   
 
-        //send these locations off to Display. Display will manage deselecting every other location
+    //         }
+
+    //     }
+
+
+
+    //     panel.deselectOtherButtons(playersPieceLocs);
+
+    //     //send these locations off to Display. Display will manage deselecting every other location
         
-    }
+    // }
 
     public void displayAvailableLocations(){
 
@@ -102,15 +111,20 @@ public class Board {
     }
 
     /* called when a button is clicked */
-    public void buttonClicked(String type, int row, int column){
+    public void buttonClicked(Piece piece){
         //Tell what button was clicked
-        lastButtonClicked[0] = row;
-        lastButtonClicked[1] = column;
+        lastButtonClicked[0] = piece.getRow();
+        lastButtonClicked[1] = piece.getColumn();
 
-        boardManager.buttonClicked(type);
+        boardManager.buttonClicked(piece.getPhrase());
 
 
     }
+
+    public void setDesiplaysValidLocations(){
+        panel.setValidLocations(validLocations);
+    }
+
 }
 
 

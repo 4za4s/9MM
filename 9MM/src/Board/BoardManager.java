@@ -29,10 +29,10 @@ public class BoardManager {
     /* starts the game. Has to be called seperately as it needs to wait for other things to be set up first */
     public void startGame(){
 
-        ////add some pieces to the board for testing
-        board.createPiece(0,0,player1);
-        board.createPiece(0,3,player1);
-        board.createPiece(6,6,player2);
+        // ////add some pieces to the board for testing
+        // board.createPiece(0,0,player1);
+        // board.createPiece(0,3,player1);
+        // board.createPiece(6,6,player2);
 
         // Player currentPlayer;
 
@@ -58,7 +58,7 @@ public class BoardManager {
 
 
         //set all pieces that are not that players to non selectable
-        board.restrictPieceAccessToOnly(player);
+        // board.restrictPieceAccessToOnly(player);
 
         
 

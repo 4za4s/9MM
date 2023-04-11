@@ -4,31 +4,27 @@ import javax.swing.JButton;
 /* like a normal button, but with a way to save some attributes */
 public class GameButton extends JButton{
 
-    private int rowPos; //column of the button
-    private int columnPos; //column of the button
-    private String type = "SelectPiece"; //what the button is used for
+    private Piece piece;
 
 
-    public GameButton(String type, int rowPos, int columnPos){
+    public GameButton(Piece piece){
 
         super(); //run the super stuff
 
-        this.rowPos = rowPos;
-        this.columnPos = columnPos;
-        this.type = type;
+        this.piece = piece;
 
         
     }
 
-    public int getRowPos(){
-        return rowPos;
+    public Piece getPiece(){
+        return piece;
     }
 
-    public int getColumnPos(){
-        return columnPos;
-    }
+    // public int getColumnPos(){
+    //     return columnPos;
+    // }
     
-    public String getType(){
-        return type;
-    }
+    // public String getType(){
+    //     return type;
+    // }
 }

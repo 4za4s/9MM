@@ -10,10 +10,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import Board.Board;
-import Board.BoardManager;
 import Board.GameButton;
-import Board.GameButtonClicked;
 import Board.Piece;
+import Board.Player;
 
 
 public class Display extends JPanel{
@@ -28,22 +27,32 @@ public class Display extends JPanel{
     int frameHeight;
     int slotSize = 50; // height/width of a button
     Dimension size; //so all board parts are created the same size
+    int[][] validLocations;
 
 
-    private JLayeredPane layeredPaneSlots;
+    private ButtonDisplay layeredPaneSlots;
     private SelectionHighlights layeredPaneHighlights;
     private Background layeredPaneBackground;
     
-   Board board; //the game board this is displaying
+    Board board; //the game board this is displaying
     ArrayList<GameButton> buttonArray = new ArrayList<GameButton>(); // array for storing the buttons
+    Piece[][] pieceArray = {{null,null,null,null,null,null,null},
+                            {null,null,null,null,null,null,null},
+                            {null,null,null,null,null,null,null},
+                            {null,null,null,null,null,null,null},
+                            {null,null,null,null,null,null,null},
+                            {null,null,null,null,null,null,null},
+                            {null,null,null,null,null,null,null}
+                        };
+
+        
+        //TODO: possible replacement array for storing the buttons
 
      
     Color defaultColour = Color.white;
    
 
     public Display(int boardPadding, Board board, Frame frame){
-     
-
         this.frame = frame;
         this.boardPadding = boardPadding;
         this.board = board;
@@ -67,9 +76,17 @@ public class Display extends JPanel{
 
 
         //Create and set up the slots layered pane.
-        layeredPaneSlots = new JLayeredPane();
-        layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight)); //TODO: remove this later somehow
-        setUpLayeredPaneSlots();
+        Player[] selectablePlayers = {new Player(defaultColour)};
+        String piecePhases[] = {"test"}; //TODO: remove
+
+
+
+        layeredPaneSlots = new ButtonDisplay(boardPadding, gap, slotSize, pieceArray, validLocations, piecePhases, selectablePlayers, " " , true);
+
+
+        layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight)); //TODO: remove this later somehow?
+        // setUpLayeredPaneSlots();
+
     
         //Create and set up the background layered pane.
         layeredPaneBackground = new Background(boardPadding, gap, slotSize);
@@ -87,111 +104,72 @@ public class Display extends JPanel{
 
 
 
-    /* Creates the buttons to represent pieces/empty spaces */
-    private void setUpLayeredPaneSlots(){
 
 
-        int[][]buttonsLocations =   new int[][]{{0,0},{0,3},{0,6}, //{row,column}
-                                                {1,1},{1,3},{1,5},
-                                                {2,2},{2,3},{2,4},
-                                                {3,0},{3,1},{3,2},{3,4},{3,5},{3,6},
-                                                {4,2},{4,3},{4,4},
-                                                {5,1},{5,3},{5,5},
-                                                {6,0},{6,3},{6,6}
+    // public void updatePiece(Piece piece){
+    //     //sets old location to empty
+    //     setLocation(piece.getPrevRow(), piece.getPrevColumn(), defaultColour);
 
-                            };
+    //     //override new location
+    //     setLocation(piece.getRow(), piece.getColumn(), piece.getColour());
+    // }
 
-        // Loop through each button location and create a button there
-        for (int i = 0; i < buttonsLocations.length; i++){
-            //get row/column of button to be creates
-            int row = buttonsLocations[i][0];
-            int column = buttonsLocations[i][1];
+    // /* Sets a button to match the colour of a player (or empty colour) */
+    // private void setLocation(int row, int column, Color colour){
+    //     //find button at location
+    //     GameButton button = findButton(row,column);
 
-            //Work out what the row/column correstponds to in terms of x/y
-            int y = boardPadding - slotSize / 2 + gap * row; //y is row not column
-            int x = boardPadding - slotSize / 2 + gap * column;
+    //     //set its colour
+    //     button.setBackground(colour);
+    // }
 
-            //Make a corresponding button
-            GameButton tempButtonVar = new GameButton("SelectPiece", row,column);
-            tempButtonVar.setBounds(x,y,slotSize,slotSize);
-            tempButtonVar.setBackground(defaultColour);
-            layeredPaneSlots.add(tempButtonVar); //what to add, layer
+    // private GameButton findButton(int row, int column) {
+    //     for (int i=0; i< buttonArray.size();i++){
+    //         if (buttonArray.get(i).getRowPos() == row && buttonArray.get(i).getColumnPos() == column){
+    //             return buttonArray.get(i);
+    //         }
 
-            //Make the button clickable
-            new GameButtonClicked(tempButtonVar,this);
+    //     }
 
+    //     return null;
+    //    // throw new Exception("Button not found at row:" + row + ", column:" + column);
 
-            buttonArray.add(tempButtonVar);
-
-
-        }
-
-    }
-
-
-    public void updatePiece(Piece piece){
-        //sets old location to empty
-        setLocation(piece.getPrevRow(), piece.getPrevColumn(), defaultColour);
-
-        //override new location
-        setLocation(piece.getRow(), piece.getColumn(), piece.getColour());
-    }
-
-    /* Sets a button to match the colour of a player (or empty colour) */
-    private void setLocation(int row, int column, Color colour){
-        //find button at location
-        GameButton button = findButton(row,column);
-
-        //set its colour
-        button.setBackground(colour);
-    }
-
-    private GameButton findButton(int row, int column) {
-        for (int i=0; i< buttonArray.size();i++){
-            if (buttonArray.get(i).getRowPos() == row && buttonArray.get(i).getColumnPos() == column){
-                return buttonArray.get(i);
-            }
-
-        }
-
-        return null;
-       // throw new Exception("Button not found at row:" + row + ", column:" + column);
-
-    }
+    // }
 
     /* Prevents user from selecting buttons in location that aren't on this is.
      * Locations on this list are NOT made selectable
      */
-    public void deselectOtherButtons(ArrayList<int[]> boardLocations){
+    // public void deselectOtherButtons(ArrayList<int[]> boardLocations){
 
-        boolean locFound = false;
+    //     boolean locFound = false;
 
-        int[] buttonLocation = {0, 0};
+    //     int[] buttonLocation = {0, 0};
         
 
-        //Find locations not on the given list
-        for (GameButton button : buttonArray){
-            locFound = false;
+    //     //Find locations not on the given list
+    //     for (GameButton button : buttonArray){
+    //         locFound = false;
 
-            //Check if a button matches any position
-            for(int[] boardLocation: boardLocations ){
+    //         //Check if a button matches any position
+    //         for(int[] boardLocation: boardLocations ){
 
-                buttonLocation[0] = button.getRowPos();
-                buttonLocation[1] = button.getColumnPos() ;
+    //             buttonLocation[0] = button.getRowPos();
+    //             buttonLocation[1] = button.getColumnPos() ;
 
-                if (Arrays.equals(buttonLocation,boardLocation)){
+    //             if (Arrays.equals(buttonLocation,boardLocation)){
 
-                    locFound = true;
-                }
-            }
+    //                 locFound = true;
+    //             }
+    //         }
 
-            //Deselect button
-            if (locFound == false){
-                button.setEnabled(false);
+    //         //Deselect button
+    //         if (locFound == false){
+    //             button.setEnabled(false);
 
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
+
 
     /* Highlite an available location the selected piece can move 
      * Using buttons because it is easy.
@@ -235,7 +213,7 @@ public class Display extends JPanel{
 
         /* When a button on the display is clicked */
         public void buttonClicked(GameButton gameButton){
-            board.buttonClicked(gameButton.getType(),gameButton.getRowPos(),gameButton.getColumnPos());
+            board.buttonClicked(gameButton.getPiece());
 
         }
 
@@ -252,7 +230,9 @@ public class Display extends JPanel{
         // //Draw rectangles
         // g2.drawRect(boardPadding,boardPadding,gap*6,gap*6); // outer rectangle
 
-
+        public void setValidLocations(int[][] validLocations){
+            this.validLocations = validLocations;
+        }
 
  }
 

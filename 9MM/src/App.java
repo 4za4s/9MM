@@ -20,6 +20,22 @@ public class App{
     static int frameHeight = 550;
 
     public static void main(String[] args) {  
+
+   
+
+
+
+        Piece[][] pieceArray = new Piece[6][6];
+        Player player1 = new Player(Color.white);
+
+        Piece table[] = {new Piece(0, 1, player1)};
+
+
+        // System.out.println(pieceArray);
+        System.out.println(pieceArray[0][0]);
+        System.out.println("Please run this in debug mode and see if you get an error = " + table[0].getColumn());
+
+
         JFrame frame = new JFrame("9 Mans Morris");
         getWindowSize();
         frame.setSize(frameWidth, frameHeight);
@@ -44,6 +60,8 @@ public class App{
         displayPane.setOpaque(false); //content panes must be opaque
         frame.setContentPane(displayPane);
 
+        board.setDesiplaysValidLocations(); //TODO: probably not the best way to have done this
+
 
         // frame.setLayout(null);
 
@@ -54,11 +72,13 @@ public class App{
 
 
 
+    }
 
 
 
 
-        boardManager.startGame();
+
+        // boardManager.startGame();
 
 
 
@@ -94,7 +114,7 @@ public class App{
 
         // frame.repaint(); //try this if rendering looks weird
        
-    }
+    // }
 
 
 
@@ -111,3 +131,4 @@ public class App{
 }
 
 
+//TODO: creaete a 3d array to store the buttons
