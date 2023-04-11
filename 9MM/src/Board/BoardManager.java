@@ -8,7 +8,7 @@ public class BoardManager {
     Player player1 = new Player(Color.blue);
     Player player2 = new Player(Color.red);
     Player[] inTurnPlayer = {player1}; //TODO: this does not need to be a list
-    int turnCounter = 1;
+    int turnCounter = 0;
 
 
     Board board;
@@ -46,7 +46,6 @@ public class BoardManager {
 
             //Common variables used
             String piecePhases1[] = {"SelectPiece"}; //TODO: I'm sure there is a better way to do. Maybe have all of the scenarios saved as class variables
-            Player[] selectablePlayers1 = {player1};
 
 
 
@@ -61,8 +60,8 @@ public class BoardManager {
                     
                     //Show selectable locations
                     board.displayAvailableLocations();
-
                     break;
+
                 case "MoveToEmptySlot":
                     //Move piece (updates the board)
                     board.movePiece(inTurnPlayer, piecePhases1,"unsedValue", false);
@@ -82,7 +81,8 @@ public class BoardManager {
     /* Changes the turn to the other player */
     private void changeTurn(){
         turnCounter ++;
-        inTurnPlayer[0] = turnCounter % 2 == 0 ? player2 : player1;
+        System.out.println("Turn: " + turnCounter);
+        inTurnPlayer[0] = turnCounter % 2 == 0 ? player1 : player2;
         
 
     }

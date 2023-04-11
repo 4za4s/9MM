@@ -97,6 +97,7 @@ public class Board {
 
     }
 
+    /* Sets the valid locations in Display class TODO: redo this a better way */
     public void setDesiplaysValidLocations(){
         panel.setValidLocations(validLocations);
     }
@@ -107,6 +108,7 @@ public class Board {
     }
 
 
+    /* the the decidated manager for this humble board to report to */
     public void setBoardManager(BoardManager boardManager){
         this.boardManager = boardManager;
     }
