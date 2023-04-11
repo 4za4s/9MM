@@ -7,9 +7,9 @@ public class BoardManager {
 
     Player player1 = new Player(Color.blue);
     Player player2 = new Player(Color.red);
+    Player[] inTurnPlayer = {player1}; //TODO: this does not need to be a list
+    int turnCounter = 1;
 
-
-    boolean player1Turn = false;
 
     Board board;
 
@@ -20,84 +20,70 @@ public class BoardManager {
 
         this.board = board;
 
-  
-
-
-
     }
 
     /* starts the game. Has to be called seperately as it needs to wait for other things to be set up first */
     public void startGame(){
 
-        // ////add some pieces to the board for testing
-        // board.createPiece(0,0,player1);
-        // board.createPiece(0,3,player1);
-        // board.createPiece(6,6,player2);
-
-        // Player currentPlayer;
-
-        //     //  while (true){
-
-        //     //change player turn
-        //     player1Turn =  !player1Turn;
-
-        //     //run turn for that player
-        //     currentPlayer = player1Turn ? player1 :  player2;
-
-            runTurn(player1);
-
-
-        // // }
-
-    }
-
-    /* Runs 1 players turn of the game  */
-    private void runTurn(Player player){
-
-        System.out.println("Turn = " + player.colour.toString());
-
-
-        //set all pieces that are not that players to non selectable
-        // board.restrictPieceAccessToOnly(player);
-
+        //add some pieces to the board for testing - assume it is playey1's turn at the stat of the game
+        board.createPiece(0,0,player1);
+        board.createPiece(0,3,player1);
+        board.createPiece(0,6,player2); 
+        board.createPiece(6,6,player2); 
         
 
+        String piecePhases[] = {"SelectPiece"};
+       
 
-        //wait for player to select a piece
-
-
-        //show available moves
-
-        //get new location selected
-
-
-        //move the piece to selected location
-
+        board.updatePieces(inTurnPlayer,piecePhases, "unsedValue", false);
 
     }
+
 
         /* this is called whenever a button is pressed. In future it will do actual stuff.*/
         public void buttonClicked(String type){
             System.out.println("Button was pressed. Type: " + type);
 
+            //Common variables used
+            String piecePhases1[] = {"SelectPiece"}; //TODO: I'm sure there is a better way to do. Maybe have all of the scenarios saved as class variables
+            Player[] selectablePlayers1 = {player1};
+
+
+
             //Do appropriate turn action
             switch(type){
                 case "SelectPiece":
-                    //TODO:
-                    // board.removeButtons
-                    // board.addNewButtons
+
+                    //Select a piece to move
+                    String piecePhases[] = {"SelectPiece"};
+                
+                    board.updatePieces(inTurnPlayer, piecePhases,"MoveToEmptySlot", true);
+                    
+                    //Show selectable locations
                     board.displayAvailableLocations();
 
                     break;
-                case "ChangeSelection":
-                    //TODO: show new selection for positions available
+                case "MoveToEmptySlot":
+                    //Move piece (updates the board)
+                    board.movePiece(inTurnPlayer, piecePhases1,"unsedValue", false);
+
+                    changeTurn();
+
                     break;
 
-                default: System.out.println("Invalid button type given");
+
+                default: System.out.println("Invalid button type given: " + type);
                     break;
 
 
 
             }
         }
+    /* Changes the turn to the other player */
+    private void changeTurn(){
+        turnCounter ++;
+        inTurnPlayer[0] = turnCounter % 2 == 0 ? player2 : player1;
+        
+
+    }
 }

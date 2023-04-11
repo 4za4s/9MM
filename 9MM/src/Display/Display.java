@@ -1,13 +1,10 @@
 package Display;
-
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import Board.Board;
 import Board.GameButton;
@@ -36,19 +33,8 @@ public class Display extends JPanel{
     
     Board board; //the game board this is displaying
     ArrayList<GameButton> buttonArray = new ArrayList<GameButton>(); // array for storing the buttons
-    Piece[][] pieceArray = {{null,null,null,null,null,null,null},
-                            {null,null,null,null,null,null,null},
-                            {null,null,null,null,null,null,null},
-                            {null,null,null,null,null,null,null},
-                            {null,null,null,null,null,null,null},
-                            {null,null,null,null,null,null,null},
-                            {null,null,null,null,null,null,null}
-                        };
+    Piece[][] pieceArray = new Piece[7][7];
 
-        
-        //TODO: possible replacement array for storing the buttons
-
-     
     Color defaultColour = Color.white;
    
 
@@ -59,6 +45,15 @@ public class Display extends JPanel{
         this.frameWidth = frame.getWidth();
         this.frameHeight = frame.getHeight();
 
+  
+
+        
+    }
+
+    /* creates the game board. Not done at initialiseation because variables need to be set later */
+    public void createGameBoard(){
+
+  
         //Work out values for the spacing
         
         int minSize = Math.min(frameWidth, frameHeight);
@@ -72,106 +67,55 @@ public class Display extends JPanel{
 
 
         //Create board
-        setLayout(null); //try setLayout(new GridLayout()); if board
+        setLayout(null); //try setLayout(new GridLayout()); if bored
 
-
-        //Create and set up the slots layered pane.
-        Player[] selectablePlayers = {new Player(defaultColour)};
-        String piecePhases[] = {"test"}; //TODO: remove
-
-
-
-        layeredPaneSlots = new ButtonDisplay(boardPadding, gap, slotSize, pieceArray, validLocations, piecePhases, selectablePlayers, " " , true);
-
-
-        layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight)); //TODO: remove this later somehow?
-        // setUpLayeredPaneSlots();
-
+  
     
         //Create and set up the background layered pane.
         layeredPaneBackground = new Background(boardPadding, gap, slotSize);
 
-        //Add both layers to the frame
-        add(layeredPaneSlots);
+        //Add layer to the frame
+   
         add(layeredPaneBackground);
 
-        size = layeredPaneSlots.getPreferredSize();
         
-        layeredPaneSlots.setSize(size);
+        
+        String piecePhases[] = {"unused"};
+        Player[] unusedPlayer = {new Player(defaultColour)};
+        updatePieces(pieceArray,unusedPlayer,piecePhases, "unusedString",false);
+
+        
+
         layeredPaneBackground.setSize(size);
 
+    }
+
+    public void updatePieces(Piece[][] pieceArray, Player[] selectablePlayers,String piecePhases[], String  noPlayerString, boolean noPlayerSelectable){
+        //Get the new locatiosn of all of the pieces
+        this.pieceArray = pieceArray;
+
+   
+
+        layeredPaneSlots = new ButtonDisplay(boardPadding, gap, slotSize, pieceArray, validLocations, piecePhases, selectablePlayers, noPlayerString , noPlayerSelectable, this);
+        layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight)); //TODO: update above input
+
+        //Remove everything from the frame
+        this.removeAll();
+        //Add all of the new stuff back to the frame
+        add(layeredPaneBackground); //TODO: not optimal to use removeAll because then I need to add this back every time. Was unable to just remove the buttons because too dumb
+        add(layeredPaneSlots);
+
+        size = layeredPaneSlots.getPreferredSize();
+
+        layeredPaneSlots.setSize(size);
+
+    
     }
 
 
 
 
-
-    // public void updatePiece(Piece piece){
-    //     //sets old location to empty
-    //     setLocation(piece.getPrevRow(), piece.getPrevColumn(), defaultColour);
-
-    //     //override new location
-    //     setLocation(piece.getRow(), piece.getColumn(), piece.getColour());
-    // }
-
-    // /* Sets a button to match the colour of a player (or empty colour) */
-    // private void setLocation(int row, int column, Color colour){
-    //     //find button at location
-    //     GameButton button = findButton(row,column);
-
-    //     //set its colour
-    //     button.setBackground(colour);
-    // }
-
-    // private GameButton findButton(int row, int column) {
-    //     for (int i=0; i< buttonArray.size();i++){
-    //         if (buttonArray.get(i).getRowPos() == row && buttonArray.get(i).getColumnPos() == column){
-    //             return buttonArray.get(i);
-    //         }
-
-    //     }
-
-    //     return null;
-    //    // throw new Exception("Button not found at row:" + row + ", column:" + column);
-
-    // }
-
-    /* Prevents user from selecting buttons in location that aren't on this is.
-     * Locations on this list are NOT made selectable
-     */
-    // public void deselectOtherButtons(ArrayList<int[]> boardLocations){
-
-    //     boolean locFound = false;
-
-    //     int[] buttonLocation = {0, 0};
-        
-
-    //     //Find locations not on the given list
-    //     for (GameButton button : buttonArray){
-    //         locFound = false;
-
-    //         //Check if a button matches any position
-    //         for(int[] boardLocation: boardLocations ){
-
-    //             buttonLocation[0] = button.getRowPos();
-    //             buttonLocation[1] = button.getColumnPos() ;
-
-    //             if (Arrays.equals(buttonLocation,boardLocation)){
-
-    //                 locFound = true;
-    //             }
-    //         }
-
-    //         //Deselect button
-    //         if (locFound == false){
-    //             button.setEnabled(false);
-
-    //         }
-    //     }
-    // }
-
-
-    /* Highlite an available location the selected piece can move 
+    /* Highlight an available location the selected piece can move 
      * Using buttons because it is easy.
      * 
      * TODO: redo whole rendering system?
@@ -179,22 +123,6 @@ public class Display extends JPanel{
 
     public void displayAvailableLocation(ArrayList<int[]> availableLocations){ //eventually ArrayList<int[]> availableLocations -> as an input
 
-        // //hardcoding this for testing
-        // ArrayList<int[]>availableLocations = new ArrayList<int[]>();
-
-        // int[] pos1 = {0,0};
-        // int[] pos2 = {0,3};
-        // int[] pos3 = {0,6};
-
-        // availableLocations.add(pos1);
-        // availableLocations.add(pos2);
-        // availableLocations.add(pos3);
-
-        //remove old highlightes
-        if (layeredPaneHighlights != null){
-            remove(layeredPaneHighlights); 
-
-        }
 
         layeredPaneHighlights = new SelectionHighlights(boardPadding, gap, slotSize, availableLocations);
 

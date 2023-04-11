@@ -1,5 +1,4 @@
 package Board;
-import javax.swing.JButton;
 import Display.Display;
 
 import java.util.ArrayList;
@@ -12,10 +11,12 @@ public class Board {
 
 
     Display panel; 
-    JButton[] slots;
     BoardManager boardManager;
-    ArrayList<Piece> pieceArray = new ArrayList<Piece>(); // array for storing the buttons
-    int[] lastButtonClicked = {0,0}; //location of last button clicked. row, column
+    Piece[][] pieceArray = new Piece[7][7];// array for storing the pieces
+
+    int[] lastPieceSelected = {0,0}; //location of last piece selected (button clicked). row, column
+    int[] secondLastPieceSelected = {0,0}; //These are for keeping track of what piece to move where
+
 
 
     int[][]validLocations =  new int[][]{{0,0},{0,3},{0,6},  //so later can work out it a move is valid
@@ -25,51 +26,19 @@ public class Board {
                                          {4,2},{4,3},{4,4},
                                          {5,1},{5,3},{5,5},
                                          {6,0},{6,3},{6,6} };
-
-    GameButton[][] pieceLocations = {
-        {null,null,null,null,null,null,null},
-        {null,null,null,null,null,null,null},
-        {null,null,null,null,null,null,null},
-        {null,null,null,null,null,null,null},
-        {null,null,null,null,null,null,null},
-        {null,null,null,null,null,null,null},
-        {null,null,null,null,null,null,null}
-       };
-
-
-
     
 
-    public void setBoardManager(BoardManager boardManager){
-        this.boardManager = boardManager;
+
+    /* Create a piece and adds it to the piece array. Then updates the board with it */
+    public void createPiece(int row, int column, Player owner){
+        Piece tempPieceVar = new Piece(row, column, owner);
+        pieceArray[row][column] = tempPieceVar;
+
+
+
     }
 
-    // /* Create a piece and adds it to the piece array. Then updates the board with it */
-    // public void createPiece(int row, int column, Player owner){
-    //     Piece tempPieceVar = new Piece(row, column, owner);
-    //     pieceArray.add(tempPieceVar);
 
-    //     updatePiece(tempPieceVar);
-
-
-
-    // }
-
-    public void setPanel(Display panel){
-        this.panel = panel;
-    }
-
-    // //updates a pieces location on the board
-    // public void updatePiece(Piece piece){
-
-    //     //not sure how this works yet
-    //     //TODO: stuff here?
-
-
-
-    //     panel.updatePiece(piece); //make the visual changes as well
-
-    // }
 
     /* restricts which pieces the user can click on. Only allows for the pieces bellonging to the player given*/
     // public void restrictPieceAccessToOnly(Player player){
@@ -100,11 +69,15 @@ public class Board {
 
     public void displayAvailableLocations(){
 
-        //Get position {row,column} of all locations since they are all valid moves for this sprint
+        //Get position {row,column} of all empty locations since they are all valid moves for this sprint
         ArrayList<int[]> locationsArrayList = new ArrayList<int[]>();
 
         for (int[] location : validLocations){
-            locationsArrayList.add(location);
+            if (pieceArray[location[1]][location[0]] == null){
+                locationsArrayList.add(location);
+
+            }
+            
 
         }
         panel.displayAvailableLocation(locationsArrayList);
@@ -112,9 +85,12 @@ public class Board {
 
     /* called when a button is clicked */
     public void buttonClicked(Piece piece){
-        //Tell what button was clicked
-        lastButtonClicked[0] = piece.getRow();
-        lastButtonClicked[1] = piece.getColumn();
+        //Recordlast two buttons clicked
+        secondLastPieceSelected[0] = lastPieceSelected[0];
+        secondLastPieceSelected[1] = lastPieceSelected[1];
+
+        lastPieceSelected[0] = piece.getRow();
+        lastPieceSelected[1] = piece.getColumn();
 
         boardManager.buttonClicked(piece.getPhrase());
 
@@ -123,6 +99,33 @@ public class Board {
 
     public void setDesiplaysValidLocations(){
         panel.setValidLocations(validLocations);
+    }
+
+    /* Note: panel is the display frame */
+    public void setPanel(Display panel){
+        this.panel = panel;
+    }
+
+
+    public void setBoardManager(BoardManager boardManager){
+        this.boardManager = boardManager;
+    }
+
+    /* Moves a piece from one spot in the board to another */
+    public void movePiece(Player[] selectablePlayers, String piecePhases[],String noPlayerString, boolean noPlayerSelectable){
+
+        //Move piece 
+        pieceArray[lastPieceSelected[0]][lastPieceSelected[1]] = pieceArray[secondLastPieceSelected[0]][secondLastPieceSelected[1]];
+        
+        pieceArray[secondLastPieceSelected[0]][secondLastPieceSelected[1]] = null;
+
+        //Update board visually
+        updatePieces(selectablePlayers,piecePhases, noPlayerString, noPlayerSelectable);
+    }
+
+    /* Rerenders the display of all of the pieces */
+    public void updatePieces( Player[] selectablePlayers, String piecePhases[],String noPlayerString, boolean noPlayerSelectable){
+        panel.updatePieces(pieceArray,selectablePlayers,piecePhases,noPlayerString,noPlayerSelectable);
     }
 
 }

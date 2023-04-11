@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import javax.swing.JLayeredPane;
 
 import Board.GameButton;
+import Board.GameButtonClicked;
 import Board.Piece;
 import Board.Player;
 
@@ -19,6 +20,7 @@ public class ButtonDisplay  extends JLayeredPane {
     int[][] validLocations;
     String noPlayerString;
     boolean noPlayerSelectable;
+    Display display;
 
     String piecePhases[]; //these two arrays  have corrsponding locations
     Player[] selectablePlayers;
@@ -26,7 +28,7 @@ public class ButtonDisplay  extends JLayeredPane {
 
     public ButtonDisplay(int boardPadding, int gap, int slotSize, 
     Piece[][] pieceArray, int[][] validLocations, String[] piecePhases, Player[] selectablePlayers,
-    String noPlayerString, boolean noPlayerSelectable){
+    String noPlayerString, boolean noPlayerSelectable, Display display){
         
         this.boardPadding = boardPadding;
         this.gap = gap;
@@ -38,6 +40,7 @@ public class ButtonDisplay  extends JLayeredPane {
         this.selectablePlayers = selectablePlayers;
         this.noPlayerString = noPlayerString;
         this.noPlayerSelectable = noPlayerSelectable;
+        this.display = display; //TODO: maybe there is some way to reduce the amount of inputs here?
 
 
    
@@ -56,7 +59,8 @@ public class ButtonDisplay  extends JLayeredPane {
         //                                         {5,1},{5,3},{5,5},
         //                                         {6,0},{6,3},{6,6}};
 
-        int nextValidLocation = 0;
+        int nextValidLocation = 0; //For checking the validLocations array to save time complexity when seeing if a 
+        // location is valid
 
         //Loop throught each location and add appropriate button
         for (int row = 0; row < pieceArray.length; row++){
@@ -65,13 +69,15 @@ public class ButtonDisplay  extends JLayeredPane {
                 //If no piece there but it is a valid location
                 if (pieceArray[row][column] == null  
                 && row == validLocations[nextValidLocation][0] 
-                && column == validLocations[nextValidLocation][0] 
+                && column == validLocations[nextValidLocation][1] 
                 ){
 
                     nextValidLocation++;
 
-                    // Create a non-player button
-                    makeNewButton(noPlayerSelectable, new Piece(row, column, null),noPlayerString, row, column);
+                    // Create a non-player button - ie empty slot
+                    Piece tempPiece = new Piece(row, column, new Player(defaultColour));
+                    tempPiece.setPhase(noPlayerString);
+                    makeNewButton(noPlayerSelectable,tempPiece,noPlayerString, row, column);
 
                 
                 // If there is a piece there
@@ -79,11 +85,14 @@ public class ButtonDisplay  extends JLayeredPane {
                     //Check which player piece belongs to
 
                     for (int i = 0; i < selectablePlayers.length; i++) {
-                        //If piece is there create a button
+                        //If piece is there create a selectablw  button
                         if (selectablePlayers[i] == pieceArray[row][column].getOwner()){
                             makeNewButton(true, pieceArray[row][column], piecePhases[i], row, column);
 
 
+
+                        } else {//Create an unselectable button
+                            makeNewButton(false, pieceArray[row][column], piecePhases[i], row, column);
 
                         }
                     }
@@ -110,6 +119,7 @@ public class ButtonDisplay  extends JLayeredPane {
         //Pass on info about what piece was clicked when button was clicked
         piece.setRow(row); //TODO, this might be unnecessary
         piece.setColumn(column);
+        piece.setPhase(piecePhrase);
 
         GameButton tempButtonVar = new GameButton(piece);
         tempButtonVar.setEnabled(selectable);
@@ -117,6 +127,8 @@ public class ButtonDisplay  extends JLayeredPane {
         tempButtonVar.setBackground(piece.getColour());
         
         add(tempButtonVar); 
+
+        new GameButtonClicked(tempButtonVar,display);
 
     }
 }

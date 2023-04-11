@@ -25,9 +25,6 @@ class Background extends JLayeredPane { //prev JPanel
     //This is run by default
     public void paintComponent(Graphics g){
 
-        System.out.println("background being drawn");
-
-
         Graphics2D g2 = (Graphics2D) g;
 
         // Set stoke size
