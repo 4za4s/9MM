@@ -10,7 +10,9 @@ import Board.Board;
 import Board.BoardManager;
 import Display.Display;
 
-
+/**
+ * This is the driver class for 9MM game
+ */
 public class App{
     //Set frame settings
     static int frameWidth = 500;

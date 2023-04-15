@@ -11,7 +11,9 @@ import Board.GameButton;
 import Board.Piece;
 import Board.Player;
 
-
+/**
+ * Manages the display
+ */
 public class Display extends JPanel{
 
     int boardPadding; //padding to each side of the board 
@@ -50,7 +52,9 @@ public class Display extends JPanel{
         
     }
 
-    /* creates the game board. Not done at initialiseation because variables need to be set later */
+    /**
+     * Creates the game board. Not done at initialisation because variables need to be set later
+     */
     public void createGameBoard(){
 
   
@@ -75,14 +79,11 @@ public class Display extends JPanel{
         layeredPaneBackground = new Background(boardPadding, gap, slotSize);
 
         //Add layer to the frame
-   
         add(layeredPaneBackground);
 
-        
-        
-        String piecePhases[] = {"unused"};
-        Player[] unusedPlayer = {new Player(defaultColour)};
-        updatePieces(pieceArray,unusedPlayer,piecePhases, "unusedString",false);
+        String piecePhase = "unused";
+        Player unusedPlayer = new Player(defaultColour);
+        updateDisplay(pieceArray,unusedPlayer,piecePhase, "unusedString",false);
 
         
 
@@ -90,13 +91,21 @@ public class Display extends JPanel{
 
     }
 
-    public void updatePieces(Piece[][] pieceArray, Player[] selectablePlayers,String piecePhases[], String  noPlayerString, boolean noPlayerSelectable){
+    /**
+     * Updates the display 
+     * @param pieceArray where all of the pieces are
+     * @param selectablePlayer player whose pieces can be clicked on
+     * @param piecePhase what to tell the board when a piece is clicked
+     * @param noPlayerString what to tell the board if an empty slot is clicked
+     * @param noPlayerSelectable can an empty slot be selected
+     */
+    public void updateDisplay(Piece[][] pieceArray, Player selectablePlayer,String piecePhase, String  noPlayerString, boolean noPlayerSelectable){
         //Get the new locatiosn of all of the pieces
         this.pieceArray = pieceArray;
 
    
 
-        layeredPaneSlots = new ButtonDisplay(boardPadding, gap, slotSize, pieceArray, validLocations, piecePhases, selectablePlayers, noPlayerString , noPlayerSelectable, this);
+        layeredPaneSlots = new ButtonDisplay(boardPadding, gap, slotSize, pieceArray, validLocations, piecePhase, selectablePlayer, noPlayerString , noPlayerSelectable, this);
         layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight)); //TODO: update above input
 
         //Remove everything from the frame
@@ -115,20 +124,16 @@ public class Display extends JPanel{
 
 
 
-    /* Highlight an available location the selected piece can move 
-     * Using buttons because it is easy.
-     * 
-     * TODO: redo whole rendering system?
-    */
-
+    /**
+     * Highlight an available location the selected piece can move 
+     * @param availableLocations the locations available
+     */
     public void displayAvailableLocation(ArrayList<int[]> availableLocations){ //eventually ArrayList<int[]> availableLocations -> as an input
 
 
         layeredPaneHighlights = new SelectionHighlights(boardPadding, gap, slotSize, availableLocations);
 
         add(layeredPaneHighlights);
-
-        
 
 
         layeredPaneHighlights.setSize(size);
@@ -139,44 +144,21 @@ public class Display extends JPanel{
 
         }
 
-        /* When a button on the display is clicked */
+        /**
+         * Tells the board a button has been clicked
+         * @param gameButton the button that was clicked
+         */
         public void buttonClicked(GameButton gameButton){
             board.buttonClicked(gameButton.getPiece());
 
         }
 
-        // // frame.setLayout(new FlowLayout());
-        // GameButton tempButtonVar = new GameButton(row,column);
-        // tempButtonVar.setBounds(0,0,10,10);
-        // tempButtonVar.setBackground(Color.pink);
-        // frame.add(tempButtonVar);
-
-        // frame.repaint();
-        // // Set stoke size
-        // g2.setStroke(new BasicStroke(slotSize / 4));
-
-        // //Draw rectangles
-        // g2.drawRect(boardPadding,boardPadding,gap*6,gap*6); // outer rectangle
-
+        /**
+         * Sets the locations that a piece can be on
+         * @param validLocations the locations
+         */
         public void setValidLocations(int[][] validLocations){
             this.validLocations = validLocations;
         }
 
  }
-
-
-
-
-        // //Example of adding text
-    // public void addShape() {
-    //     // this.getGraphics();
-
-        
-    
-    //     // Graphics2D g2 = (Graphics2D) g;
-
-    //     // g2.setStroke(new BasicStroke(10));
-    
-    //     // g.drawString("qwe",20,20);
-    // }
-

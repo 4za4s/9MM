@@ -4,9 +4,11 @@ import Display.Display;
 import java.util.ArrayList;
 
 
-/*This is the board where all of the pices go on  */ 
+/* */ 
 
-
+/**
+ * The board where all of the pices go on. Keeps track of pieces and their movement
+ */
 public class Board {
 
 
@@ -27,9 +29,13 @@ public class Board {
                                          {5,1},{5,3},{5,5},
                                          {6,0},{6,3},{6,6} };
     
-
-
-    /* Create a piece and adds it to the piece array. Then updates the board with it */
+                                        
+    /**
+     * Create a piece and adds it to the piece array
+     * @param row row of the new piece
+     * @param column column of the new piece
+     * @param owner which player the piece belongs to
+     */
     public void createPiece(int row, int column, Player owner){
         Piece tempPieceVar = new Piece(row, column, owner);
         pieceArray[row][column] = tempPieceVar;
@@ -38,35 +44,7 @@ public class Board {
 
     }
 
-
-
-    /* restricts which pieces the user can click on. Only allows for the pieces bellonging to the player given*/
-    // public void restrictPieceAccessToOnly(Player player){
-
-
-    //     //work out which location have the pieces of the player
-
-    //     ArrayList<int[]> playersPieceLocs = new ArrayList<int[]>();
-
-
-
-    //     for (Piece piece : pieceArray ){
-    //         if (piece.getOwner() == player) {
-    //             int[] pieceLoc = {piece.getRow(),piece.getColumn() };
-    //             playersPieceLocs.add(pieceLoc);   
-
-    //         }
-
-    //     }
-
-
-
-    //     panel.deselectOtherButtons(playersPieceLocs);
-
-    //     //send these locations off to Display. Display will manage deselecting every other location
-        
-    // }
-
+    
     public void displayAvailableLocations(){
 
         //Get position {row,column} of all empty locations since they are all valid moves for this sprint
@@ -114,7 +92,8 @@ public class Board {
     }
 
     /* Moves a piece from one spot in the board to another */
-    public void movePiece(Player[] selectablePlayers, String piecePhases[],String noPlayerString, boolean noPlayerSelectable){
+
+    public void movePiece(Player selectablePlayer, String piecePhase, String noPlayerString, boolean noPlayerSelectable){
 
         //Move piece 
         pieceArray[lastPieceSelected[0]][lastPieceSelected[1]] = pieceArray[secondLastPieceSelected[0]][secondLastPieceSelected[1]];
@@ -122,12 +101,12 @@ public class Board {
         pieceArray[secondLastPieceSelected[0]][secondLastPieceSelected[1]] = null;
 
         //Update board visually
-        updatePieces(selectablePlayers,piecePhases, noPlayerString, noPlayerSelectable);
+        updatePieces(selectablePlayer,piecePhase, noPlayerString, noPlayerSelectable);
     }
 
     /* Rerenders the display of all of the pieces */
-    public void updatePieces( Player[] selectablePlayers, String piecePhases[],String noPlayerString, boolean noPlayerSelectable){
-        panel.updatePieces(pieceArray,selectablePlayers,piecePhases,noPlayerString,noPlayerSelectable);
+    public void updatePieces( Player selectablePlayer, String piecePhase,String noPlayerString, boolean noPlayerSelectable){
+        panel.updateDisplay(pieceArray,selectablePlayer,piecePhase,noPlayerString,noPlayerSelectable);
     }
 
 }

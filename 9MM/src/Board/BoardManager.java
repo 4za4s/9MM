@@ -1,13 +1,20 @@
 package Board;
 import java.awt.Color;
 
-/* Manages the board */
+
+/**
+ * Manages the board
+ */
 public class BoardManager {
 
-
-    Player player1 = new Player(Color.blue);
+    /**
+     * There are two players in the game
+     */
+    Player player1 = new Player(Color.blue); 
     Player player2 = new Player(Color.red);
-    Player[] inTurnPlayer = {player1}; //TODO: this does not need to be a list
+
+
+    Player inTurnPlayer = player1; //Which player whose turn it currently is
     int turnCounter = 0;
 
 
@@ -32,20 +39,22 @@ public class BoardManager {
         board.createPiece(6,6,player2); 
         
 
-        String piecePhases[] = {"SelectPiece"};
+        String piecePhases = "SelectPiece";
        
 
         board.updatePieces(inTurnPlayer,piecePhases, "unsedValue", false);
 
     }
 
-
-        /* this is called whenever a button is pressed. In future it will do actual stuff.*/
+        /**
+         * This is called whenever a button is pressed. Managed the outcome
+         * @param type the action the button represents when clicked - eg select a piece -> SelectPiece
+         */
         public void buttonClicked(String type){
             System.out.println("Button was pressed. Type: " + type);
 
             //Common variables used
-            String piecePhases1[] = {"SelectPiece"}; //TODO: I'm sure there is a better way to do. Maybe have all of the scenarios saved as class variables
+            String piecePhases1 = "SelectPiece"; //TODO: I'm sure there is a better way to do. Maybe have all of the scenarios saved as class variables
 
 
 
@@ -54,19 +63,21 @@ public class BoardManager {
                 case "SelectPiece":
 
                     //Select a piece to move
-                    String piecePhases[] = {"SelectPiece"};
-                
-                    board.updatePieces(inTurnPlayer, piecePhases,"MoveToEmptySlot", true);
+                    String piecePhase = "SelectPiece";
+                    board.updatePieces(inTurnPlayer, piecePhase,"MoveToEmptySlot", true);
                     
                     //Show selectable locations
                     board.displayAvailableLocations();
+
                     break;
 
                 case "MoveToEmptySlot":
                     //Move piece (updates the board)
+                    changeTurn();
+
                     board.movePiece(inTurnPlayer, piecePhases1,"unsedValue", false);
 
-                    changeTurn();
+                    
 
                     break;
 
@@ -78,11 +89,25 @@ public class BoardManager {
 
             }
         }
-    /* Changes the turn to the other player */
+
+    /**
+     * Changes the turn to the other player
+     */
     private void changeTurn(){
         turnCounter ++;
         System.out.println("Turn: " + turnCounter);
-        inTurnPlayer[0] = turnCounter % 2 == 0 ? player1 : player2;
+        int turn = turnCounter % 2 ;
+
+        if (turn == 0){
+            inTurnPlayer = player1;
+
+        } else {
+            inTurnPlayer = player2;
+            
+        }
+
+        //Not sure why but this gives an error on compilation:
+        // inTurnPlayer = turnCounter % 2 == 0 ? player1 : player2;
         
 
     }

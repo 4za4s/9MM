@@ -22,12 +22,12 @@ public class ButtonDisplay  extends JLayeredPane {
     boolean noPlayerSelectable;
     Display display;
 
-    String piecePhases[]; //these two arrays  have corrsponding locations
-    Player[] selectablePlayers;
+    String piecePhase; //string accociated with the button eg "selectPiece"
+    Player selectablePlayer; //player which can be selected on the board
 
 
     public ButtonDisplay(int boardPadding, int gap, int slotSize, 
-    Piece[][] pieceArray, int[][] validLocations, String[] piecePhases, Player[] selectablePlayers,
+    Piece[][] pieceArray, int[][] validLocations, String piecePhase, Player selectablePlayer,
     String noPlayerString, boolean noPlayerSelectable, Display display){
         
         this.boardPadding = boardPadding;
@@ -36,8 +36,8 @@ public class ButtonDisplay  extends JLayeredPane {
 
         this.pieceArray = pieceArray;
         this.validLocations = validLocations;
-        this.piecePhases = piecePhases; 
-        this.selectablePlayers = selectablePlayers;
+        this.piecePhase = piecePhase; 
+        this.selectablePlayer = selectablePlayer;
         this.noPlayerString = noPlayerString;
         this.noPlayerSelectable = noPlayerSelectable;
         this.display = display; //TODO: maybe there is some way to reduce the amount of inputs here?
@@ -84,23 +84,19 @@ public class ButtonDisplay  extends JLayeredPane {
                 } else if (pieceArray[row][column] != null){
                     //Check which player piece belongs to
 
-                    for (int i = 0; i < selectablePlayers.length; i++) {
-                        //If piece is there create a selectablw  button
-                        if (selectablePlayers[i] == pieceArray[row][column].getOwner()){
-                            makeNewButton(true, pieceArray[row][column], piecePhases[i], row, column);
+                     //If piece is there create a selectable  button
+                    if (selectablePlayer == pieceArray[row][column].getOwner()){
+                        makeNewButton(true, pieceArray[row][column], piecePhase, row, column);
 
-
-
-                        } else {//Create an unselectable button
-                            makeNewButton(false, pieceArray[row][column], piecePhases[i], row, column);
-
-                        }
+                    } else { //Create an unselectable button
+                        makeNewButton(false, pieceArray[row][column], "unused", row, column);
                     }
+
+
                     nextValidLocation++;
 
                 // There is no piece there, and it is not a valid location
                 } else{
-                    //
 
                 }
             }
