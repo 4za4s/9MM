@@ -6,33 +6,30 @@ import java.awt.Color;
  * Manages the board
  */
 public class BoardManager {
-
-    /**
-     * There are two players in the game
-     */
-    Player player1 = new Player(Color.blue); 
+   
+    Player player1 = new Player(Color.blue); //There are two players in the game
     Player player2 = new Player(Color.red);
 
 
     Player inTurnPlayer = player1; //Which player whose turn it currently is
-    int turnCounter = 0;
+    int turnCounter = 0; //Keep track of the turn number
 
 
     Board board;
 
-    //
-
-    /* managers the game for a board */
     public BoardManager(Board board){
 
         this.board = board;
 
     }
 
-    /* starts the game. Has to be called seperately as it needs to wait for other things to be set up first */
+    /**
+     * Starts the game. Has to be called seperately as it needs to wait for other things - eg the board-
+     *  to be set up first
+     */
     public void startGame(){
 
-        //add some pieces to the board for testing - assume it is playey1's turn at the stat of the game
+        //add some pieces to the board for testing - assume it is player1's turn at the start of the game
         board.createPiece(0,0,player1);
         board.createPiece(0,3,player1);
         board.createPiece(0,6,player2); 
@@ -75,9 +72,9 @@ public class BoardManager {
                     //Move piece (updates the board)
                     changeTurn();
 
-                    board.movePiece(inTurnPlayer, piecePhases1,"unsedValue", false);
+                    board.moveLatestPiece();
 
-                    
+                    board.updatePieces(inTurnPlayer, piecePhases1,"unsedValue", false);
 
                     break;
 

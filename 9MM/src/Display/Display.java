@@ -46,10 +46,6 @@ public class Display extends JPanel{
         this.board = board;
         this.frameWidth = frame.getWidth();
         this.frameHeight = frame.getHeight();
-
-  
-
-        
     }
 
     /**

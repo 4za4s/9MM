@@ -10,7 +10,9 @@ import Board.GameButtonClicked;
 import Board.Piece;
 import Board.Player;
 
-/* Creates the buttons to represent pieces/empty spaces */
+/**
+ * Creates the buttons to represent pieces/empty spaces
+ */
 public class ButtonDisplay  extends JLayeredPane {
     Color defaultColour = Color.white;
     int boardPadding;
@@ -49,15 +51,7 @@ public class ButtonDisplay  extends JLayeredPane {
     
 
     @Override
-    //This is run by default
     public void paintComponent(Graphics g){
-        // int[][]buttonsLocations =   new int[][]{{0,0},{0,3},{0,6}, //{row,column}
-        //                                         {1,1},{1,3},{1,5},
-        //                                         {2,2},{2,3},{2,4},
-        //                                         {3,0},{3,1},{3,2},{3,4},{3,5},{3,6},
-        //                                         {4,2},{4,3},{4,4},
-        //                                         {5,1},{5,3},{5,5},
-        //                                         {6,0},{6,3},{6,6}};
 
         int nextValidLocation = 0; //For checking the validLocations array to save time complexity when seeing if a 
         // location is valid
@@ -106,6 +100,16 @@ public class ButtonDisplay  extends JLayeredPane {
     }
 
     /* make a new piece */
+
+    /**
+     * Makes a new button on the board. The board gets regularly cleared and 
+     * this is run each time the board is re-rendered
+     * @param selectable if the button can be selected
+     * @param piece the piece this button represents
+     * @param piecePhrase the phrase the piece should have - tells the board manager what to do next
+     * @param row the row the button should be placed on
+     * @param column the column the button should be placed on
+     */
     public void makeNewButton(boolean selectable, Piece piece, String piecePhrase, int row, int column){
 
         //Work out what the row/column correstponds to in terms of x/y
@@ -113,7 +117,7 @@ public class ButtonDisplay  extends JLayeredPane {
         int x = boardPadding - slotSize / 2 + gap * column;
 
         //Pass on info about what piece was clicked when button was clicked
-        piece.setRow(row); //TODO, this might be unnecessary
+        piece.setRow(row);
         piece.setColumn(column);
         piece.setPhase(piecePhrase);
 

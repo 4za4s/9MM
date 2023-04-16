@@ -1,11 +1,6 @@
 import java.awt.Dimension;
 import java.awt.Toolkit;
-// import java.awt.event.ComponentAdapter;
-// import java.awt.event.ComponentEvent;
-
-
 import javax.swing.JFrame;
-
 import Board.Board;
 import Board.BoardManager;
 import Display.Display;
@@ -43,15 +38,7 @@ public class App{
         board.setPanel(displayPane);
         board.setDesiplaysValidLocations(); //TODO: probably not the best way to have done this
         displayPane.createGameBoard();
-
-
-        displayPane.setOpaque(false); //content panes must be opaque - TODO: maybe this should be true?
         frame.setContentPane(displayPane);
-
-        
-
-
-        // frame.setLayout(null);
 
         //Display the window
         frame.pack();
@@ -69,8 +56,9 @@ public class App{
     }
 
 
-
-    /* Set window size relative to display */
+    /**
+     * Set window size of game relative to display
+     */
     private static void getWindowSize(){
         // getScreenSize() returns the size
         // of the screen in pixels
@@ -81,6 +69,3 @@ public class App{
         frameWidth = frameHeight*9/10; //10;
     } 
 }
-
-
-//TODO: creaete a 3d array to store the buttons

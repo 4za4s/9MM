@@ -6,12 +6,14 @@ import java.awt.Graphics2D;
 import javax.swing.JLayeredPane;
 
 
-/* Creates a draweing of the background. This drawing has to be added to a panel to be viewed */
+/**
+ *  Creates a drawing of the background. This drawing has to be added to a panel to be viewed 
+ */
 class Background extends JLayeredPane { //prev JPanel
 
-    int boardPadding;
-    int gap;
-    int slotSize;
+    int boardPadding; //how much padding to ad to each side of the board
+    int gap; //how much space to put between the rings of the board
+    int slotSize; //how big each piece is one the board
 
     public Background( int boardPadding, int gap, int slotSize) {
 
@@ -22,7 +24,6 @@ class Background extends JLayeredPane { //prev JPanel
     }
 
     @Override
-    //This is run by default
     public void paintComponent(Graphics g){
 
         Graphics2D g2 = (Graphics2D) g;

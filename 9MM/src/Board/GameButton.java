@@ -1,15 +1,15 @@
 package Board;
 import javax.swing.JButton;
 
-/* like a normal button, but with a way to save some attributes */
+/**
+ * Like a normal button java button, but with a way to save some attributes
+ */
 public class GameButton extends JButton{
 
-    private Piece piece;
+    private Piece piece; // what piece this button represents
 
 
     public GameButton(Piece piece){
-
-        super(); //run the super stuff
 
         this.piece = piece;
 
@@ -19,12 +19,5 @@ public class GameButton extends JButton{
     public Piece getPiece(){
         return piece;
     }
-
-    // public int getColumnPos(){
-    //     return columnPos;
-    // }
     
-    // public String getType(){
-    //     return type;
-    // }
 }
