@@ -78,7 +78,10 @@ public class Board {
 
     }
 
-    /* Sets the valid locations in Display class TODO: redo this a better way */
+    
+    /**
+     * Sets the valid locations in Display class TODO: redo this a better way
+     */
     public void setDesiplaysValidLocations() {
         panel.setValidLocations(validLocations);
     }
