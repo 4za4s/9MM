@@ -10,9 +10,7 @@ public class GameButton extends JButton{
 
 
     public GameButton(Piece piece){
-
         this.piece = piece;
-
         
     }
 

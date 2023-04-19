@@ -13,11 +13,13 @@ import javax.swing.JLayeredPane;
 */
 class SelectionHighlights extends JLayeredPane { //prev JPanel
 
-    int boardPadding;
-    int gap;
-    int highlightSize;
-    ArrayList<int[]> availableLocations;
-    Color highlightColour = Color.yellow;
+    private int boardPadding; //padding to each side of the board
+    private int gap; // distance between concentric squares
+    private int highlightSize; //how large to make highlighting
+    private ArrayList<int[]> availableLocations; //locations a piece or empty slot should be
+    private Color highlightColour = Color.yellow; //highlight color to show available locations
+
+
 
     public SelectionHighlights( int boardPadding, int gap, int slotSize, ArrayList<int[]> availableLocations) {
 

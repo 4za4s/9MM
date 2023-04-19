@@ -10,15 +10,17 @@ import Display.Display;
  */
 public class App{
     //Set frame settings
-    static int frameWidth = 500;
-    static int frameHeight = 550;
+    private static int frameWidth = 500; //width of 9MM gui
+    private static int frameHeight = 550;  //height of 9MM gui
 
     public static void main(String[] args) {  
 
    
         JFrame frame = new JFrame("9 Mans Morris");
+
+
         getWindowSize();
-        frame.setSize(frameWidth, frameHeight);
+        frame.setSize(frameWidth,frameHeight);
 
         // frame.setResizable(false); //prevent resizing 
 
@@ -58,7 +60,7 @@ public class App{
 
     /**
      * Set window size of game relative to display
-     */
+     */ //TODO: move this to a new class?
     private static void getWindowSize(){
         // getScreenSize() returns the size
         // of the screen in pixels

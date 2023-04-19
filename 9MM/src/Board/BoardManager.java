@@ -7,15 +7,13 @@ import java.awt.Color;
  */
 public class BoardManager {
    
-    Player player1 = new Player(Color.blue); //There are two players in the game
-    Player player2 = new Player(Color.red);
+    private Player player1 = new Player(Color.blue); //There are two players in the game
+    private Player player2 = new Player(Color.red);
 
+    private Player inTurnPlayer = player1; //Which player whose turn it currently is
+    private int turnCounter = 0; //Keep track of the turn number
 
-    Player inTurnPlayer = player1; //Which player whose turn it currently is
-    int turnCounter = 0; //Keep track of the turn number
-
-
-    Board board;
+    private Board board; //the board that is managed
 
     public BoardManager(Board board){
 

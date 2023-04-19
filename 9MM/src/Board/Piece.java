@@ -8,9 +8,9 @@ public class Piece {
 
     Player owner; //who owns the piece
 
-    int row;   
-    int column;
-    String piecePhrase;
+    private int row; //row of the board the piece is on   
+    private int column; //column of the board the piece is on   
+    private String piecePhrase; //what is represented as happening when the piece is selected
 
     public Piece(int row, int column,Player owner){
         this.row = row;

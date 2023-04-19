@@ -14,18 +14,18 @@ import Board.Player;
  * Creates the buttons to represent pieces/empty spaces
  */
 public class ButtonDisplay  extends JLayeredPane {
-    Color defaultColour = Color.white;
-    int boardPadding;
-    int gap;
-    int slotSize;
-    Piece[][] pieceArray;
-    int[][] validLocations;
-    String noPlayerString;
-    boolean noPlayerSelectable;
-    Display display;
+    private Color defaultColour = Color.white;
+    private int boardPadding;
+    private int gap;
+    private int slotSize;
+    private Piece[][] pieceArray;
+    private int[][] validLocations;
+    private String noPlayerString;
+    private boolean noPlayerSelectable;
+    private Display display;
 
-    String piecePhase; //string accociated with the button eg "selectPiece"
-    Player selectablePlayer; //player which can be selected on the board
+    private String piecePhase; //string accociated with the button eg "selectPiece"
+    private Player selectablePlayer; //player which can be selected on the board
 
 
     public ButtonDisplay(int boardPadding, int gap, int slotSize, 

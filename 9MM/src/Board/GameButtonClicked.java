@@ -9,8 +9,8 @@ import Display.Display;
  */
 public class GameButtonClicked implements ActionListener {
     
-    GameButton button; //the button that is clicked
-    Display display; // where to send message one button is cliked
+    private GameButton button; //the button that is clicked
+    private Display display; // where to send message one button is cliked
 
     public GameButtonClicked(GameButton button, Display display){
 

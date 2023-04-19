@@ -16,32 +16,26 @@ import Board.Player;
  */
 public class Display extends JPanel{
 
-    int boardPadding; //padding to each side of the board 
-    int effectiveSize; //how mich room is left  in game (frame minus padding)
-    int gap; // distance between concentric squares
+    private int boardPadding; //padding to each side of the board 
+    private int effectiveSize; //how mich room is left  in game (frame minus padding)
+    private int gap; // distance between concentric squares
+    private int frameWidth; //width of the frame (frame = where everything is rendered)
+    private int frameHeight; //height of the frame
+    private int slotSize = 50; // height/width of a button
+    private Dimension size; //so all board parts are created the same size
+    private int[][] validLocations; //list of all valid locations a piece can be. Used to know where to place empty slots and pieces
+
+
+    private ButtonDisplay layeredPaneSlots; //button layer for game
+    private SelectionHighlights layeredPaneHighlights; //highlight layer for game 
+    private Background layeredPaneBackground; //background layer for game
     
-    Frame frame;
+    private Board board; //the game board this is displaying
+    private Piece[][] pieceArray = new Piece[7][7]; //array for storing piece info
 
-    int frameWidth;
-    int frameHeight;
-    int slotSize = 50; // height/width of a button
-    Dimension size; //so all board parts are created the same size
-    int[][] validLocations;
-
-
-    private ButtonDisplay layeredPaneSlots;
-    private SelectionHighlights layeredPaneHighlights;
-    private Background layeredPaneBackground;
-    
-    Board board; //the game board this is displaying
-    ArrayList<GameButton> buttonArray = new ArrayList<GameButton>(); // array for storing the buttons
-    Piece[][] pieceArray = new Piece[7][7];
-
-    Color defaultColour = Color.white;
+    private Color defaultColour = Color.white; //default colour of game buttons
    
-
     public Display(int boardPadding, Board board, Frame frame){
-        this.frame = frame;
         this.boardPadding = boardPadding;
         this.board = board;
         this.frameWidth = frame.getWidth();
@@ -133,9 +127,6 @@ public class Display extends JPanel{
 
 
         layeredPaneHighlights.setSize(size);
-
-        // repaint();
-        // revalidate();
 
 
         }

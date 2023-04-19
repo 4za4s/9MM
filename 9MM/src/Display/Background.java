@@ -11,9 +11,9 @@ import javax.swing.JLayeredPane;
  */
 class Background extends JLayeredPane { //prev JPanel
 
-    int boardPadding; //how much padding to ad to each side of the board
-    int gap; //how much space to put between the rings of the board
-    int slotSize; //how big each piece is one the board
+    private int boardPadding; //how much padding to ad to each side of the board
+    private int gap; //how much space to put between the rings of the board
+    private int slotSize; //how big each piece is one the board
 
     public Background( int boardPadding, int gap, int slotSize) {
 

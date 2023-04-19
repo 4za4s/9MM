@@ -12,14 +12,14 @@ import java.util.ArrayList;
  */
 public class Board {
 
-    Display panel; //what displays the board
-    BoardManager boardManager; //what manages the board
-    Piece[][] pieceArray = new Piece[7][7];// array for storing the pieces
+    private Display panel; //what displays the board
+    private BoardManager boardManager; //what manages the board
+    private Piece[][] pieceArray = new Piece[7][7];// array for storing the pieces
 
-    int[] lastPieceSelected = { 0, 0 }; // location of last piece selected (button clicked). row, column
-    int[] secondLastPieceSelected = { 0, 0 }; // These are for keeping track of what piece to move where
+    private int[] lastPieceSelected = { 0, 0 }; // location of last piece selected (button clicked). row, column
+    private int[] secondLastPieceSelected = { 0, 0 }; // These are for keeping track of what piece to move where
 
-    int[][] validLocations = new int[][] { { 0, 0 }, { 0, 3 }, { 0, 6 }, // so later can work out it a move is valid
+    private int[][] validLocations = new int[][] { { 0, 0 }, { 0, 3 }, { 0, 6 }, // so later can work out it a move is valid
             { 1, 1 }, { 1, 3 }, { 1, 5 }, // {row,column}
             { 2, 2 }, { 2, 3 }, { 2, 4 }, 
             { 3, 0 }, { 3, 1 }, { 3, 2 }, { 3, 4 }, { 3, 5 }, { 3, 6 },
