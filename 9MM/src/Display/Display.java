@@ -57,7 +57,7 @@ public class Display extends JPanel{
 
 
         //make button size depend on board size
-        slotSize = minSize/20; //(Accessibility feature)
+        slotSize = (minSize-boardPadding)/20; //(Accessibility feature)
 
 
         //Create board
