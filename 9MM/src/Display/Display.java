@@ -7,7 +7,6 @@ import java.awt.Frame;
 import java.util.ArrayList;
 
 import Board.Board;
-import Board.GameButton;
 import Board.Piece;
 import Board.Player;
 
@@ -139,8 +138,8 @@ public class Display extends JPanel{
          * Tells the board a button has been clicked
          * @param gameButton the button that was clicked
          */
-        public void buttonClicked(GameButton gameButton){
-            board.buttonClicked(gameButton.getPiece());
+        public void buttonClicked(Piece gameButton){
+            board.buttonClicked(gameButton );
 
         }
 

@@ -22,6 +22,3 @@ public class Player {
         return playerName;
     }
 }
-
-
-//DODo - get player class?

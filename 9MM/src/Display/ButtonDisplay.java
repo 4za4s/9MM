@@ -5,7 +5,6 @@ import java.awt.Graphics;
 
 import javax.swing.JLayeredPane;
 
-import Board.GameButton;
 import Board.GameButtonClicked;
 import Board.Piece;
 import Board.Player;
@@ -117,18 +116,24 @@ public class ButtonDisplay  extends JLayeredPane {
         int x = boardPadding - slotSize / 2 + gap * column;
 
         //Pass on info about what piece was clicked when button was clicked
-        piece.setRow(row);
-        piece.setColumn(column);
-        piece.setPhase(piecePhrase);
+        // piece.setRow(row);
+        // piece.setColumn(column);
+        // piece.setPhase(piecePhrase);
 
-        GameButton tempButtonVar = new GameButton(piece);
-        tempButtonVar.setEnabled(selectable);
-        tempButtonVar.setBounds(x,y,slotSize,slotSize);
-        tempButtonVar.setBackground(piece.getColour());
+        Piece tempPiece = new Piece(row, column, selectablePlayer);
+
+        // GameButton tempButtonVar = new Piece(piece); //TODO: here
+        tempPiece.setEnabled(selectable);
+        tempPiece.setBounds(x,y,slotSize,slotSize);
+        tempPiece.setBackground(piece.getColour());
+
+        tempPiece.setRow(row);
+        tempPiece.setColumn(column);
+        tempPiece.setPhase(piecePhrase);
         
-        add(tempButtonVar); 
+        add(tempPiece); 
 
-        new GameButtonClicked(tempButtonVar,display);
+        new GameButtonClicked(tempPiece,display);
 
     }
 }

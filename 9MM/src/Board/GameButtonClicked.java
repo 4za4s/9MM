@@ -9,15 +9,15 @@ import Display.Display;
  */
 public class GameButtonClicked implements ActionListener {
     
-    private GameButton button; //the button that is clicked
+    private Piece piece; //the button that is clicked
     private Display display; // where to send message one button is cliked
 
-    public GameButtonClicked(GameButton button, Display display){
+    public GameButtonClicked(Piece piece, Display display){
 
-        this.button = button;
+        this.piece = piece;
         this.display = display;
 
-        button.addActionListener(this);
+        piece.addActionListener(this);
     }
 
 
@@ -27,7 +27,7 @@ public class GameButtonClicked implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        display.buttonClicked(button);
+        display.buttonClicked(piece);
 
     }
 

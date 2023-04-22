@@ -35,9 +35,9 @@ public class BoardManager {
 
        
 
-        board.updateBoard(inTurnPlayer,"SelectPiece", "unused", true,
+        board.updateBoard(inTurnPlayer,"SelectPiece", "unused", false,
         inTurnPlayer.getName() + ": select a position to place your piece");
-        board.displayAvailableLocations();
+        // board.displayAvailableLocations();
 
     }
 

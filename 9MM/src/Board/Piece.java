@@ -1,10 +1,12 @@
 package Board;
 import java.awt.Color;
 
+import javax.swing.JButton;
+
 /** 
  * Represents a piece on the board
  */
-public class Piece {
+public class Piece extends JButton{
 
     Player owner; //who owns the piece
 
