@@ -72,8 +72,8 @@ public class Display extends JPanel{
         add(layeredPaneBackground);
 
         String piecePhase = "unused";
-        Player unusedPlayer = new Player(defaultColour);
-        updateDisplay(pieceArray,unusedPlayer,piecePhase, "unusedString",false);
+        Player unusedPlayer = new Player(defaultColour, "noPlayer");
+        updateDisplay(pieceArray,unusedPlayer,piecePhase, "unusedString",false,"");
 
         
 
@@ -88,8 +88,9 @@ public class Display extends JPanel{
      * @param piecePhase what to tell the board when a piece is clicked
      * @param noPlayerString what to tell the board if an empty slot is clicked
      * @param noPlayerSelectable can an empty slot be selected
+     * @param turnText the text to display telling user what to do
      */
-    public void updateDisplay(Piece[][] pieceArray, Player selectablePlayer,String piecePhase, String  noPlayerString, boolean noPlayerSelectable){
+    public void updateDisplay(Piece[][] pieceArray, Player selectablePlayer,String piecePhase, String  noPlayerString, boolean noPlayerSelectable, String turnText){
         //Get the new locatiosn of all of the pieces
         this.pieceArray = pieceArray;
 
@@ -104,9 +105,12 @@ public class Display extends JPanel{
         add(layeredPaneBackground); //TODO: not optimal to use removeAll because then I need to add this back every time. Was unable to just remove the buttons because too dumb
         add(layeredPaneSlots);
 
+        // add(new TurnText(turnText,boardPadding,gap,frameWidth, frameHeight));
+
+
         size = layeredPaneSlots.getPreferredSize();
 
-        layeredPaneSlots.setSize(size);
+        layeredPaneSlots.setSize(size); //TODO: put this inside the class
 
     
     }

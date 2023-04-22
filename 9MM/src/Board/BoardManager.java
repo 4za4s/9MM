@@ -7,14 +7,13 @@ import java.awt.Color;
  */
 public class BoardManager {
    
-    private Player player1 = new Player(Color.blue); //There are two players in the game
-    private Player player2 = new Player(Color.red);
+    private Player player1 = new Player(Color.blue, "Player Blue"); //There are two players in the game
+    private Player player2 = new Player(Color.red, "Player Red");
 
     private Player inTurnPlayer = player1; //Which player whose turn it currently is
     private int turnCounter = 0; //Keep track of the turn number
 
     private Board board; //the board that is managed
-
     public BoardManager(Board board){
 
         this.board = board;
@@ -27,17 +26,18 @@ public class BoardManager {
      */
     public void startGame(){
 
+
         //add some pieces to the board for testing - assume it is player1's turn at the start of the game
         board.createPiece(0,0,player1);
         board.createPiece(0,3,player1);
         board.createPiece(0,6,player2); 
         board.createPiece(6,6,player2); 
-        
 
-        String piecePhases = "SelectPiece";
        
 
-        board.updatePieces(inTurnPlayer,piecePhases, "unsedValue", false);
+        board.updateBoard(inTurnPlayer,"SelectPiece", "unused", true,
+        inTurnPlayer.getName() + ": select a position to place your piece");
+        board.displayAvailableLocations();
 
     }
 
@@ -49,17 +49,27 @@ public class BoardManager {
             System.out.println("Button was pressed. Type: " + type);
 
             //Common variables used
-            String piecePhases1 = "SelectPiece"; //TODO: I'm sure there is a better way to do. Maybe have all of the scenarios saved as class variables
-
-
 
             //Do appropriate turn action
             switch(type){
+
+                case "createPiece":
+
+                    //TODO: logic for creating pieces
+                    
+
+
+
+
+
+                    break; 
+
+
                 case "SelectPiece":
 
                     //Select a piece to move
-                    String piecePhase = "SelectPiece";
-                    board.updatePieces(inTurnPlayer, piecePhase,"MoveToEmptySlot", true);
+                    board.updateBoard(inTurnPlayer, "SelectPiece","MoveToEmptySlot",
+                    true, "<html>" + inTurnPlayer.getName() + ": select a position to move your piece to <br/>or a new piece to move</html>");
                     
                     //Show selectable locations
                     board.displayAvailableLocations();
@@ -72,7 +82,8 @@ public class BoardManager {
 
                     board.moveLatestPiece();
 
-                    board.updatePieces(inTurnPlayer, piecePhases1,"unsedValue", false);
+                    board.updateBoard(inTurnPlayer, "SelectPiece","unsedValue", false,
+                    inTurnPlayer.getName() + ": select a piece to move");
 
                     break;
 

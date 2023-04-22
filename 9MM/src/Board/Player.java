@@ -6,13 +6,22 @@ import java.awt.Color;
  */
 public class Player {
     Color colour;
+    String playerName;
 
-    public Player(Color colour){
+    public Player(Color colour, String playerName){
         this.colour = colour;
+        this.playerName = playerName;
     }
 
 
     public Color getColour(){
         return colour;
     }
+
+    public String getName(){
+        return playerName;
+    }
 }
+
+
+//DODo - get player class?

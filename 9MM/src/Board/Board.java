@@ -12,9 +12,10 @@ import java.util.ArrayList;
  */
 public class Board {
 
-    private Display panel; //what displays the board
+    private Display display; //what displays the board
     private BoardManager boardManager; //what manages the board
     private Piece[][] pieceArray = new Piece[7][7];// array for storing the pieces
+    
 
     private int[] lastPieceSelected = { 0, 0 }; // location of last piece selected (button clicked). row, column
     private int[] secondLastPieceSelected = { 0, 0 }; // These are for keeping track of what piece to move where
@@ -37,7 +38,6 @@ public class Board {
     public void createPiece(int row, int column, Player owner) {
         Piece tempPieceVar = new Piece(row, column, owner);
         pieceArray[row][column] = tempPieceVar;
-
     }
 
     /**
@@ -57,7 +57,7 @@ public class Board {
             }
 
         }
-        panel.displayAvailableLocation(locationsArrayList);
+        display.displayAvailableLocation(locationsArrayList);
     }
 
 
@@ -83,12 +83,12 @@ public class Board {
      * Sets the valid locations in Display class TODO: redo this a better way
      */
     public void setDesiplaysValidLocations() {
-        panel.setValidLocations(validLocations);
+        display.setValidLocations(validLocations);
     }
 
     /* Note: panel is the display frame */
-    public void setPanel(Display panel) {
-        this.panel = panel;
+    public void setDisplay(Display panel) {
+        this.display = panel;
     }
 
     /* the the decidated manager for this humble board to report to */
@@ -108,7 +108,7 @@ public class Board {
     }
 
     /**
-     * Rerenders the display of all of the pieces
+     * Rerenders the display of the board
      * 
      * @param selectablePlayer   the players whos pieces can be selected
      * @param piecePhase         the phrase to send to board manager if a piece is
@@ -116,10 +116,15 @@ public class Board {
      * @param noPlayerString     the phrase to send to board manager if an empty
      *                           slot is selected (button pressed)
      * @param noPlayerSelectable if empty slots can be selected
+     * @param turnText the text to display telling user what to do
      */
-    public void updatePieces(Player selectablePlayer, String piecePhase, String noPlayerString,
-            boolean noPlayerSelectable) {
-        panel.updateDisplay(pieceArray, selectablePlayer, piecePhase, noPlayerString, noPlayerSelectable);
+    public void updateBoard(Player selectablePlayer, String piecePhase, String noPlayerString,
+            boolean noPlayerSelectable, String turnText) {
+        display.updateDisplay(pieceArray, selectablePlayer, piecePhase, noPlayerString, noPlayerSelectable, turnText);
+    }
+
+    public int[] getLastPieceSelected(){
+        return lastPieceSelected;
     }
 
 }

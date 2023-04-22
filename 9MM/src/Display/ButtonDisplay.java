@@ -69,7 +69,7 @@ public class ButtonDisplay  extends JLayeredPane {
                     nextValidLocation++;
 
                     // Create a non-player button - ie empty slot
-                    Piece tempPiece = new Piece(row, column, new Player(defaultColour));
+                    Piece tempPiece = new Piece(row, column, new Player(defaultColour, "noPlayer"));
                     tempPiece.setPhase(noPlayerString);
                     makeNewButton(noPlayerSelectable,tempPiece,noPlayerString, row, column);
 
