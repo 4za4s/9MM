@@ -82,7 +82,7 @@ public class Board {
     /**
      * Sets the valid locations in Display class TODO: redo this a better way
      */
-    public void setDesiplaysValidLocations() {
+    public void setDisplaysValidLocations() {
         display.setValidLocations(validLocations);
     }
 
