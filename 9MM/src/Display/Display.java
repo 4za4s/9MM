@@ -127,7 +127,7 @@ public class Display extends JFrame{
         layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight)); //TODO: update above input
 
         //Remove everything from the frame
-        this.getContentPane().removeAll();
+        getContentPane().removeAll(); //just doing deletes the root panel. this just removes the content of the panel. Otherwise nothing to display on for next line
         
         //Add all of the new stuff back to the frame
         add(layeredPaneBackground); //TODO: not optimal to use removeAll because then I need to add this back every time. Was unable to just remove the buttons because too dumb
