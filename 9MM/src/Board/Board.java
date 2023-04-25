@@ -35,7 +35,7 @@ public class Board {
         Display display = new Display(200,this,validLocations);
         this.display = display;
 
-        display.createGameBoard();
+        display.createGameBoard(pieceArray);
     
     }
 

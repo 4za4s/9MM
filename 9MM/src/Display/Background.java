@@ -9,9 +9,9 @@ import javax.swing.JLayeredPane;
 /**
  *  Creates a drawing of the background. This drawing has to be added to a panel to be viewed 
  */
-class Background extends JLayeredPane { //prev JPanel
+class Background extends JLayeredPane {
 
-    private int boardPadding; //how much padding to ad to each side of the board
+    private int boardPadding; //how much padding to add to each side of the board
     private int gap; //how much space to put between the rings of the board
     private int slotSize; //how big each piece is one the board
 

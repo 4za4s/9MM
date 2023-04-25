@@ -79,6 +79,7 @@ public class BoardManager {
                     //Show selectable locations
                     board.displayAvailableLocations(inTurnPlayer);
 
+
                     break;
 
                 case "MoveToEmptySlot":
@@ -89,6 +90,8 @@ public class BoardManager {
 
                     board.updateBoard(inTurnPlayer, "SelectPiece","unsedValue", false,
                     inTurnPlayer.getName() + ": select a piece to move");
+
+                
 
                     break;
 

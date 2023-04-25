@@ -22,14 +22,19 @@ class SelectionHighlights extends JLayeredPane { //prev JPanel
 
 
 
-    public SelectionHighlights( int boardPadding, int gap, int slotSize, ArrayList<int[]> availableLocations, Color highlightColour) {
+    public SelectionHighlights( int boardPadding, int gap, int slotSize) {
 
         this.boardPadding = boardPadding;
         this.gap = gap;
         this.highlightSize = slotSize * 3 / 2;
+
+
+    }
+
+    public void addHighlights( ArrayList<int[]> availableLocations, Color highlightColour){
         this.availableLocations = availableLocations;
         this.highlightColour = highlightColour;
-
+        
     }
 
     @Override
@@ -50,6 +55,14 @@ class SelectionHighlights extends JLayeredPane { //prev JPanel
           
 
         }
+
+    }
+
+    /** Removes all highlights from the board 
+     * paintComponent() automatically happens a lot. This makes sure that when it is repainted nothing is painted
+    */
+    public void removeAllHighlights(){
+        availableLocations =  new ArrayList<int[]>();
 
     }
 
