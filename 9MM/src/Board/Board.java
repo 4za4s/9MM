@@ -43,8 +43,9 @@ public class Board {
     /**
      * Gets positions of all available locations where a piece can move to.
      * This is then passed to Display which handles the rendering
+     * @param inTurnPlayer player who is currently in turn. So highlihgting can match his colour
      */
-    public void displayAvailableLocations() {
+    public void displayAvailableLocations(Player inTurnPlayer) {
 
         // Get position {row,column} of all empty locations since they are all valid
         // moves for this sprint
@@ -57,7 +58,7 @@ public class Board {
             }
 
         }
-        display.displayAvailableLocation(locationsArrayList);
+        display.displayAvailableLocation(locationsArrayList, inTurnPlayer);
     }
 
 

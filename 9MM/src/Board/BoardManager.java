@@ -30,8 +30,14 @@ public class BoardManager {
         //add some pieces to the board for testing - assume it is player1's turn at the start of the game
         board.createPiece(0,0,player1);
         board.createPiece(0,3,player1);
+        board.createPiece(3,0,player1); 
+        board.createPiece(6,0,player1); 
+
         board.createPiece(0,6,player2); 
         board.createPiece(6,6,player2); 
+        board.createPiece(3,6,player2);
+        board.createPiece(6,3,player2); 
+        board.createPiece(4,4,player2); 
 
        
 
@@ -72,7 +78,7 @@ public class BoardManager {
                     true, "<html>" + inTurnPlayer.getName() + ": select a position to move your piece to <br/>or a new piece to move</html>");
                     
                     //Show selectable locations
-                    board.displayAvailableLocations();
+                    board.displayAvailableLocations(inTurnPlayer);
 
                     break;
 

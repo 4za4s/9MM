@@ -17,16 +17,18 @@ class SelectionHighlights extends JLayeredPane { //prev JPanel
     private int gap; // distance between concentric squares
     private int highlightSize; //how large to make highlighting
     private ArrayList<int[]> availableLocations; //locations a piece or empty slot should be
-    private Color highlightColour = Color.yellow; //highlight color to show available locations
+    private Color highlightColour; //highlight color to show available locations
 
 
 
-    public SelectionHighlights( int boardPadding, int gap, int slotSize, ArrayList<int[]> availableLocations) {
+
+    public SelectionHighlights( int boardPadding, int gap, int slotSize, ArrayList<int[]> availableLocations, Color highlightColour) {
 
         this.boardPadding = boardPadding;
         this.gap = gap;
         this.highlightSize = slotSize * 3 / 2;
         this.availableLocations = availableLocations;
+        this.highlightColour = highlightColour;
 
     }
 

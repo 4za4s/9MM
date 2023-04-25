@@ -41,7 +41,9 @@ public class ButtonDisplay  extends JLayeredPane {
         this.selectablePlayer = selectablePlayer;
         this.noPlayerString = noPlayerString;
         this.noPlayerSelectable = noPlayerSelectable;
-        this.display = display; //TODO: maybe there is some way to reduce the amount of inputs here?
+        this.display = display; 
+        //TODO: maybe there is some way to reduce the amount of inputs here? 
+        // Maybe make it so buttons are not recreated every time
 
 
    

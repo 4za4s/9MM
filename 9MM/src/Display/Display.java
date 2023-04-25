@@ -109,7 +109,7 @@ public class Display extends JPanel{
 
         size = layeredPaneSlots.getPreferredSize();
 
-        layeredPaneSlots.setSize(size); //TODO: put this inside the class
+        layeredPaneSlots.setSize(size); //TODO: put this inside the class?
 
     
     }
@@ -120,11 +120,12 @@ public class Display extends JPanel{
     /**
      * Highlight an available location the selected piece can move 
      * @param availableLocations the locations available
+     * @param inTurnPlayer current player. So highlighting matches curent player's colour
      */
-    public void displayAvailableLocation(ArrayList<int[]> availableLocations){ //eventually ArrayList<int[]> availableLocations -> as an input
+    public void displayAvailableLocation(ArrayList<int[]> availableLocations, Player inTurnPlayer){ //eventually ArrayList<int[]> availableLocations -> as an input
 
-
-        layeredPaneHighlights = new SelectionHighlights(boardPadding, gap, slotSize, availableLocations);
+        Color highLightcolour = new Color(inTurnPlayer.getColour().getRed(),inTurnPlayer.getColour().getGreen(),inTurnPlayer.getColour().getBlue(),inTurnPlayer.getColour().getAlpha()*2/5);
+        layeredPaneHighlights = new SelectionHighlights(boardPadding, gap, slotSize, availableLocations,highLightcolour);
 
         add(layeredPaneHighlights);
 
