@@ -6,6 +6,7 @@ import java.awt.Color;
  * Manages the board
  */
 public class BoardManager {
+    
    
     private Player player1 = new Player(Color.blue, "Player Blue"); //There are two players in the game
     private Player player2 = new Player(Color.red, "Player Red");
@@ -14,7 +15,9 @@ public class BoardManager {
     private int turnCounter = 0; //Keep track of the turn number
 
     private Board board; //the board that is managed
-    public BoardManager(Board board){
+    public BoardManager(){
+
+        Board board = new Board(this);
 
         this.board = board;
 
@@ -63,10 +66,6 @@ public class BoardManager {
 
                     //TODO: logic for creating pieces
                     
-
-
-
-
 
                     break; 
 

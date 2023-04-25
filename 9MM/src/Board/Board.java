@@ -28,6 +28,17 @@ public class Board {
             { 5, 1 }, { 5, 3 }, { 5, 5 },
             { 6, 0 }, { 6, 3 }, { 6, 6 } };
 
+
+    public Board(BoardManager boardManager){
+
+        this.boardManager = boardManager;
+        Display display = new Display(200,this,validLocations);
+        this.display = display;
+
+        display.createGameBoard();
+    
+    }
+
     /**
      * Create a piece and adds it to the piece array
      * 
@@ -79,23 +90,6 @@ public class Board {
 
     }
 
-    
-    /**
-     * Sets the valid locations in Display class TODO: redo this a better way
-     */
-    public void setDisplaysValidLocations() {
-        display.setValidLocations(validLocations);
-    }
-
-    /* Note: panel is the display frame */
-    public void setDisplay(Display panel) {
-        this.display = panel;
-    }
-
-    /* the the decidated manager for this humble board to report to */
-    public void setBoardManager(BoardManager boardManager) {
-        this.boardManager = boardManager;
-    }
 
     /**
      * Moves a pieces. Does this by overriding the last selected position with the

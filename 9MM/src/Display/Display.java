@@ -1,9 +1,9 @@
 package Display;
-import javax.swing.JPanel;
+import javax.swing.JFrame;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import Board.Board;
@@ -13,7 +13,7 @@ import Board.Player;
 /**
  * Manages the display
  */
-public class Display extends JPanel{
+public class Display extends JFrame{
 
     private int boardPadding; //padding to each side of the board 
     private int effectiveSize; //how mich room is left  in game (frame minus padding)
@@ -34,11 +34,30 @@ public class Display extends JPanel{
 
     private Color defaultColour = Color.white; //default colour of game buttons
    
-    public Display(int boardPadding, Board board, Frame frame){
+    public Display(int boardPadding, Board board, int[][] validLocations){
+
+        super("9 Mans Morris");
+
+        
+
+        //Frame settings
+        setSize(frameWidth,frameHeight);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // setResizable(false);
+
+        this.validLocations = validLocations;
         this.boardPadding = boardPadding;
         this.board = board;
-        this.frameWidth = frame.getWidth();
-        this.frameHeight = frame.getHeight();
+
+        getWindowSize();
+        // this.frameWidth = 1000;//frame.getWidth();
+        // this.frameHeight = 1200;//frame.getHeight();
+
+        //Display the window //TODO: not sure if this is still needed 
+        pack();
+        setSize(new Dimension(frameWidth, frameHeight));
+        setVisible(true);
     }
 
     /**
@@ -93,16 +112,32 @@ public class Display extends JPanel{
         //Get the new locatiosn of all of the pieces
         this.pieceArray = pieceArray;
 
-   
+        // this.remove(layeredPaneSlots);
+
+        //TODO:
+        // maybe have:
+        /*
+         * update piece locations (updates according to the piece array
+         * 
+         * update piece settings (updates what happens when you click a piece)
+         */
+
+
 
         layeredPaneSlots = new ButtonDisplay(boardPadding, gap, slotSize, pieceArray, validLocations, piecePhase, selectablePlayer, noPlayerString , noPlayerSelectable, this);
         layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight)); //TODO: update above input
 
         //Remove everything from the frame
-        this.removeAll();
+        // this.removeAll();
+        
         //Add all of the new stuff back to the frame
         add(layeredPaneBackground); //TODO: not optimal to use removeAll because then I need to add this back every time. Was unable to just remove the buttons because too dumb
+        
         add(layeredPaneSlots);
+
+        // remove(layeredPaneSlots);
+
+        
 
         // add(new TurnText(turnText,boardPadding,gap,frameWidth, frameHeight));
 
@@ -152,4 +187,18 @@ public class Display extends JPanel{
             this.validLocations = validLocations;
         }
 
- }
+
+            /**
+     * Set window size of game relative to display
+     */
+    private void getWindowSize(){
+        // getScreenSize() returns the size
+        // of the screen in pixels
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        
+        // height will store the height of the screen
+        frameHeight = (int)size.getHeight()*4/5;
+        frameWidth = frameHeight*9/10; //10;
+    } 
+
+}
