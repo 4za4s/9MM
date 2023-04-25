@@ -38,7 +38,7 @@ public class App{
         // Create and set up the content pane.
         Display display = new Display(200,board, frame);
         board.setDisplay(display);
-        board.setDesiplaysValidLocations(); //TODO: probably not the best way to have done this
+        board.setDisplaysValidLocations(); //TODO: probably not the best way to have done this
         display.createGameBoard();
         frame.setContentPane(display);
 
