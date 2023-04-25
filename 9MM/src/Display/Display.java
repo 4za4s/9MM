@@ -123,12 +123,11 @@ public class Display extends JFrame{
          */
 
 
-
         layeredPaneSlots = new ButtonDisplay(boardPadding, gap, slotSize, pieceArray, validLocations, piecePhase, selectablePlayer, noPlayerString , noPlayerSelectable, this);
         layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight)); //TODO: update above input
 
         //Remove everything from the frame
-        // this.removeAll();
+        this.getContentPane().removeAll();
         
         //Add all of the new stuff back to the frame
         add(layeredPaneBackground); //TODO: not optimal to use removeAll because then I need to add this back every time. Was unable to just remove the buttons because too dumb
