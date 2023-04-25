@@ -51,13 +51,15 @@ public class Display extends JFrame{
         this.board = board;
 
         getWindowSize();
-        // this.frameWidth = 1000;//frame.getWidth();
-        // this.frameHeight = 1200;//frame.getHeight();
-
-        //Display the window //TODO: not sure if this is still needed 
+        
+        //Display the window
         pack();
         setSize(new Dimension(frameWidth, frameHeight));
         setVisible(true);
+
+        //Create initial parts of display
+
+
     }
 
     /**
@@ -130,13 +132,13 @@ public class Display extends JFrame{
         getContentPane().removeAll(); //just doing deletes the root panel. this just removes the content of the panel. Otherwise nothing to display on for next line
         
         //Add all of the new stuff back to the frame
-        add(layeredPaneBackground); //TODO: not optimal to use removeAll because then I need to add this back every time. Was unable to just remove the buttons because too dumb
+         
         
         add(layeredPaneSlots);
 
-        // remove(layeredPaneSlots);
+        add(layeredPaneBackground); //TODO: not optimal to use removeAll because then I need to add this back every time. Was unable to just remove the buttons because too dumb 
 
-        
+
 
         // add(new TurnText(turnText,boardPadding,gap,frameWidth, frameHeight));
 

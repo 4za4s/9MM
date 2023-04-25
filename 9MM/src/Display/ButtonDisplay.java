@@ -17,7 +17,7 @@ public class ButtonDisplay  extends JLayeredPane {
     private int boardPadding;
     private int gap;
     private int slotSize;
-    private Piece[][] pieceArray;
+    private Piece[][] pieceArray; //all pieces that need to be added to the board / later will contain all that are added
     private int[][] validLocations;
     private String noPlayerString;
     private boolean noPlayerSelectable;
@@ -45,16 +45,17 @@ public class ButtonDisplay  extends JLayeredPane {
         //TODO: maybe there is some way to reduce the amount of inputs here? 
         // Maybe make it so buttons are not recreated every time
 
+        createButtonDisplay();
+
 
    
+    
         }
 
     
 
-    @Override
-    public void paintComponent(Graphics g){
-
-        System.out.println("making new buttons");
+ 
+    public void createButtonDisplay(){
 
         int nextValidLocation = 0; //For checking the validLocations array to save time complexity when seeing if a 
         // location is valid
@@ -101,6 +102,45 @@ public class ButtonDisplay  extends JLayeredPane {
         }
 
     }
+
+    /**
+     * TODO - not sure if this is a good idea
+     *  Updates all of the info for the button
+     * Gets an array containing all of the piece info
+     * 
+     * It first removes all ofk the old pieces, then it removes all of the new piece
+     * 
+     * 
+     * */
+    // public void updateButtonDisplay(int[][] validLocations, String piecePhrase, Player selectablePlayer,
+    // String noPlayerString, boolean noPlayerSelectable){
+    //     //
+    //     //TODO: this
+    //     //Update all pieces in the array
+    //     for (int row = 0; row < pieceArray.length; row++){
+    //         for (int column = 0; column < pieceArray[0].length; column++){
+
+    //             Piece piece = pieceArray[row][column];
+
+                
+    //             if (piece != null){
+
+    //                 if (piece.getOwner() == selectablePlayer){ //Selectable pieces
+
+                        
+    //                 } else { //other pieces
+
+    //                 }
+
+
+    //                 piece.setPhase("");
+
+    //             } 
+    //         }
+
+    //     }
+
+    // }
 
     /* make a new piece */
 
