@@ -18,7 +18,6 @@ public class BoardManager {
     public BoardManager(){
 
         Board board = new Board(this);
-
         this.board = board;
 
     }
@@ -90,8 +89,6 @@ public class BoardManager {
 
                     board.updateBoard(inTurnPlayer, "SelectPiece","unsedValue", false,
                     inTurnPlayer.getName() + ": select a piece to move");
-
-                
 
                     break;
 

@@ -121,15 +121,6 @@ public class Display extends JFrame{
 
         }
 
-        /**
-         * Sets the locations that a piece can be on
-         * @param validLocations the locations
-         */
-        public void setValidLocations(int[][] validLocations){
-            this.validLocations = validLocations;
-        }
-
-
     /**
      * Set window size of game relative to display
      */

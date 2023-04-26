@@ -27,16 +27,15 @@ class SelectionHighlights extends JLayeredPane { //prev JPanel
         this.boardPadding = boardPadding;
         this.gap = gap;
         this.highlightSize = slotSize * 3 / 2;
-
-
     }
+
 
     public void addHighlights( ArrayList<int[]> availableLocations, Color highlightColour){
         this.availableLocations = availableLocations;
         this.highlightColour = highlightColour;
-        
     }
 
+    
     @Override
     public void paintComponent(Graphics g){
 

@@ -6,9 +6,11 @@ public class App{
 
     public static void main(String[] args) {  
 
-        //TODO: game start menu
+
 
         BoardManager boardManager = new BoardManager();
+
+        //TODO: game start menu
         
         boardManager.startGame();
 

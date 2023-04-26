@@ -118,8 +118,4 @@ public class Board {
         display.updateDisplay(pieceArray, selectablePlayer, piecePhase, noPlayerString, noPlayerSelectable, turnText);
     }
 
-    public int[] getLastPieceSelected(){
-        return lastPieceSelected;
-    }
-
 }
