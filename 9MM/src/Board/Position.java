@@ -33,7 +33,7 @@ public class Position extends JButton {
 
     public void setPiece(Piece piece){
         this.piece = piece;
-        if (piece.getPosition() != this) {
+        if (piece != null && piece.getPosition() != this) {
             piece.setPosition(this);
         }
     }

@@ -10,6 +10,7 @@ import Game.Game.newGameState;
  */
 public class Board {
     ArrayList<Position> positions = new ArrayList<Position>();
+    ArrayList<Position> possibleMoves;
 
     public Board(){
         System.out.println("Creating Positions");
@@ -19,13 +20,27 @@ public class Board {
     }
 
     public void movePiece(Piece piece, Position newPosition) {
+        piece.getPosition().setPiece(null);
         piece.setPosition(newPosition);
     }
 
     public ArrayList<Position> getPossibleMoves(newGameState gameState, Piece piece) {
         switch (gameState) {
-            case PLACING:
-                ArrayList<Position> possibleMoves = new ArrayList<Position>();
+            // Currently pieces can move anywhere no matter the game state
+            // case PLACING:
+            //     return null;
+
+            // case SELECTING:
+            //     return null;
+
+            // case MOVING:
+            //     return null;
+
+            // case FLYING:
+            //     return null;
+
+            default:
+                possibleMoves = new ArrayList<Position>();
 
                 for (Position position : positions) {
                     if (position.getPiece() == null) {
@@ -34,19 +49,7 @@ public class Board {
                 }
 
                 return possibleMoves;
-
-            case SELECTING:
-                return null;
-
-            case MOVING:
-                return null;
-
-            case FLYING:
-                return null;
-
-            default:
-                return null;
-        }
+            }
     }
 
     public ArrayList<Position> getPositions(){

@@ -29,7 +29,7 @@ public class Piece {
 
     public void setPosition(Position pos){
         this.pos = pos;
-        if (pos.getPiece() != this) {
+        if (pos != null && pos.getPiece() != this) {
             pos.setPiece(this);
         }
     }

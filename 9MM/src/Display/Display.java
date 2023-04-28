@@ -116,7 +116,12 @@ public class Display extends JFrame{
         );
 
         layeredPaneHighlights.addHighlights(possibleMoves, highLightcolour);
-     }
+    }
+
+    public void removeHighlights(){
+        layeredPaneHighlights.removeHighlights();
+    }
+
 
     /**
      * Set window size of game relative to display

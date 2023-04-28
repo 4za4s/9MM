@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import Board.Board;
+import Board.Piece;
 import Board.Player;
 import Board.Position;
 import Display.Display;
@@ -22,6 +23,7 @@ public class Game {
     ArrayList<Player> players = new ArrayList<Player>();
     private int turn = 0;
     private newGameState gameState;
+    private Piece selectedPiece;
 
     /**
      * Creates a new game, can be extended later to include different player types (AI, human, etc.)
@@ -46,9 +48,9 @@ public class Game {
                     pos.setPiece(players.get(turn).getPieces().get(index));
                     players.get(turn).piecePlaced();
 
-                    if (players.get(turn).getPiecesPlaced() == 9 && turn == 1) {
+                    if (players.get(turn).getPiecesPlaced() == players.get(turn).getPieces().size() && turn == 1) {
                         gameState = newGameState.SELECTING;
-                        display.displayPossibleMoves(new ArrayList<Position>(), players.get(0).getColour());
+                        display.removeHighlights();
 
                         turn();
                         break;
@@ -59,8 +61,22 @@ public class Game {
                 }
                 break;
             case SELECTING:
+                selectedPiece = null;
+                if (pos.getPiece() == null) {
+                    break;
+                }
+                selectPiece(pos, newGameState.FLYING);
                 break;
+                
             case FLYING:
+                if (pos.getPiece() == null) {
+                    board.movePiece(selectedPiece, pos);
+                    turn();
+                    display.removeHighlights();
+                    gameState = newGameState.SELECTING;
+                } else {
+                    selectPiece(pos, newGameState.FLYING);
+                }
                 break;
             default:
                 break;
@@ -71,6 +87,17 @@ public class Game {
 
     public void turn() {
         turn = (turn + 1) % 2;
+    }
+
+    public void selectPiece(Position pos, newGameState state) {
+        if (pos.getPiece().getOwner() == players.get(turn)) {
+            selectedPiece = pos.getPiece();
+            gameState = state;
+            display.displayPossibleMoves(board.getPossibleMoves(gameState, selectedPiece), players.get(turn).getColour());
+        } else {
+            selectedPiece = null;
+            display.removeHighlights();
+        }
     }
 
     public void setDisplay(Display display) {

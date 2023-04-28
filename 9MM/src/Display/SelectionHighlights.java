@@ -29,6 +29,9 @@ class SelectionHighlights extends JLayeredPane { //prev JPanel
         this.highlightColour = highlightColour;
     }
 
+    public void removeHighlights() {
+        this.availableLocations = new ArrayList<Position>();
+    }
     
     @Override
     public void paintComponent(Graphics g){
