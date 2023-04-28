@@ -16,11 +16,9 @@ class Background extends JLayeredPane {
     private int slotSize; //how big each piece is one the board
 
     public Background( int boardPadding, int gap, int slotSize) {
-
         this.boardPadding = boardPadding;
         this.gap = gap;
         this.slotSize = slotSize;
-
     }
 
     @Override
@@ -41,19 +39,5 @@ class Background extends JLayeredPane {
         g2.drawLine(boardPadding + gap*3, boardPadding + gap*4, boardPadding + gap*3, boardPadding + gap*6 ); //bottom line
         g2.drawLine(boardPadding, boardPadding + gap*3, boardPadding + gap*2, boardPadding + gap*3 ); //left line
         g2.drawLine(boardPadding + gap*4, boardPadding + gap*3, boardPadding + gap*6, boardPadding + gap*3 ); //right line
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }

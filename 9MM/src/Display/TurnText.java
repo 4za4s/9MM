@@ -1,4 +1,4 @@
-// Impliment this for a later sprint
+// Impliment this in a later sprint
 
 // package Display;
 
@@ -21,13 +21,6 @@
 //         setBounds(boardPadding, - gap * 4  , 0, 0); //TODO: not sure why 0s don't break things. Not really sure how this works
 //         this.setSize(frameWidth, frameHeight);
 //         setLayout( new FlowLayout(frameHeight, gap, gap));
-
-
 //     }
-
-
-
-
-
 // }
     
