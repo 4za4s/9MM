@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JLayeredPane;
 
 import Board.Position;
+import Game.Game;
 
 /**
  * Creates the buttons to represent pieces/empty spaces
@@ -13,18 +14,18 @@ import Board.Position;
 public class ButtonDisplay  extends JLayeredPane {
     private Color defaultColour = Color.white;
  
-    public void createButtonDisplay(ArrayList<Position> positions, int[][] buttonLocations, int boardPadding, int gap, int slotSize){
+    public void createButtonDisplay(Game game, ArrayList<Position> positions, int[][] buttonLocations, int boardPadding, int gap, int slotSize){
         int index = 0;
         //Loop throught each location and add appropriate button
         for (Position pos : positions) {
             if (pos.getPiece() != null) {
                 Color colour = pos.getPiece().getColour();
                 int[] loc = buttonLocations[index];
-                makeNewButton(pos, colour, loc, boardPadding, gap, slotSize);
+                makeNewButton(game, pos, colour, loc, boardPadding, gap, slotSize);
             }
             else {
                 int[] loc = buttonLocations[index];
-                makeNewButton(pos, defaultColour, loc, boardPadding, gap, slotSize);
+                makeNewButton(game, pos, defaultColour, loc, boardPadding, gap, slotSize);
             }
             index++;
         }
@@ -39,7 +40,7 @@ public class ButtonDisplay  extends JLayeredPane {
      * @param row the row the button should be placed on
      * @param column the column the button should be placed on
      */
-    public void makeNewButton(Position pos, Color colour, int[] loc, int boardPadding, int gap, int slotSize){
+    public void makeNewButton(Game game, Position pos, Color colour, int[] loc, int boardPadding, int gap, int slotSize){
 
         int y = boardPadding - slotSize / 2 + gap * loc[0];
         int x = boardPadding - slotSize / 2 + gap * loc[1];
@@ -48,7 +49,7 @@ public class ButtonDisplay  extends JLayeredPane {
         pos.setBounds(x,y,slotSize,slotSize);
         pos.setBackground(colour);
 
-        pos.addActionListener(e -> pos.buttonPressed());
+        pos.addActionListener(e -> game.buttonPressed(pos));
 
         add(pos); 
     }

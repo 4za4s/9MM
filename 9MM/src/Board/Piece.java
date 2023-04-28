@@ -5,10 +5,8 @@ import java.awt.Color;
  * Represents a piece on the board
  */
 public class Piece {
-
     private Player owner; //who owns the piece
     private Position pos; //where the piece is on the board
-    private String piecePhase; //what is represented as happening when the piece is selected
 
     //start with initial position
     public Piece(Position pos, Player owner){
@@ -29,11 +27,14 @@ public class Piece {
         return owner;
     }
 
-    public void setPhase(String piecePhrase){
-        this.piecePhase = piecePhrase;
+    public void setPosition(Position pos){
+        this.pos = pos;
+        if (pos.getPiece() != this) {
+            pos.setPiece(this);
+        }
     }
 
-    public String getPhase(){
-        return piecePhase;
+    public Position getPosition(){
+        return pos;
     }
 }

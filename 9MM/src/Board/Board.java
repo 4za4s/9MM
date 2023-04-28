@@ -16,6 +16,10 @@ public class Board {
         }
     }
 
+    public void movePiece(Piece piece, Position position) {
+        piece.setPosition(position);
+    }
+
     public ArrayList<Position> getPositions(){
         return positions;
     }

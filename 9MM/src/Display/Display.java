@@ -8,12 +8,13 @@ import java.util.ArrayList;
 
 import Board.Board;
 import Board.Position;
+import Game.Game;
 
 /**
  * Manages the display
  */
 public class Display extends JFrame{
-
+    private Game game;
     private int boardPadding = 200; //padding to each side of the board 
     private int frameWidth; //width of the frame (frame = where everything is rendered)
     private int frameHeight; //height of the frame
@@ -34,8 +35,9 @@ public class Display extends JFrame{
     private SelectionHighlights layeredPaneHighlights; //highlight layer for game 
     private Background layeredPaneBackground; //background layer for game
    
-    public Display(){
+    public Display(Game game){
         super("9 Mans Morris");
+        this.game = game;
 
         System.out.println("Creating display");
         //Frame settings
@@ -67,7 +69,7 @@ public class Display extends JFrame{
         layeredPaneSlots = new ButtonDisplay();
         layeredPaneHighlights = new SelectionHighlights(slotSize);
 
-        layeredPaneSlots.createButtonDisplay(board.getPositions(), buttonLocations, boardPadding, gap, slotSize);
+        layeredPaneSlots.createButtonDisplay(game, board.getPositions(), buttonLocations, boardPadding, gap, slotSize);
     
         //Add layers to the frame
         add(layeredPaneSlots);
@@ -89,6 +91,14 @@ public class Display extends JFrame{
      * @param board the current state of the board
      */
     public void updateDisplay(Board board){
+        for (Position pos : board.getPositions()) {
+            if (pos.getPiece() != null) {
+                pos.setBackground(pos.getPiece().getColour());
+            }
+            else {
+                pos.setBackground(Color.white);
+            }
+        }
         repaint(); //A repaint is not normally triggered otherwise. There would be ghosting with the highlights
     }
 
