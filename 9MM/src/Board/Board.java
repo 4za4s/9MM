@@ -2,7 +2,7 @@ package Board;
 
 import java.util.ArrayList;
 
-import Game.Game.state;
+import Game.Game.newGameState;
 
 /**
  * The board where all of the pices go on. Keeps track of pieces and their
@@ -18,11 +18,11 @@ public class Board {
         }
     }
 
-    public void movePiece(Piece piece, Position position) {
-        piece.setPosition(position);
+    public void movePiece(Piece piece, Position newPosition) {
+        piece.setPosition(newPosition);
     }
 
-    public ArrayList<Position> getPossibleMoves(state gameState, Piece piece) {
+    public ArrayList<Position> getPossibleMoves(newGameState gameState, Piece piece) {
         switch (gameState) {
             case PLACING:
                 ArrayList<Position> possibleMoves = new ArrayList<Position>();
@@ -34,12 +34,16 @@ public class Board {
                 }
 
                 return possibleMoves;
+
             case SELECTING:
                 return null;
+
             case MOVING:
                 return null;
+
             case FLYING:
                 return null;
+
             default:
                 return null;
         }

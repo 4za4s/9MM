@@ -1,4 +1,5 @@
-// Impliment this for a later sprint
+// Impliment this in a later sprint
+
 // package Display;
 
 // import java.awt.FlowLayout;

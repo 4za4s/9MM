@@ -9,7 +9,7 @@ import Board.Position;
 import Display.Display;
 
 public class Game {
-    public enum state {
+    public enum newGameState {
         PLACING,
         SELECTING,
         MOVING,
@@ -20,8 +20,8 @@ public class Game {
     private Display display;
     private Board board;
     ArrayList<Player> players = new ArrayList<Player>();
-    private int turn;
-    private state gameState;
+    private int turn = 0;
+    private newGameState gameState;
 
     /**
      * Creates a new game, can be extended later to include different player types (AI, human, etc.)
@@ -32,9 +32,9 @@ public class Game {
         this.board = new Board();
         this.players.add(new Player(Color.blue, "Player 1"));
         this.players.add(new Player(Color.red, "Player 2"));
-        this.turn = 0;
 
-        gameState = state.PLACING;
+
+        gameState = newGameState.PLACING;
     }
 
     public void buttonPressed(Position pos) {
@@ -47,7 +47,7 @@ public class Game {
                     players.get(turn).piecePlaced();
 
                     if (players.get(turn).getPiecesPlaced() == 9 && turn == 1) {
-                        gameState = state.SELECTING;
+                        gameState = newGameState.SELECTING;
                         display.displayPossibleMoves(new ArrayList<Position>(), players.get(0).getColour());
 
                         turn();

@@ -8,8 +8,12 @@ public class App{
         // create new game
         System.out.println("INITIALISING GAME");
         Game game = new Game();
-        game.setDisplay(new Display(game));
+        Display display = new Display(game);
+
+        game.setDisplay(display);
         System.out.println("GAME CREATED");
+
+        //TODO run more games with 'display'
     }
 }
 
