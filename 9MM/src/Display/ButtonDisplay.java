@@ -48,7 +48,7 @@ public class ButtonDisplay  extends JLayeredPane {
         pos.setBounds(x,y,slotSize,slotSize);
         pos.setBackground(colour);
 
-        pos.addActionListener(pos);
+        pos.addActionListener(e -> pos.buttonPressed());
 
         add(pos); 
     }

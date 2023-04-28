@@ -1,14 +1,11 @@
 package Board;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 
 /**
  * Class to represent a position on the board, holds a single piece or nothing and has a list of neighbours
  */
-public class Position extends JButton implements ActionListener {
+public class Position extends JButton {
     private Piece piece;
     private Position[] neighbours;
 
@@ -38,8 +35,7 @@ public class Position extends JButton implements ActionListener {
         this.piece = piece;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        System.out.printf("%d, %d\n",getX(), getY());
+    public void buttonPressed(){
+        System.out.println("Button pressed");
     }
 }

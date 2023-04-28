@@ -16,7 +16,7 @@ public class Board {
         }
     }
 
-    public ArrayList<Position> gePositions(){
+    public ArrayList<Position> getPositions(){
         return positions;
     }
 }

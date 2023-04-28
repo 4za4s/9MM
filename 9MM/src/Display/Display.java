@@ -67,7 +67,7 @@ public class Display extends JFrame{
         layeredPaneSlots = new ButtonDisplay();
         layeredPaneHighlights = new SelectionHighlights(slotSize);
 
-        layeredPaneSlots.createButtonDisplay(board.gePositions(), buttonLocations, boardPadding, gap, slotSize);
+        layeredPaneSlots.createButtonDisplay(board.getPositions(), buttonLocations, boardPadding, gap, slotSize);
     
         //Add layers to the frame
         add(layeredPaneSlots);
