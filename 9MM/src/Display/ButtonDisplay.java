@@ -49,6 +49,7 @@ public class ButtonDisplay  extends JLayeredPane {
         pos.setBounds(x,y,slotSize,slotSize);
         pos.setBackground(colour);
 
+        //creates a new listener for each position that will call the buttonPressed method in the game class
         pos.addActionListener(e -> game.buttonPressed(pos));
 
         add(pos); 
