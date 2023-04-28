@@ -1,7 +1,7 @@
 package Display;
 
 import java.awt.Color;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JLayeredPane;
 
@@ -12,13 +12,8 @@ import Board.Position;
  */
 public class ButtonDisplay  extends JLayeredPane {
     private Color defaultColour = Color.white;
-    private Display display;
-
-    public ButtonDisplay(Display display){
-        this.display = display; 
-    }
  
-    public void createButtonDisplay(Position[] positions, int[][] buttonLocations, int boardPadding, int gap, int slotSize){
+    public void createButtonDisplay(ArrayList<Position> positions, int[][] buttonLocations, int boardPadding, int gap, int slotSize){
         int index = 0;
         //Loop throught each location and add appropriate button
         for (Position pos : positions) {
@@ -31,9 +26,9 @@ public class ButtonDisplay  extends JLayeredPane {
                 int[] loc = buttonLocations[index];
                 makeNewButton(pos, defaultColour, loc, boardPadding, gap, slotSize);
             }
+            index++;
         }
     }
-
 
     /**
      * Makes a new button on the board. The board gets regularly cleared and 
@@ -53,13 +48,8 @@ public class ButtonDisplay  extends JLayeredPane {
         pos.setBounds(x,y,slotSize,slotSize);
         pos.setBackground(colour);
 
-        //Remmve old action listeners
-        for (ActionListener al : pos.getActionListeners()){
-            pos.removeActionListener(al);
-        }
+        pos.addActionListener(pos);
 
         add(pos); 
-
     }
-
 }

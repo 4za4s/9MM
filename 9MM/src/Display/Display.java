@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import Board.Board;
+import Board.Position;
 
 /**
  * Manages the display
@@ -63,8 +64,8 @@ public class Display extends JFrame{
 
         //Create layers
         layeredPaneBackground = new Background(boardPadding, gap, slotSize);
-        layeredPaneSlots = new ButtonDisplay(this);
-        layeredPaneHighlights = new SelectionHighlights(boardPadding, gap, slotSize);
+        layeredPaneSlots = new ButtonDisplay();
+        layeredPaneHighlights = new SelectionHighlights(slotSize);
 
         layeredPaneSlots.createButtonDisplay(board.gePositions(), buttonLocations, boardPadding, gap, slotSize);
     
@@ -96,8 +97,7 @@ public class Display extends JFrame{
      * @param availableLocations the locations available
      * @param playerColour Colour of the player who's turn it is, for the correct highlight colour
      */
-    public void displayPossibleMoves(ArrayList<int[]> availableLocations, Color playerColour){ //eventually ArrayList<int[]> availableLocations -> as an input
-
+    public void displayPossibleMoves(ArrayList<Position> availableLocations, Color playerColour){
         Color highLightcolour = new Color(
             playerColour.getRed(), 
             playerColour.getGreen(),

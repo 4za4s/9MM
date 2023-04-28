@@ -40,6 +40,6 @@ public class Position extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Button clicked");
+        System.out.printf("%d, %d\n",getX(), getY());
     }
 }

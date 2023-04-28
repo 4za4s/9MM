@@ -1,20 +1,22 @@
 package Board;
 
+import java.util.ArrayList;
+
 /**
  * The board where all of the pices go on. Keeps track of pieces and their
  * movement
  */
 public class Board {
-    Position[] positions;
+    ArrayList<Position> positions = new ArrayList<Position>();
 
     public Board(){
         System.out.println("Creating Positions");
         for (int i = 0; i < 24; i++) {
-            positions[i] = new Position();
+            positions.add(new Position());
         }
     }
 
-    public Position[] gePositions(){
+    public ArrayList<Position> gePositions(){
         return positions;
     }
 }
