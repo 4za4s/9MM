@@ -5,9 +5,8 @@ import Display.Display;
  */
 public class App{
     public static void main(String[] args) {  
-
         // create new game
-
+        new Game(new Display());
     }
 }
 

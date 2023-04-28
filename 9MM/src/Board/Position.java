@@ -10,7 +10,7 @@ public class Position extends JButton {
     private Position[] neighbours;
 
     //constructor if a piece should already exist here
-    public Position(Piece piece){
+    public Position(int[] pos, Piece piece){
         this.piece = piece;
     }
 

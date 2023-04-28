@@ -7,32 +7,34 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import Board.Board;
-import Board.Piece;
-import Board.Player;
 
 /**
  * Manages the display
  */
 public class Display extends JFrame{
 
-    private int boardPadding; //padding to each side of the board 
-    private int effectiveSize; //how mich room is left  in game (frame minus padding)
-    private int gap; // distance between concentric squares
+    private int boardPadding = 200; //padding to each side of the board 
     private int frameWidth; //width of the frame (frame = where everything is rendered)
     private int frameHeight; //height of the frame
-    private int slotSize = 50; // height/width of a button
     private Dimension size; //so all board parts are created the same size
+    private int[][] buttonLocations = { 
+        { 0, 0 }, { 0, 3 }, { 0, 6 },   // {row,column}
+        { 1, 1 }, { 1, 3 }, { 1, 5 }, 
+        { 2, 2 }, { 2, 3 }, { 2, 4 }, 
+        { 3, 0 }, { 3, 1 }, { 3, 2 }, 
+        { 3, 4 }, { 3, 5 }, { 3, 6 },
+        { 4, 2 }, { 4, 3 }, { 4, 4 },
+        { 5, 1 }, { 5, 3 }, { 5, 5 },
+        { 6, 0 }, { 6, 3 }, { 6, 6 } 
+    };
+
 
     private ButtonDisplay layeredPaneSlots; //button layer for game
     private SelectionHighlights layeredPaneHighlights; //highlight layer for game 
     private Background layeredPaneBackground; //background layer for game
-    
-    private Board board; //the game board this is displaying
    
-    public Display(int boardPadding, Board board){
+    public Display(){
         super("9 Mans Morris");
-        this.boardPadding = boardPadding;
-        this.board = board;
         
         //Frame settings
         setSize(frameWidth,frameHeight);
@@ -51,13 +53,13 @@ public class Display extends JFrame{
     /**
      * Creates the game board. Not done at initialisation because variables need to be set later
      */
-    public void createGameBoard(Piece[][] pieceArray){
+    public void createGameBoard(Board board){
 
         //Work out values for the spacing
         int minSize = Math.min(frameWidth, frameHeight);
-        effectiveSize = minSize - boardPadding * 2;
-        gap = effectiveSize/6;
-        slotSize = (minSize-boardPadding)/20; //(Accessibility feature)
+        int effectiveSize = minSize - boardPadding * 2;
+        int gap = effectiveSize/6;
+        int slotSize = (minSize-boardPadding)/20; //(Accessibility feature)
 
         //Create layers
         layeredPaneBackground = new Background(boardPadding, gap, slotSize);
@@ -69,7 +71,7 @@ public class Display extends JFrame{
         add(layeredPaneBackground);
         add(layeredPaneHighlights);
 
-        updateDisplay(pieceArray,null,"unused", "unusedString",false,"");
+        updateDisplay(board);
         
         //Set display sizes
         layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight));
@@ -85,7 +87,7 @@ public class Display extends JFrame{
      */
     public void updateDisplay(Board board){
 
-        layeredPaneSlots.createButtonDisplay(pieceArray, piecePhase, selectablePlayer, noPlayerString , noPlayerSelectable);
+        layeredPaneSlots.createButtonDisplay(board.gePositions(), buttonLocations);
 
         layeredPaneHighlights.removeAllHighlights();
 
@@ -95,23 +97,19 @@ public class Display extends JFrame{
     /**
      * Highlight an available location the selected piece can move 
      * @param availableLocations the locations available
-     * @param inTurnPlayer current player. So highlighting matches curent player's colour
+     * @param playerColour Colour of the player who's turn it is, for the correct highlight colour
      */
-    public void displayAvailableLocation(ArrayList<int[]> availableLocations, Player inTurnPlayer){ //eventually ArrayList<int[]> availableLocations -> as an input
+    public void displayPossibleMoves(ArrayList<int[]> availableLocations, Color playerColour){ //eventually ArrayList<int[]> availableLocations -> as an input
 
-        Color highLightcolour = new Color(inTurnPlayer.getColour().getRed(),inTurnPlayer.getColour().getGreen(),inTurnPlayer.getColour().getBlue(),inTurnPlayer.getColour().getAlpha()*2/5);
+        Color highLightcolour = new Color(
+            playerColour.getRed(), 
+            playerColour.getGreen(),
+            playerColour.getBlue(),
+            playerColour.getAlpha()*2/5
+        );
+
         layeredPaneHighlights.addHighlights(availableLocations, highLightcolour);
-
-        }
-
-        /**
-         * Tells the board a button has been clicked
-         * @param gameButton the button that was clicked
-         */
-        public void buttonClicked(Piece gameButton){
-            board.buttonClicked(gameButton );
-
-        }
+     }
 
     /**
      * Set window size of game relative to display
@@ -119,8 +117,9 @@ public class Display extends JFrame{
     private void setWindowSize(){
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         
-        // height will store the height of the screen
-        frameHeight = (int)size.getHeight()*4/5;
-        frameWidth = frameHeight*9/10; //10;
+        // Height and Width calculated relative to the screen so the 
+        // game is roughly the same size on most screens
+        frameHeight = (int)size.getHeight()*5/6;
+        frameWidth = frameHeight*13/14;
     }
 }

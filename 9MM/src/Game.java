@@ -1,9 +1,7 @@
 import java.awt.Color;
 
 import Board.Board;
-import Board.Piece;
 import Board.Player;
-import Board.Position;
 import Display.Display;
 
 public class Game {
@@ -17,8 +15,13 @@ public class Game {
      * @param display the display that will be used to display the game
      */
     public Game(Display display) {
-        this.board = new Board(null);
+        this.display = display;
+        this.board = new Board();
         this.players = new Player[] {new Player(Color.red, "Player 1"), new Player(Color.blue, "Player 2")};
         this.turn = 0;
+    }
+
+    public void nextTurn() {
+        turn = (turn + 1) % 2;
     }
 }
