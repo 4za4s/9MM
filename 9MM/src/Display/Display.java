@@ -107,7 +107,7 @@ public class Display extends JFrame{
      * @param availableLocations the locations available
      * @param playerColour Colour of the player who's turn it is, for the correct highlight colour
      */
-    public void displayPossibleMoves(ArrayList<Position> availableLocations, Color playerColour){
+    public void displayPossibleMoves(ArrayList<Position> possibleMoves, Color playerColour){
         Color highLightcolour = new Color(
             playerColour.getRed(), 
             playerColour.getGreen(),
@@ -115,7 +115,7 @@ public class Display extends JFrame{
             playerColour.getAlpha()*2/5
         );
 
-        layeredPaneHighlights.addHighlights(availableLocations, highLightcolour);
+        layeredPaneHighlights.addHighlights(possibleMoves, highLightcolour);
      }
 
     /**

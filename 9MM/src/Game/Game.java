@@ -9,7 +9,7 @@ import Board.Position;
 import Display.Display;
 
 public class Game {
-    enum state {
+    public enum state {
         PLACING,
         SELECTING,
         MOVING,
@@ -40,16 +40,22 @@ public class Game {
     public void buttonPressed(Position pos) {
         switch (gameState) {
             case PLACING:
+                int index = players.get(turn).getPiecesPlaced();
+                
                 if (pos.getPiece() == null) {
-                    int index = players.get(turn).getPiecesPlaced();
                     pos.setPiece(players.get(turn).getPieces().get(index));
                     players.get(turn).piecePlaced();
 
                     if (players.get(turn).getPiecesPlaced() == 9 && turn == 1) {
                         gameState = state.SELECTING;
+                        display.displayPossibleMoves(new ArrayList<Position>(), players.get(0).getColour());
+
+                        turn();
+                        break;
                     }
                     
                     turn();
+                    display.displayPossibleMoves(board.getPossibleMoves(gameState, players.get(turn).getPieces().get(index)), players.get(turn).getColour());
                 }
                 break;
             case SELECTING:
@@ -70,5 +76,6 @@ public class Game {
     public void setDisplay(Display display) {
         this.display = display;
         display.createDisplay(board);
+        display.displayPossibleMoves(board.getPossibleMoves(gameState, players.get(turn).getPieces().get(0)), players.get(turn).getColour());
     }
 }
