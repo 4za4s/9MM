@@ -12,18 +12,13 @@ import javax.swing.JLayeredPane;
  * 
 */
 class SelectionHighlights extends JLayeredPane { //prev JPanel
-
     private int boardPadding; //padding to each side of the board
     private int gap; // distance between concentric squares
     private int highlightSize; //how large to make highlighting
     private ArrayList<int[]> availableLocations; //locations a piece or empty slot should be
     private Color highlightColour; //highlight color to show available locations
 
-
-
-
     public SelectionHighlights( int boardPadding, int gap, int slotSize) {
-
         this.boardPadding = boardPadding;
         this.gap = gap;
         this.highlightSize = slotSize * 3 / 2;
@@ -52,23 +47,4 @@ class SelectionHighlights extends JLayeredPane { //prev JPanel
             g2.fillRect(boardPadding + row * gap  - highlightSize / 2 , boardPadding + column * gap - highlightSize / 2, highlightSize , highlightSize); 
         }
     }
-
-    /** Removes all highlights from the board 
-     * paintComponent() automatically happens a lot. This makes sure that when it is repainted nothing is painted
-    */
-    public void removeAllHighlights(){
-        availableLocations =  new ArrayList<int[]>();
-    }
-
-
-
-
-
-
-
-
-
-
-
-
 }

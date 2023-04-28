@@ -35,12 +35,11 @@ public class Display extends JFrame{
    
     public Display(){
         super("9 Mans Morris");
-        
+
+        System.out.println("Creating display");
         //Frame settings
-        setSize(frameWidth,frameHeight);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // setResizable(false);
 
         //Display the window
         setWindowSize();
@@ -53,7 +52,8 @@ public class Display extends JFrame{
     /**
      * Creates the game board. Not done at initialisation because variables need to be set later
      */
-    public void createGameBoard(Board board){
+    public void createDisplay(Board board){
+        System.out.println("Making board in display");
 
         //Work out values for the spacing
         int minSize = Math.min(frameWidth, frameHeight);
@@ -63,15 +63,15 @@ public class Display extends JFrame{
 
         //Create layers
         layeredPaneBackground = new Background(boardPadding, gap, slotSize);
-        layeredPaneSlots = new ButtonDisplay(boardPadding, gap, slotSize, this);
+        layeredPaneSlots = new ButtonDisplay(this);
         layeredPaneHighlights = new SelectionHighlights(boardPadding, gap, slotSize);
+
+        layeredPaneSlots.createButtonDisplay(board.gePositions(), buttonLocations, boardPadding, gap, slotSize);
     
         //Add layers to the frame
         add(layeredPaneSlots);
         add(layeredPaneBackground);
         add(layeredPaneHighlights);
-
-        updateDisplay(board);
         
         //Set display sizes
         layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight));
@@ -79,6 +79,8 @@ public class Display extends JFrame{
         layeredPaneBackground.setSize(size);
         layeredPaneSlots.setSize(size);
         layeredPaneHighlights.setSize(size);
+
+        repaint();
     }
 
     /**
@@ -86,11 +88,6 @@ public class Display extends JFrame{
      * @param board the current state of the board
      */
     public void updateDisplay(Board board){
-
-        layeredPaneSlots.createButtonDisplay(board.gePositions(), buttonLocations);
-
-        layeredPaneHighlights.removeAllHighlights();
-
         repaint(); //A repaint is not normally triggered otherwise. There would be ghosting with the highlights
     }
 

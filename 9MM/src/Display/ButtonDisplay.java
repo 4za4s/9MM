@@ -5,9 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JLayeredPane;
 
-import Board.GameButtonClicked;
-import Board.Piece;
-import Board.Player;
 import Board.Position;
 
 /**
@@ -15,26 +12,24 @@ import Board.Position;
  */
 public class ButtonDisplay  extends JLayeredPane {
     private Color defaultColour = Color.white;
-    private int boardPadding;
-    private int gap;
-    private int slotSize;
     private Display display;
 
-    public ButtonDisplay(int boardPadding, int gap, int slotSize, Display display){
-        this.boardPadding = boardPadding;
-        this.gap = gap;
-        this.slotSize = slotSize;
+    public ButtonDisplay(Display display){
         this.display = display; 
     }
-
  
-    public void createButtonDisplay(Position[] positions, int[][] buttonLocations){
-        removeAll(); //Remove all previous buttons
-
+    public void createButtonDisplay(Position[] positions, int[][] buttonLocations, int boardPadding, int gap, int slotSize){
+        int index = 0;
         //Loop throught each location and add appropriate button
         for (Position pos : positions) {
             if (pos.getPiece() != null) {
-                makeNewButton(pos, pos.getPiece().getColour());
+                Color colour = pos.getPiece().getColour();
+                int[] loc = buttonLocations[index];
+                makeNewButton(pos, colour, loc, boardPadding, gap, slotSize);
+            }
+            else {
+                int[] loc = buttonLocations[index];
+                makeNewButton(pos, defaultColour, loc, boardPadding, gap, slotSize);
             }
         }
     }
@@ -49,26 +44,20 @@ public class ButtonDisplay  extends JLayeredPane {
      * @param row the row the button should be placed on
      * @param column the column the button should be placed on
      */
-    public void makeNewButton(Position pos, Color colour){
-        //Put piece on board
-        pos.setEnabled(selectable);
-        pos.setBounds(x,y,slotSize,slotSize);
-        pos.setBackground(piece.getColour());
+    public void makeNewButton(Position pos, Color colour, int[] loc, int boardPadding, int gap, int slotSize){
 
-        pos.setRow(row);
-        pos.setColumn(column);
-        pos.setPhase(piecePhrase);
+        int y = boardPadding - slotSize / 2 + gap * loc[0];
+        int x = boardPadding - slotSize / 2 + gap * loc[1];
+
+        //Put piece on board
+        pos.setBounds(x,y,slotSize,slotSize);
+        pos.setBackground(colour);
 
         //Remmve old action listeners
         for (ActionListener al : pos.getActionListeners()){
             pos.removeActionListener(al);
-
         }
 
-        //Add a new listener
-        new GameButtonClicked(pos, display);
-
-                
         add(pos); 
 
     }
