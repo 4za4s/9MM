@@ -6,37 +6,21 @@ import javax.swing.JButton;
 /** 
  * Represents a piece on the board
  */
-public class Piece extends JButton{
+public class Piece {
 
-    Player owner; //who owns the piece
+    private Player owner; //who owns the piece
+    private Position pos; //where the piece is on the board
+    private String piecePhase; //what is represented as happening when the piece is selected
 
-    private int row; //row of the board the piece is on   
-    private int column; //column of the board the piece is on   
-    private String piecePhrase; //what is represented as happening when the piece is selected
-
-    public Piece(int row, int column,Player owner){
-        this.row = row;
-        this.column = column;
+    //start with initial position
+    public Piece(Position pos, Player owner){
+        this.pos = pos;
         this.owner = owner;
-
     }
 
-    
-    public int getRow(){
-        return row;
-    }
-
-    public int getColumn(){
-        return column;
-    }
-
-
-    public void setRow(int row){
-        this.row = row;
-    }
-
-    public void setColumn(int column){
-        this.column = column;
+    //start without a position
+    public Piece(Player owner){
+        this.owner = owner;
     }
 
     public Color getColour(){
@@ -48,10 +32,10 @@ public class Piece extends JButton{
     }
 
     public void setPhase(String piecePhrase){
-        this.piecePhrase = piecePhrase;
+        this.piecePhase = piecePhrase;
     }
 
-    public String getPhrase(){
-        return piecePhrase;
+    public String getPhase(){
+        return piecePhase;
     }
 }

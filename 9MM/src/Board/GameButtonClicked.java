@@ -18,8 +18,8 @@ public class GameButtonClicked implements ActionListener {
         this.display = display;
 
         piece.addActionListener(this);
+        
     }
-
 
     /**
      * What happens when the button is press. It tells display that it was pressed.
@@ -30,6 +30,4 @@ public class GameButtonClicked implements ActionListener {
         display.buttonClicked(piece);
 
     }
-
-
 }

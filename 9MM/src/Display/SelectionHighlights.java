@@ -40,7 +40,7 @@ class SelectionHighlights extends JLayeredPane { //prev JPanel
     public void paintComponent(Graphics g){
 
         Graphics2D g2 = (Graphics2D) g;
-
+        
         g2.setColor(highlightColour);
 
         int row;
@@ -50,11 +50,7 @@ class SelectionHighlights extends JLayeredPane { //prev JPanel
             row = availableLocations.get(i)[0];
             column =  availableLocations.get(i)[1];
             g2.fillRect(boardPadding + row * gap  - highlightSize / 2 , boardPadding + column * gap - highlightSize / 2, highlightSize , highlightSize); 
-            
-          
-
         }
-
     }
 
     /** Removes all highlights from the board 
@@ -62,7 +58,6 @@ class SelectionHighlights extends JLayeredPane { //prev JPanel
     */
     public void removeAllHighlights(){
         availableLocations =  new ArrayList<int[]>();
-
     }
 
 

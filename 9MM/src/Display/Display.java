@@ -22,7 +22,6 @@ public class Display extends JFrame{
     private int frameHeight; //height of the frame
     private int slotSize = 50; // height/width of a button
     private Dimension size; //so all board parts are created the same size
-    private int[][] validLocations; //list of all valid locations a piece can be. Used to know where to place empty slots and pieces
 
     private ButtonDisplay layeredPaneSlots; //button layer for game
     private SelectionHighlights layeredPaneHighlights; //highlight layer for game 
@@ -30,9 +29,8 @@ public class Display extends JFrame{
     
     private Board board; //the game board this is displaying
    
-    public Display(int boardPadding, Board board, int[][] validLocations){
+    public Display(int boardPadding, Board board){
         super("9 Mans Morris");
-        this.validLocations = validLocations;
         this.boardPadding = boardPadding;
         this.board = board;
         
@@ -48,7 +46,6 @@ public class Display extends JFrame{
         setSize(new Dimension(frameWidth, frameHeight));
         setVisible(true);
         setLayout(null); //try setLayout(new GridLayout()); if bored
-
     }
 
     /**
@@ -84,16 +81,11 @@ public class Display extends JFrame{
 
     /**
      * Updates the display 
-     * @param pieceArray where all of the pieces are
-     * @param selectablePlayer player whose pieces can be clicked on
-     * @param piecePhase what to tell the board when a piece is clicked
-     * @param noPlayerString what to tell the board if an empty slot is clicked
-     * @param noPlayerSelectable can an empty slot be selected
-     * @param turnText the text to display telling user what to do
+     * @param board the current state of the board
      */
-    public void updateDisplay(Piece[][] pieceArray, Player selectablePlayer,String piecePhase, String  noPlayerString, boolean noPlayerSelectable, String turnText){
+    public void updateDisplay(Board board){
 
-        layeredPaneSlots.createButtonDisplay(pieceArray, validLocations, piecePhase, selectablePlayer, noPlayerString , noPlayerSelectable);
+        layeredPaneSlots.createButtonDisplay(pieceArray, piecePhase, selectablePlayer, noPlayerString , noPlayerSelectable);
 
         layeredPaneHighlights.removeAllHighlights();
 

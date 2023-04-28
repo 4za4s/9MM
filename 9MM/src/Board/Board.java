@@ -1,32 +1,19 @@
 package Board;
 
 import Display.Display;
-
 import java.util.ArrayList;
-
-
 
 /**
  * The board where all of the pices go on. Keeps track of pieces and their
  * movement
  */
 public class Board {
-
     private Display display; //what displays the board
     private BoardManager boardManager; //what manages the board
-    private Piece[][] pieceArray = new Piece[7][7];// array for storing the pieces
+    private Position[] positions; //all the positions on the board
     
-
-    private int[] lastPieceSelected = { 0, 0 }; // location of last piece selected (button clicked). row, column
-    private int[] secondLastPieceSelected = { 0, 0 }; // These are for keeping track of what piece to move where
-
-    private int[][] validLocations = new int[][] { { 0, 0 }, { 0, 3 }, { 0, 6 }, // so later can work out it a move is valid
-            { 1, 1 }, { 1, 3 }, { 1, 5 }, // {row,column}
-            { 2, 2 }, { 2, 3 }, { 2, 4 }, 
-            { 3, 0 }, { 3, 1 }, { 3, 2 }, { 3, 4 }, { 3, 5 }, { 3, 6 },
-            { 4, 2 }, { 4, 3 }, { 4, 4 },
-            { 5, 1 }, { 5, 3 }, { 5, 5 },
-            { 6, 0 }, { 6, 3 }, { 6, 6 } };
+    private Position PosSelected; // location of last piece selected (button clicked). row, column
+    private Position LastPosSelected; // These are for keeping track of what piece to move where
 
 
     public Board(BoardManager boardManager){
@@ -86,7 +73,7 @@ public class Board {
         lastPieceSelected[0] = piece.getRow();
         lastPieceSelected[1] = piece.getColumn();
 
-        boardManager.buttonClicked(piece.getPhrase());
+        boardManager.buttonClicked(piece.getPhase());
 
     }
 

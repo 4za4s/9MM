@@ -65,9 +65,7 @@ public class BoardManager {
 
                     //TODO: logic for creating pieces
                     
-
                     break; 
-
 
                 case "SelectPiece":
 
@@ -95,9 +93,6 @@ public class BoardManager {
 
                 default: System.out.println("Invalid button type given: " + type);
                     break;
-
-
-
             }
         }
 

@@ -13,7 +13,6 @@ public class Player {
         this.playerName = playerName;
     }
 
-
     public Color getColour(){
         return colour;
     }

@@ -29,7 +29,7 @@ public class ButtonDisplay  extends JLayeredPane {
         }
 
  
-    public void createButtonDisplay(Piece[][] pieceArray, int[][] validLocations, String piecePhase, Player selectablePlayer,
+    public void createButtonDisplay(Piece[][] pieceArray, String piecePhase, Player selectablePlayer,
     String noPlayerString, boolean noPlayerSelectable){
         removeAll(); //Remove all previous buttons
 
@@ -74,11 +74,8 @@ public class ButtonDisplay  extends JLayeredPane {
 
                 }
             }
-
         }
-
     }
-
 
     /**
      * Makes a new button on the board. The board gets regularly cleared and 
@@ -106,14 +103,14 @@ public class ButtonDisplay  extends JLayeredPane {
 
         //Remmve old action listeners
         for (ActionListener al : piece.getActionListeners()){
+
             piece.removeActionListener(al);
 
         }
 
         //Add a new listener
         new GameButtonClicked(piece,display);
-
-                
+        
         add(piece); 
 
     }
