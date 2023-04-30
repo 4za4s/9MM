@@ -1,4 +1,5 @@
 package Board;
+
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -11,41 +12,42 @@ public class Player {
     private ArrayList<Piece> pieces = new ArrayList<Piece>();
     private int piecesPlace = 0;
     private int piecesLost = 0;
+    public final int maxPieces = 2;
 
-    public Player(Color colour, String playerName){
+    public Player(Color colour, String playerName) {
         this.colour = colour;
         this.playerName = playerName;
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < maxPieces; i++) {
             pieces.add(new Piece(this));
         }
     }
 
-    public Color getColour(){
+    public Color getColour() {
         return colour;
     }
 
-    public String getName(){
+    public String getName() {
         return playerName;
     }
 
-    public int getPiecesPlaced(){
+    public int getNumOfPiecesPlaced() {
         return piecesPlace;
     }
 
-    public void piecePlaced(){
+    public void piecePlaced() {
         piecesPlace++;
     }
 
-    public int getPiecesLost(){
+    public int getPiecesLost() {
         return piecesLost;
     }
 
-    public void pieceLost(){
+    public void pieceLost() {
         piecesLost++;
     }
 
-    public ArrayList<Piece> getPieces(){
+    public ArrayList<Piece> getPieces() {
         return pieces;
     }
 }
