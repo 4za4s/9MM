@@ -15,7 +15,8 @@ import Game.Game;
  */
 public class Display extends JFrame{
     private Game game;
-    private int boardPadding = 200; //padding to each side of the board 
+    private int boardPadding = 200; //padding to each side of the board
+    private final int minSize = 700; //minimum size the board can display as 
     private int frameWidth; //width of the frame (frame = where everything is rendered)
     private int frameHeight; //height of the frame
     private Dimension size; //so all board parts are created the same size
@@ -134,7 +135,8 @@ public class Display extends JFrame{
         
         // Height and Width calculated relative to the screen so the 
         // game is roughly the same size on most screens
-        frameHeight = (int)size.getHeight()*5/6;
-        frameWidth = frameHeight*13/14;
+        frameHeight = Math.max(minSize,(int)size.getHeight()*5/6);
+        frameWidth = Math.max(minSize,frameHeight*13/14);
+
     }
 }

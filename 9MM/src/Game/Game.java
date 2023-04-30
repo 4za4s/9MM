@@ -15,22 +15,14 @@ import Display.Display;
  */
 public class Game {
 
-    // Enum for the different game states, for implementing different rules at each stage of the game
-    public enum newGameState {
-        PLACING,
-        SELECTING,
-        MOVING,
-        FLYING,
-        TAKING
-    }
-
     private Display display;
     private Board board;
     ArrayList<Player> players = new ArrayList<Player>();
-    private int turn = 0;
-    private newGameState gameState;
-    private Piece selectedPiece;
     private Player inTurnPlayer;
+    private int turn = 0;
+    private int turnCounter = 0;
+    private GameState gameState;
+    private Piece selectedPiece;
 
     /**
      * Creates a new game, can be extended later to include different player types (AI, human, etc.)
@@ -39,9 +31,10 @@ public class Game {
         this.board = new Board();
         this.players.add(new Player(Color.blue, "Player 1"));
         this.players.add(new Player(Color.red, "Player 2"));
-
         inTurnPlayer = players.get(turn);
-        gameState = newGameState.PLACING;
+
+        //Place pieces
+        gameState = GameState.PLACING;
     }
 
     /**
@@ -49,62 +42,80 @@ public class Game {
      * @param pos the position that was clicked
      */
     public void buttonPressed(Position pos) {
-        switch (gameState) {
+        switch (gameState) { 
+
+            //Place a piece
             case PLACING:
                 //First phase of the game, players place their pieces
-                int index = inTurnPlayer.getPiecesPlaced();
-                
+                int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced();
+
                 if (pos.getPiece() == null) {
-                    pos.setPiece(inTurnPlayer.getPieces().get(index));
+                    pos.setPiece(inTurnPlayer.getPieces().get(lastPieceIndex));
                     inTurnPlayer.piecePlaced();
 
-                    if (inTurnPlayer.getPiecesPlaced() == inTurnPlayer.getPieces().size() && turn == 1) {
-                        gameState = newGameState.SELECTING;
+                    //If all pieces have been placed - and it is the last player to do so
+                    if (lastPieceIndex == inTurnPlayer.maxPieces - 1 && inTurnPlayer == players.get(players.size() - 1)) {
+                        gameState = GameState.SELECTING;
                         display.removeHighlights();
 
-                        turn();
+                        changeTurn();
                         break;
                     }
-                    
-                    turn();
-                    display.displayPossibleMoves(board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(index)), inTurnPlayer.getColour());
+
+                    changeTurn();
+                    display.displayPossibleMoves(
+                            board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(lastPieceIndex)),
+                            inTurnPlayer.getColour());
                 }
                 break;
+
+            // Select a piece to move
             case SELECTING:
                 selectedPiece = null;
                 if (pos.getPiece() == null) {
                     break;
                 }
-                selectPiece(pos, newGameState.FLYING);
+                updatePieceSelection(pos, GameState.FLYING);
                 break;
-                
+
+            // A piece can be moved anywhere 
             case FLYING:
                 if (pos.getPiece() == null) {
                     board.movePiece(selectedPiece, pos);
-                    turn();
+                    changeTurn();
                     display.removeHighlights();
-                    gameState = newGameState.SELECTING;
+                    gameState = GameState.SELECTING;
                 } else {
-                    selectPiece(pos, newGameState.FLYING);
+                    updatePieceSelection(pos, GameState.FLYING);
                 }
                 break;
+             
+            //An unknown gamestate was given
             default:
-                break;
+                throw new IllegalArgumentException("Unknown gamestate was given: '" + gameState +  "'");
+                
         }
 
         display.updateDisplay(board);
     }
 
-    public void turn() {
-        turn = (turn + 1) % 2;
+    /**
+     * Changes the player who is in turn
+     */
+    public void changeTurn() {
+        turn = (++turnCounter) % 2;
         inTurnPlayer = players.get(turn);
     }
 
-    public void selectPiece(Position pos, newGameState state) {
+    /** 
+     * Enusres that a valid piece is selected and if so shows the result of the new selection
+    */
+    public void updatePieceSelection(Position pos, GameState state) {
         if (pos.getPiece().getOwner() == inTurnPlayer) {
             selectedPiece = pos.getPiece();
             gameState = state;
-            display.displayPossibleMoves(board.getPossibleMoves(gameState, selectedPiece), inTurnPlayer.getColour());
+            display.displayPossibleMoves(board.getPossibleMoves(gameState, selectedPiece),
+                inTurnPlayer.getColour());
         } else {
             selectedPiece = null;
             display.removeHighlights();
@@ -113,7 +124,10 @@ public class Game {
 
     public void setDisplay(Display display) {
         this.display = display;
+
+        //Tells the display to display this game
         display.createDisplay(board);
-        display.displayPossibleMoves(board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(0)), inTurnPlayer.getColour());
+        display.displayPossibleMoves(board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(0)),
+            inTurnPlayer.getColour());
     }
 }

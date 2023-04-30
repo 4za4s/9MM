@@ -2,7 +2,7 @@ package Board;
 
 import java.util.ArrayList;
 
-import Game.Game.newGameState;
+import Game.GameState;
 
 /**
  * The board where all of the pices go on. Keeps track of pieces and their
@@ -17,6 +17,8 @@ public class Board {
      */
     public Board(){
         System.out.println("Creating Positions");
+
+        //24 total positions on the board
         for (int i = 0; i < 24; i++) {
             positions.add(new Position());
         }
@@ -27,7 +29,7 @@ public class Board {
         piece.setPosition(newPosition);
     }
 
-    public ArrayList<Position> getPossibleMoves(newGameState gameState, Piece piece) {
+    public ArrayList<Position> getPossibleMoves(GameState gameState, Piece piece) {
         switch (gameState) {
             // Currently pieces can move anywhere no matter the game state
             // case PLACING:
@@ -39,10 +41,9 @@ public class Board {
             // case MOVING:
             //     return null;
 
-            // case FLYING:
-            //     return null;
+            case PLACING: //these two cases are the same (so no break statement)
+            case FLYING:
 
-            default:
                 possibleMoves = new ArrayList<Position>();
 
                 for (Position position : positions) {
@@ -52,8 +53,15 @@ public class Board {
                 }
 
                 return possibleMoves;
-            }
+
+            default:
+                throw new IllegalArgumentException("Unknown gamestate was given: '" + gameState +  "'");
+        }
+
+
+            
     }
+    
 
     public ArrayList<Position> getPositions(){
         return positions;

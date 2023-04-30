@@ -3,7 +3,7 @@ package Board;
 import javax.swing.JButton;
 
 /**
- * Class to represent a position on the board, holds a single piece or nothing and has a list of neighbours
+ * Represent a position on the board, holds a single piece or nothing and has a list of neighbours
  */
 public class Position extends JButton {
     private Piece piece;
