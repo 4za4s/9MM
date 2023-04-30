@@ -103,7 +103,7 @@ public class Game {
      * Changes the player who is in turn
      */
     public void changeTurn() {
-        turn = (++turnCounter) % 2;
+        turn = (++turnCounter) % players.size();
         inTurnPlayer = players.get(turn);
     }
 
