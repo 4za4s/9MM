@@ -14,6 +14,14 @@ import Game.Game;
 public class ButtonDisplay  extends JLayeredPane {
     private Color defaultColour = Color.white;
  
+    /**
+     * @param game game handles what happens when the button is pressed
+     * @param positions positions are the buttons since you click on positions and pieces
+     * @param buttonLocations possible locations for a button, each location will get a button
+     * @param boardPadding padding around the board
+     * @param gap gap between each button
+     * @param slotSize size of each button
+     */
     public void createButtonDisplay(Game game, ArrayList<Position> positions, int[][] buttonLocations, int boardPadding, int gap, int slotSize){
         int index = 0;
         //Loop throught each location and add appropriate button
@@ -44,6 +52,7 @@ public class ButtonDisplay  extends JLayeredPane {
      */
     public void makeNewButton(Game game, Position pos, Color colour, int[] loc, int boardPadding, int gap, int slotSize){
 
+        //buttons are placed on a grid, so the location is used to calculate the x and y position on the display
         int y = boardPadding - slotSize / 2 + gap * loc[0];
         int x = boardPadding - slotSize / 2 + gap * loc[1];
 

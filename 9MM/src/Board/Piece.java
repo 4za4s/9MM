@@ -23,20 +23,39 @@ public class Piece {
         this.owner = owner;
     }
 
+    /**
+     * Gets the colour of the piece
+     * @return Java color object
+     */
     public Color getColour(){
         return owner.getColour();
     }
 
+    /**
+     * Gets the owner of the piece
+     * @return Player owner of the piece
+     */
     public Player getOwner(){
         return owner;
     }
 
+    /**
+     * Sets the position of the piece
+     * @param pos position to set, can be null to remove the piece from the board
+     */
     public void setPosition(Position pos){
         this.pos = pos;
+
+        //if the piece is removed from the board, the owner loses a piece
+        if (pos == null){
+            owner.pieceLost();
+        }
+        //updates the position to let it know the piece is no longer here
         if (pos != null && pos.getPiece() != this) {
             pos.setPiece(this);
         }
     }
+
 
     public Position getPosition(){
         return pos;

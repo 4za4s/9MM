@@ -122,6 +122,9 @@ public class Display extends JFrame{
         layeredPaneHighlights.addHighlights(possibleMoves, highLightcolour);
     }
 
+    /**
+     * Remove all highlights, calls the removeHighlights method in the highlight layer
+     */
     public void removeHighlights(){
         layeredPaneHighlights.removeHighlights();
     }

@@ -24,6 +24,10 @@ class Background extends JLayeredPane {
         this.slotSize = slotSize;
     }
 
+    /**
+     * Draws the background, called when the panel is drawn
+     * Part of the JLayeredPane class
+     */
     @Override
     public void paintComponent(Graphics g){
 

@@ -14,7 +14,6 @@ import Display.Display;
  * Main class that handles all the game logic and actions
  */
 public class Game {
-
     private Display display;
     private Board board;
     ArrayList<Player> players = new ArrayList<Player>();
@@ -96,6 +95,7 @@ public class Game {
                 
         }
 
+        //Always update the display after an action
         display.updateDisplay(board);
     }
 
@@ -108,7 +108,9 @@ public class Game {
     }
 
     /** 
-     * Enusres that a valid piece is selected and if so shows the result of the new selection
+     * Enusres that a valid piece is selected and displays the possible moves for that piece
+     * @param pos the position of the piece clicked
+     * @param state different states have different possible moves
     */
     public void updatePieceSelection(Position pos, GameState state) {
         if (pos.getPiece().getOwner() == inTurnPlayer) {
@@ -122,11 +124,17 @@ public class Game {
         }
     }
 
+    /**
+     * Sets the display for this game
+     * @param display the display to be used
+     */
     public void setDisplay(Display display) {
         this.display = display;
 
         //Tells the display to display this game
         display.createDisplay(board);
+        
+        //Game starts with player 1 having some possible moves
         display.displayPossibleMoves(board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(0)),
             inTurnPlayer.getColour());
     }
