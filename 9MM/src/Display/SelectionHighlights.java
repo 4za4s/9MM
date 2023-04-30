@@ -18,6 +18,9 @@ class SelectionHighlights extends JLayeredPane { //prev JPanel
     private Color highlightColour; //highlight color to show available locations
     private int offset;
 
+    /**
+     * Class constructor
+     */
     public SelectionHighlights(int slotSize) {
         this.highlightSize = slotSize * 3 / 2;
         this.offset = (highlightSize - slotSize)/2;

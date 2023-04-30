@@ -12,6 +12,9 @@ public class Board {
     ArrayList<Position> positions = new ArrayList<Position>();
     ArrayList<Position> possibleMoves;
 
+    /**
+     * Class constructor
+     */
     public Board(){
         System.out.println("Creating Positions");
         for (int i = 0; i < 24; i++) {

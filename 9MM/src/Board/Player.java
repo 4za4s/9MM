@@ -9,9 +9,12 @@ public class Player {
     private Color colour;
     private String playerName;
     private ArrayList<Piece> pieces = new ArrayList<Piece>();
-    private int piecesPlace = 0;
+    private int piecesPlaced = 0;
     private int piecesLost = 0;
 
+    /**
+     * Class constructor
+     */
     public Player(Color colour, String playerName){
         this.colour = colour;
         this.playerName = playerName;
@@ -30,11 +33,11 @@ public class Player {
     }
 
     public int getPiecesPlaced(){
-        return piecesPlace;
+        return piecesPlaced;
     }
 
     public void piecePlaced(){
-        piecesPlace++;
+        piecesPlaced++;
     }
 
     public int getPiecesLost(){

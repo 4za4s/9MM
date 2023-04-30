@@ -8,13 +8,17 @@ public class Piece {
     private Player owner; //who owns the piece
     private Position pos; //where the piece is on the board
 
-    //start with initial position
+    /**
+     * Class constructor. starting on a position
+     */
     public Piece(Position pos, Player owner){
         this.pos = pos;
         this.owner = owner;
     }
 
-    //start without a position
+    /**
+     * Class constructor, no initial position
+     */
     public Piece(Player owner){
         this.owner = owner;
     }

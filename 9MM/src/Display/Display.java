@@ -35,6 +35,9 @@ public class Display extends JFrame{
     private SelectionHighlights layeredPaneHighlights; //highlight layer for game 
     private Background layeredPaneBackground; //background layer for game
    
+    /**
+     * Class constructor
+     */
     public Display(Game game){
         super("9 Mans Morris");
         this.game = game;

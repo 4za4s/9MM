@@ -9,7 +9,13 @@ import Board.Player;
 import Board.Position;
 import Display.Display;
 
+
+/**
+ * Main class that handles all the game logic and actions
+ */
 public class Game {
+
+    // Enum for the different game states, for implementing different rules at each stage of the game
     public enum newGameState {
         PLACING,
         SELECTING,
@@ -24,31 +30,35 @@ public class Game {
     private int turn = 0;
     private newGameState gameState;
     private Piece selectedPiece;
+    private Player inTurnPlayer;
 
     /**
      * Creates a new game, can be extended later to include different player types (AI, human, etc.)
-     * @param display the display that will be used to display the game
      */
     public Game() {
-        System.out.println("Making Game Objects");
         this.board = new Board();
         this.players.add(new Player(Color.blue, "Player 1"));
         this.players.add(new Player(Color.red, "Player 2"));
 
-
+        inTurnPlayer = players.get(turn);
         gameState = newGameState.PLACING;
     }
 
+    /**
+     * Handles the game logic when a player clicks a position
+     * @param pos the position that was clicked
+     */
     public void buttonPressed(Position pos) {
         switch (gameState) {
             case PLACING:
-                int index = players.get(turn).getPiecesPlaced();
+                //First phase of the game, players place their pieces
+                int index = inTurnPlayer.getPiecesPlaced();
                 
                 if (pos.getPiece() == null) {
-                    pos.setPiece(players.get(turn).getPieces().get(index));
-                    players.get(turn).piecePlaced();
+                    pos.setPiece(inTurnPlayer.getPieces().get(index));
+                    inTurnPlayer.piecePlaced();
 
-                    if (players.get(turn).getPiecesPlaced() == players.get(turn).getPieces().size() && turn == 1) {
+                    if (inTurnPlayer.getPiecesPlaced() == inTurnPlayer.getPieces().size() && turn == 1) {
                         gameState = newGameState.SELECTING;
                         display.removeHighlights();
 
@@ -57,7 +67,7 @@ public class Game {
                     }
                     
                     turn();
-                    display.displayPossibleMoves(board.getPossibleMoves(gameState, players.get(turn).getPieces().get(index)), players.get(turn).getColour());
+                    display.displayPossibleMoves(board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(index)), inTurnPlayer.getColour());
                 }
                 break;
             case SELECTING:
@@ -87,13 +97,14 @@ public class Game {
 
     public void turn() {
         turn = (turn + 1) % 2;
+        inTurnPlayer = players.get(turn);
     }
 
     public void selectPiece(Position pos, newGameState state) {
-        if (pos.getPiece().getOwner() == players.get(turn)) {
+        if (pos.getPiece().getOwner() == inTurnPlayer) {
             selectedPiece = pos.getPiece();
             gameState = state;
-            display.displayPossibleMoves(board.getPossibleMoves(gameState, selectedPiece), players.get(turn).getColour());
+            display.displayPossibleMoves(board.getPossibleMoves(gameState, selectedPiece), inTurnPlayer.getColour());
         } else {
             selectedPiece = null;
             display.removeHighlights();
@@ -103,6 +114,6 @@ public class Game {
     public void setDisplay(Display display) {
         this.display = display;
         display.createDisplay(board);
-        display.displayPossibleMoves(board.getPossibleMoves(gameState, players.get(turn).getPieces().get(0)), players.get(turn).getColour());
+        display.displayPossibleMoves(board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(0)), inTurnPlayer.getColour());
     }
 }

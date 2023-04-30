@@ -34,11 +34,13 @@ public class ButtonDisplay  extends JLayeredPane {
     /**
      * Makes a new button on the board. The board gets regularly cleared and 
      * this is run each time the board is re-rendered
-     * @param selectable if the button can be selected
-     * @param piece the piece this button represents
-     * @param piecePhrase the phrase the piece should have - tells the board manager what to do next
-     * @param row the row the button should be placed on
-     * @param column the column the button should be placed on
+     * @param game game handles what happens when the button is pressed
+     * @param pos positions are the buttons since you click on positions and pieces
+     * @param colour initial colour of the button, colout is changed based on the piece on it or default
+     * @param loc location of the button on the board, based on a grid [row, column]
+     * @param boardPadding padding around the board
+     * @param gap gap between each button
+     * @param slotSize size of each button
      */
     public void makeNewButton(Game game, Position pos, Color colour, int[] loc, int boardPadding, int gap, int slotSize){
 
