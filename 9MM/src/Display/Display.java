@@ -108,7 +108,7 @@ public class Display extends JFrame{
 
     /**
      * Highlight an available location the selected piece can move 
-     * @param availableLocations the locations available
+     * @param possibleMoves the locations available
      * @param playerColour Colour of the player who's turn it is, for the correct highlight colour
      */
     public void displayPossibleMoves(ArrayList<Position> possibleMoves, Color playerColour){
