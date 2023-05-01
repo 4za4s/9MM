@@ -15,6 +15,7 @@ public class ButtonDisplay  extends JLayeredPane {
     private Color defaultColour = Color.white;
  
     /**
+     * Creates the buttons on the display
      * @param game game handles what happens when the button is pressed
      * @param positions positions are the buttons since you click on positions and pieces
      * @param buttonLocations possible locations for a button, each location will get a button

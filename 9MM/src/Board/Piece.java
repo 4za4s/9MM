@@ -57,6 +57,7 @@ public class Piece {
     }
     
     /** 
+     * Gets the position of the piece
      * @return Position
      */
     public Position getPosition(){
