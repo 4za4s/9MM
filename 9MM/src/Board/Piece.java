@@ -55,8 +55,10 @@ public class Piece {
             pos.setPiece(this);
         }
     }
-
-
+    
+    /** 
+     * @return Position
+     */
     public Position getPosition(){
         return pos;
     }
