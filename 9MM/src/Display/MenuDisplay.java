@@ -1,34 +1,21 @@
 package Display;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import javax.swing.JLayeredPane;
 
-import javax.swing.JFrame;
-
-public class Display extends JFrame{
-
+public class MenuDisplay extends JLayeredPane {
     /**
      * Class constructor
      */
-    public Display(){
+    public MenuDisplay(){
         super("9 Mans Morris");
-
-        //Frame settings
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //Display the window
-        setWindowSize();
-        pack();
-        setSize(new Dimension(frameWidth, frameHeight));
-        setVisible(true);
-        setLayout(null); //try setLayout(new GridLayout()); if bored
     }
 
     /**
      * Creates the game board. Not done at initialisation because variables need to be set later
      */
     public void createDisplay(Board board){
+        System.out.println("Making board in display");
+
         //Work out values for the spacing
         int minSize = Math.min(frameWidth, frameHeight);
         int effectiveSize = minSize - boardPadding * 2;
@@ -55,6 +42,38 @@ public class Display extends JFrame{
         layeredPaneHighlights.setSize(size);
 
         repaint();
+    }
+
+    /**
+     * Updates the display 
+     * @param board the current state of the board
+     */
+    public void updateDisplay(Board board){
+        for (Position pos : board.getPositions()) {
+            if (pos.getPiece() != null) {
+                pos.setBackground(pos.getPiece().getColour());
+            }
+            else {
+                pos.setBackground(Color.white);
+            }
+        }
+        repaint(); //A repaint is not normally triggered otherwise. There would be ghosting with the highlights
+    }
+
+    /**
+     * Highlight an available location the selected piece can move 
+     * @param possibleMoves the locations available
+     * @param playerColour Colour of the player who's turn it is, for the correct highlight colour
+     */
+    public void displayPossibleMoves(ArrayList<Position> possibleMoves, Color playerColour){
+        Color highLightcolour = new Color(
+            playerColour.getRed(), 
+            playerColour.getGreen(),
+            playerColour.getBlue(),
+            playerColour.getAlpha()*2/5
+        );
+
+        layeredPaneHighlights.addHighlights(possibleMoves, highLightcolour);
     }
 
     /**

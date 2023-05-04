@@ -8,5 +8,6 @@ public enum GameState {
     SELECTING,
     MOVING,
     FLYING,
-    TAKING
+    TAKING,
+    GAMEEND
 }

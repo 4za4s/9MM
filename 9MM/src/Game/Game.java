@@ -3,18 +3,20 @@ package Game;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import App.App;
 import Board.Board;
 import Board.Piece;
 import Board.Player;
 import Board.Position;
-import Display.Display;
+import Display.GameDisplay;
 
 
 /**
  * Main class that handles all the game logic and actions
  */
 public class Game {
-    private Display display;
+    private App app;
+    private GameDisplay display;
     private Board board;
     ArrayList<Player> players = new ArrayList<Player>();
     private Player inTurnPlayer;
@@ -128,7 +130,7 @@ public class Game {
      * Sets the display for this game
      * @param display the display to be used
      */
-    public void setDisplay(Display display) {
+    public void setDisplay(GameDisplay display) {
         this.display = display;
 
         //Tells the display to display this game
