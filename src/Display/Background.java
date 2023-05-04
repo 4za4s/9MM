@@ -2,7 +2,13 @@ package Display;
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JLayeredPane;
 
 
@@ -33,6 +39,22 @@ class Background extends JLayeredPane {
 
         Graphics2D g2 = (Graphics2D) g;
 
+
+        //Add image background
+        // Image img;
+        // try {
+        //     String url = "/home/linden/Documents/Uni/2023/Sem1/FIT3077/9MansMorris/project/src/Display/planks_birch.png";
+        //     img = ImageIO.read(new File(url));
+        //     g2.drawImage(img, 0,0,1300,1300, this);
+
+        // } catch (IOException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace(); 
+        // }
+
+       
+
+
         // Set stoke size
         g2.setStroke(new BasicStroke(slotSize / 4));
 
@@ -46,5 +68,9 @@ class Background extends JLayeredPane {
         g2.drawLine(boardPadding + gap*3, boardPadding + gap*4, boardPadding + gap*3, boardPadding + gap*6 ); //bottom line
         g2.drawLine(boardPadding, boardPadding + gap*3, boardPadding + gap*2, boardPadding + gap*3 ); //left line
         g2.drawLine(boardPadding + gap*4, boardPadding + gap*3, boardPadding + gap*6, boardPadding + gap*3 ); //right line
+
+
+
+        
     }
 }

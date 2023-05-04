@@ -15,6 +15,7 @@ import Game.Game;
  */
 public class Display extends JFrame{
     private Game game;
+    private final Color backgroundColor = new Color(244,224,190);
     private int boardPadding = 200; //padding to each side of the board
     private final int minSize = 700; //minimum size the board can display as 
     private int frameWidth; //width of the frame (frame = where everything is rendered)
@@ -43,12 +44,15 @@ public class Display extends JFrame{
         super("9 Mans Morris");
         this.game = game;
 
+
+
         System.out.println("Creating display");
         //Frame settings
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Display the window
+        getContentPane().setBackground(backgroundColor);
         setWindowSize();
         pack();
         setSize(new Dimension(frameWidth, frameHeight));
@@ -143,4 +147,3 @@ public class Display extends JFrame{
 
     }
 }
-
