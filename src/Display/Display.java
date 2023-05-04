@@ -18,6 +18,7 @@ public class Display extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Display the window
+        getContentPane().setBackground(backgroundColor);
         setWindowSize();
         pack();
         setSize(new Dimension(frameWidth, frameHeight));

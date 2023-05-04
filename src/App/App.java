@@ -15,3 +15,7 @@ public class App{
 }
 
 
+//No highlihght option if can't select
+//Show pieces remaining and taken away
+//Better back ground
+//Turn text
