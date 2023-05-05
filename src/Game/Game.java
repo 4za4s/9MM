@@ -3,7 +3,6 @@ package Game;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import App.App;
 import Board.Board;
 import Board.Piece;
 import Board.Player;
@@ -15,7 +14,6 @@ import Display.GameDisplay;
  * Main class that handles all the game logic and actions
  */
 public class Game {
-    private App app;
     private GameDisplay display;
     private Board board;
     ArrayList<Player> players = new ArrayList<Player>();

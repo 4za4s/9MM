@@ -2,13 +2,6 @@ package Display;
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.JLayeredPane;
 
 
@@ -52,9 +45,6 @@ class Background extends JLayeredPane {
         //     e.printStackTrace(); 
         // }
 
-       
-
-
         // Set stoke size
         g2.setStroke(new BasicStroke(slotSize / 4));
 
@@ -67,10 +57,6 @@ class Background extends JLayeredPane {
         g2.drawLine(boardPadding + gap*3, boardPadding, boardPadding + gap*3, boardPadding + gap*2 ); //top line
         g2.drawLine(boardPadding + gap*3, boardPadding + gap*4, boardPadding + gap*3, boardPadding + gap*6 ); //bottom line
         g2.drawLine(boardPadding, boardPadding + gap*3, boardPadding + gap*2, boardPadding + gap*3 ); //left line
-        g2.drawLine(boardPadding + gap*4, boardPadding + gap*3, boardPadding + gap*6, boardPadding + gap*3 ); //right line
-
-
-
-        
+        g2.drawLine(boardPadding + gap*4, boardPadding + gap*3, boardPadding + gap*6, boardPadding + gap*3 ); //right line  
     }
 }

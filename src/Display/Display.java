@@ -5,66 +5,44 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-public class Display extends JFrame{
+import Game.Game;
+import Menu.MainMenu;
 
+public class Display extends JFrame{
+    private final int minSize = 700; //minimum size the board can display as 
+    private Dimension size;
     /**
      * Class constructor
      */
     public Display(){
         super("9 Mans Morris");
-
         //Frame settings
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Display the window
-        getContentPane().setBackground(backgroundColor);
         setWindowSize();
         pack();
-        setSize(new Dimension(frameWidth, frameHeight));
+        setSize(size);
         setVisible(true);
         setLayout(null); //try setLayout(new GridLayout()); if bored
+        
     }
 
-    /**
-     * Creates the game board. Not done at initialisation because variables need to be set later
-     */
-    public void createDisplay(Board board){
-        //Work out values for the spacing
-        int minSize = Math.min(frameWidth, frameHeight);
-        int effectiveSize = minSize - boardPadding * 2;
-        int gap = effectiveSize/6;
-        int slotSize = (minSize-boardPadding)/20; //(Accessibility feature)
-
-        //Create layers
-        layeredPaneBackground = new Background(boardPadding, gap, slotSize);
-        layeredPaneSlots = new ButtonDisplay();
-        layeredPaneHighlights = new SelectionHighlights(slotSize);
-
-        layeredPaneSlots.createButtonDisplay(game, board.getPositions(), buttonLocations, boardPadding, gap, slotSize);
-    
-        //Add layers to the frame
-        add(layeredPaneSlots);
-        add(layeredPaneBackground);
-        add(layeredPaneHighlights);
-        
-        //Set display sizes
-        layeredPaneSlots.setPreferredSize(new Dimension(frameWidth, frameHeight));
-        size = layeredPaneSlots.getPreferredSize();
-        layeredPaneBackground.setSize(size);
-        layeredPaneSlots.setSize(size);
-        layeredPaneHighlights.setSize(size);
-
+    public void displayGame(Game game){
+        getContentPane().removeAll();
+        GameDisplay gameDisplay = new GameDisplay(game, this);
+        game.setDisplay(gameDisplay);
         repaint();
     }
 
-    /**
-     * Remove all highlights, calls the removeHighlights method in the highlight layer
-     */
-    public void removeHighlights(){
-        layeredPaneHighlights.removeHighlights();
+    public void displayMenu(MainMenu menu){
+        getContentPane().removeAll();
+        MenuDisplay menuDisplay = new MenuDisplay(menu, this);
+        menuDisplay.setPreferredSize(new Dimension(getHeight(), getWidth()));
+        add(menuDisplay);
+        repaint();
     }
-
 
     /**
      * Set window size of game relative to display
@@ -74,8 +52,9 @@ public class Display extends JFrame{
         
         // Height and Width calculated relative to the screen so the 
         // game is roughly the same size on most screens
-        frameHeight = Math.max(minSize,(int)size.getHeight()*5/6);
-        frameWidth = Math.max(minSize,frameHeight*13/14);
+        int frameHeight = Math.max(minSize,(int)size.getHeight()*5/6);
+        int frameWidth = Math.max(minSize,frameHeight*13/14);
 
+        this.size = new Dimension(frameWidth, frameHeight);
     }
 }

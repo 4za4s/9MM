@@ -1,10 +1,13 @@
 package Display;
 
+import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import Board.Board;
@@ -14,12 +17,10 @@ import Game.Game;
 /**
  * Manages the display
  */
-public class GameDisplay extends JLayeredPane{
+public class GameDisplay{
     private Game game;
     private int boardPadding = 200; //padding to each side of the board
     private final int minSize = 700; //minimum size the board can display as 
-    private int frameWidth; //width of the frame (frame = where everything is rendered)
-    private int frameHeight; //height of the frame
     private Dimension size; //so all board parts are created the same size
     private int[][] buttonLocations = { 
         { 0, 0 }, { 0, 3 }, { 0, 6 },   // {row,column}
@@ -32,7 +33,7 @@ public class GameDisplay extends JLayeredPane{
         { 6, 0 }, { 6, 3 }, { 6, 6 } 
     };
 
-
+    private Display display;
     private ButtonDisplay layeredPaneSlots; //button layer for game
     private SelectionHighlights layeredPaneHighlights; //highlight layer for game 
     private Background layeredPaneBackground; //background layer for game
@@ -40,11 +41,9 @@ public class GameDisplay extends JLayeredPane{
     /**
      * Class constructor
      */
-    public GameDisplay(Game game){
+    public GameDisplay(Game game, Display display){
         this.game = game;
-
-        setVisible(true);
-        setLayout(null); //try setLayout(new GridLayout()); if bored
+        this.display = display;
     }
 
     /**
@@ -52,7 +51,7 @@ public class GameDisplay extends JLayeredPane{
      */
     public void createDisplay(Board board){
         //Work out values for the spacing
-        int minSize = Math.min(Frame.HEIGHT, Frame.WIDTH);
+        int minSize = Math.min(display.getHeight(), display.getWidth());
         int effectiveSize = minSize - boardPadding * 2;
         int gap = effectiveSize/6;
         int slotSize = (minSize-boardPadding)/20; //(Accessibility feature)
@@ -65,18 +64,18 @@ public class GameDisplay extends JLayeredPane{
         layeredPaneSlots.createButtonDisplay(game, board.getPositions(), buttonLocations, boardPadding, gap, slotSize);
     
         //Add layers to the frame
-        add(layeredPaneSlots);
-        add(layeredPaneBackground);
-        add(layeredPaneHighlights);
+        display.add(layeredPaneSlots);
+        display.add(layeredPaneBackground);
+        display.add(layeredPaneHighlights);
         
         //Set display sizes
-        layeredPaneSlots.setPreferredSize(new Dimension(Frame.HEIGHT, Frame.WIDTH));
+        layeredPaneSlots.setPreferredSize(new Dimension(display.getHeight(), display.getWidth()));
         size = layeredPaneSlots.getPreferredSize();
         layeredPaneBackground.setSize(size);
         layeredPaneSlots.setSize(size);
         layeredPaneHighlights.setSize(size);
 
-        repaint();
+        display.repaint();
     }
 
     /**
@@ -92,7 +91,7 @@ public class GameDisplay extends JLayeredPane{
                 pos.setBackground(Color.white);
             }
         }
-        repaint();
+       display.repaint();
     }
 
     /**
