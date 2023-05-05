@@ -33,10 +33,10 @@ class Background extends JLayeredPane {
         Graphics2D g2 = (Graphics2D) g;
 
 
-        //Add image background
+        // // Add image background
         // Image img;
         // try {
-        //     String url = "/home/linden/Documents/Uni/2023/Sem1/FIT3077/9MansMorris/project/src/Display/planks_birch.png";
+        //     String url = "src/Assets/planks_birch.png";
         //     img = ImageIO.read(new File(url));
         //     g2.drawImage(img, 0,0,1300,1300, this);
 

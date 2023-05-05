@@ -1,5 +1,7 @@
 package Board;
 
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 
 /**
@@ -7,7 +9,10 @@ import javax.swing.JButton;
  */
 public class Position extends JButton {
     private Piece piece;
-    private Position[] neighbours;
+    private Position northNeighbour;
+    private Position southNeighbour;
+    private Position eastNeighbour;
+    private Position westNeighbour;
 
     /**
      * Class constructor, starting with a piece
@@ -23,21 +28,63 @@ public class Position extends JButton {
         this.piece = null;
     }
 
-    /**
-     * Sets the neighbours of this position
-     * Neighbours are determined during game creation for easy access during gameplay
-     * @param neighbours list of neighbours
-     */
-    public void setNeighbours(Position[] neighbours){
-        this.neighbours = neighbours;
+    public void setNorthNeighbour(Position northNeighbour){
+        this.northNeighbour = northNeighbour;
     }
+
+    public void setSouthNeighbour(Position southNeighbour){
+        this.southNeighbour = southNeighbour;
+    }
+
+    public void setEastNeighbour(Position eastNeighbour){
+        this.eastNeighbour = eastNeighbour;
+    }
+
+    public void setWestNeighbour(Position westNeighbour){
+        this.westNeighbour = westNeighbour;
+    }
+
+    public Position getNorthNeighbour(){
+       return northNeighbour;
+    }
+
+    public Position getSouthNeighbour(){
+        return southNeighbour;
+    }
+
+    public Position getEastNeighbour(){
+    return eastNeighbour;
+    }
+
+
+    public Position getWestNeighbour(){
+    return westNeighbour;
+    }
+
+ 
+
 
     /**
      * Gets the neighbours of this position
      * @return list of Positions
      */
-    public Position[] getNeighbours(){
-        return neighbours;
+    public ArrayList<Position> getEmptyNeighbours(){
+        ArrayList<Position> emptyNeighbours = new ArrayList<Position>();
+
+        //Add the empty neighbours
+        if (northNeighbour != null && northNeighbour.getPiece() == null){
+            emptyNeighbours.add(northNeighbour);
+        }
+        if (southNeighbour != null && southNeighbour.getPiece() == null){
+            emptyNeighbours.add(southNeighbour);
+        }
+        if (eastNeighbour != null && eastNeighbour.getPiece() == null){
+            emptyNeighbours.add(eastNeighbour);
+        }
+        if (westNeighbour != null && westNeighbour.getPiece() == null){
+            emptyNeighbours.add(westNeighbour);
+        }
+        return emptyNeighbours;
     }
 
     /**
