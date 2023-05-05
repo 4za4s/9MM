@@ -1,5 +1,6 @@
 package Display;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -11,6 +12,7 @@ import Menu.MainMenu;
 public class Display extends JFrame{
     private final int minSize = 700; //minimum size the board can display as 
     private Dimension size;
+    private final Color backgroundColor = new Color(244,224,190);
     /**
      * Class constructor
      */
@@ -21,6 +23,7 @@ public class Display extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Display the window
+        getContentPane().setBackground(backgroundColor);
         setWindowSize();
         pack();
         setSize(size);
