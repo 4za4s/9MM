@@ -83,10 +83,16 @@ public class Game {
                 if (selectedPiece.getPosition().getEmptyNeighbours().contains(pos)) {
                     board.movePiece(selectedPiece, pos);
                     changeTurn();
-                    gameDisplay.removeHighlights();
-                    gameState = GameState.SELECTING;
+                    
+                    
 
-                }
+                //Otherwise deselect piece selected
+                } else { 
+                    selectedPiece = null;
+                    
+                } 
+                gameState = GameState.SELECTING;
+                gameDisplay.removeHighlights();
                 break;
              
             //An unknown gamestate was given
