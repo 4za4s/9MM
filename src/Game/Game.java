@@ -133,16 +133,17 @@ public class Game {
 
     /**
      * Sets the display for this game
-     * @param display the display to be used
+     * @param gameDisplay the display to be used
      */
-    public void setGameDisplay(GameDisplay display) {
-        this.gameDisplay = display;
+    public void setGameDisplay(GameDisplay gameDisplay) {
+        this.gameDisplay = gameDisplay;
 
         //Tells the display to display this game
-        display.createDisplay(board);
+        gameDisplay.createDisplay(board);
+        gameDisplay.AddPlayerCounter(players);
         
         //Game starts with player 1 having some possible moves
-        display.displayPossibleMoveHighlights(board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(0)),
+        gameDisplay.displayPossibleMoveHighlights(board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(0)),
             inTurnPlayer.getColour());
     }
 }

@@ -7,10 +7,12 @@ import java.awt.Graphics2D;
 
 import javax.swing.JLayeredPane;
 
+import Board.Player;
+
 /**n Display for how many pieces are left */
 public class PieceCounter extends JLayeredPane{
     Color backgroundColor = Color.black;
-    Color playerColor = Color.red;
+    Color playerColor;
     Color emptyPieceColor = Color.lightGray;
 
 
@@ -24,9 +26,19 @@ public class PieceCounter extends JLayeredPane{
 
     int piecesLeft = 3;
 
+    Player player;
+
+    public PieceCounter(Player player){
+        this.player = player;
+        playerColor = player.getColour();
+
+    }
+
 
     @Override
     public void paintComponent(Graphics g){
+
+        piecesLeft =  player.getNumOfPiecesPlaced() - player.getNoOfPiecesLost();
 
         Graphics2D g2 = (Graphics2D) g;
 

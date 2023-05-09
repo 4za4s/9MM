@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import Board.Board;
+import Board.Player;
 import Board.Position;
 import Game.Game;
 
@@ -37,7 +38,7 @@ public class GameDisplay{
     private ButtonDisplay layeredPaneSlots; //button layer for game
     private SelectionHighlights layeredPaneHighlights; //highlight layer for game 
     private Background layeredPaneBackground; //background layer for game
-    private PieceCounter pieceCounter; //display for telling player how many pieces left
+
    
     /**
      * Class constructor
@@ -61,7 +62,7 @@ public class GameDisplay{
         layeredPaneBackground = new Background(boardPadding, gap, slotSize);
         layeredPaneSlots = new ButtonDisplay();
         layeredPaneHighlights = new SelectionHighlights(slotSize);
-        pieceCounter = new PieceCounter();
+        
 
         layeredPaneSlots.createButtonDisplay(game, board.getPositions(), buttonLocations, boardPadding, gap, slotSize);
     
@@ -69,7 +70,7 @@ public class GameDisplay{
         display.add(layeredPaneSlots);
         display.add(layeredPaneBackground);
         display.add(layeredPaneHighlights);
-        display.add(pieceCounter); //TODO: Here for now for testing
+        
         
         //Set display sizes
         layeredPaneSlots.setPreferredSize(new Dimension(display.getHeight(), display.getWidth()));
@@ -77,9 +78,9 @@ public class GameDisplay{
         layeredPaneBackground.setSize(size);
         layeredPaneSlots.setSize(size);
         layeredPaneHighlights.setSize(size);
-        pieceCounter.setSize(size);
+        
 
-        pieceCounter.setLocation(55,100);
+        
         
 
         display.repaint();
@@ -122,6 +123,26 @@ public class GameDisplay{
      */
     public void removeHighlights(){
         layeredPaneHighlights.removeHighlights();
+    }
+
+    /** Adds a player counter for each player */
+    public void AddPlayerCounter(ArrayList<Player> players){
+        Player currentPlayer = players.get(0);
+
+        PieceCounter leftPieceCounter = new PieceCounter(currentPlayer);
+        leftPieceCounter.setSize(1000,1000); //TODO: set this properly later
+        leftPieceCounter.setLocation(55,100);
+
+
+        currentPlayer = players.get(1);
+        PieceCounter rightPieceCounter = new PieceCounter(currentPlayer);
+        rightPieceCounter.setSize(1000,1000); //TODO: set this properly later
+        rightPieceCounter.setLocation(55,500);
+
+        display.add(leftPieceCounter);
+        display.add(rightPieceCounter);
+
+        
     }
 }
 

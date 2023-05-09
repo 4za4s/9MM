@@ -61,7 +61,7 @@ public class Player {
      * Gets the number of pieces the player has lost
      * @return int number of pieces lost
      */
-    public int getPiecesLost() {
+    public int getNoOfPiecesLost() {
         return piecesLost;
     }
 
