@@ -1,0 +1,73 @@
+package Display;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JLayeredPane;
+
+/**n Display for how many pieces are left */
+public class PieceCounter extends JLayeredPane{
+    Color backgroundColor = Color.black;
+    Color playerColor = Color.red;
+    Color emptyPieceColor = Color.lightGray;
+
+
+    float scale = 1;
+
+    int backgroundWidth = 75;
+    int backgroundHeight = 275;
+
+    int pieceHeight = 15;
+    int pieceGap = 5;
+
+    int piecesLeft = 3;
+
+
+    @Override
+    public void paintComponent(Graphics g){
+
+        Graphics2D g2 = (Graphics2D) g;
+
+        g2.setStroke(new BasicStroke(100));
+
+        //Background
+        g2.setColor(backgroundColor);
+        g2.fillRect(0,0,backgroundWidth,backgroundHeight); 
+
+        //Draw player indicator
+        g2.setColor(playerColor);
+        g2.fillOval(backgroundWidth * 2/10, backgroundWidth * 2/10, backgroundWidth * 6/10, backgroundWidth * 6/10);
+
+
+        //Display myPieces
+        g2.setColor(playerColor.darker());
+        for (int i = 9; i > 9 - piecesLeft; i--){
+            g2.fillRect(
+                backgroundWidth * 1/10,
+                backgroundWidth + (pieceGap + pieceHeight) * i,
+                backgroundWidth * 8/10,
+                pieceHeight
+                );
+
+        }
+
+        //Display Missing pieces
+        g2.setColor(emptyPieceColor);
+        for (int i = 9 - piecesLeft; i > 0; i--){
+            g2.fillRect(
+                backgroundWidth * 1/10,
+                backgroundWidth + (pieceGap + pieceHeight) * i,
+                backgroundWidth * 8/10,
+                pieceHeight
+                );
+
+        }
+        
+
+       
+    }
+    
+}
+

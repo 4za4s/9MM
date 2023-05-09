@@ -37,6 +37,7 @@ public class GameDisplay{
     private ButtonDisplay layeredPaneSlots; //button layer for game
     private SelectionHighlights layeredPaneHighlights; //highlight layer for game 
     private Background layeredPaneBackground; //background layer for game
+    private PieceCounter pieceCounter; //display for telling player how many pieces left
    
     /**
      * Class constructor
@@ -60,6 +61,7 @@ public class GameDisplay{
         layeredPaneBackground = new Background(boardPadding, gap, slotSize);
         layeredPaneSlots = new ButtonDisplay();
         layeredPaneHighlights = new SelectionHighlights(slotSize);
+        pieceCounter = new PieceCounter();
 
         layeredPaneSlots.createButtonDisplay(game, board.getPositions(), buttonLocations, boardPadding, gap, slotSize);
     
@@ -67,6 +69,7 @@ public class GameDisplay{
         display.add(layeredPaneSlots);
         display.add(layeredPaneBackground);
         display.add(layeredPaneHighlights);
+        display.add(pieceCounter); //TODO: Here for now for testing
         
         //Set display sizes
         layeredPaneSlots.setPreferredSize(new Dimension(display.getHeight(), display.getWidth()));
@@ -74,6 +77,10 @@ public class GameDisplay{
         layeredPaneBackground.setSize(size);
         layeredPaneSlots.setSize(size);
         layeredPaneHighlights.setSize(size);
+        pieceCounter.setSize(size);
+
+        pieceCounter.setLocation(55,100);
+        
 
         display.repaint();
     }
