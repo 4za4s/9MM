@@ -125,14 +125,6 @@ public class Board {
 
         switch (gameState) {
             // Currently pieces can move anywhere no matter the game state
-            // case PLACING:
-            //     return null;
-
-            // case SELECTING:
-            //     return null;
-
-            // case MOVING:
-            //     return null;
 
             case PLACING: 
                 //start with empty list always
@@ -146,20 +138,18 @@ public class Board {
                 }
                 return possibleMoves;
 
+            case SELECTING:
+                ArrayList<Position> possibleMoves = new ArrayList<Position>();
+                return possibleMoves;
 
 
             case MOVING:
-
-            
                 return piecePos.getEmptyNeighbours();
-
-                
-
-              
+ 
 
             default:
                 //all cases should be acounted for
-                throw new IllegalArgumentException("Unknown gamestate was given: '" + gameState +  "'");
+                throw new IllegalArgumentException("Unknown gamestate was given in board: '" + gameState +  "'");
         }    
     }
     

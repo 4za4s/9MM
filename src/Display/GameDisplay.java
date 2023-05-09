@@ -67,6 +67,7 @@ public class GameDisplay{
         layeredPaneSlots.createButtonDisplay(game, board.getPositions(), buttonLocations, boardPadding, gap, slotSize);
     
         //Add layers to the frame
+        display.getContentPane().removeAll(); //TODO: shouldn't need this
         display.add(layeredPaneSlots);
         display.add(layeredPaneBackground);
         display.add(layeredPaneHighlights);

@@ -3,13 +3,20 @@ package Display;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.JFrame;
 
 import Game.Game;
+import Game.GameState;
 import Menu.MainMenu;
 
 public class Display extends JFrame{
+    Game game;
+    MainMenu mainMenu;
+    GameState mode = GameState.PREGAME;
+    Display display = this;
     private final int minSize = 700; //minimum size the board can display as 
     private Dimension size;
     private final Color backgroundColor = new Color(244,224,190);
@@ -29,19 +36,67 @@ public class Display extends JFrame{
         setSize(size);
         setVisible(true);
         setLayout(null); //try setLayout(new GridLayout()); if bored
+        setMinimumSize(new Dimension(600, 600));
+        setMaximumSize(new Dimension(2000, 2000));
+
+
+        resizing();
+    }
+
+    /* Enables resizing */
+    private void resizing(){
+
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+
+                System.out.println("Size Changing");
+                getContentPane().removeAll();
+                
+                
+
+                switch(mode){
+                    case PREGAME:
+                        MenuDisplay menuDisplay = new MenuDisplay(mainMenu, display);
+                        menuDisplay.setPreferredSize(new Dimension(getHeight(), getWidth()));
+                        // add(menuDisplay);
+                        break;
+
+                    case INGAME:
+                        GameDisplay gameDisplay = new GameDisplay(game, display);
+                        game.setGameDisplay(gameDisplay);
+                        break;
+
+                    case POSTGAME:
+                        System.out.println("TODO!!!!!!");
+
+                    default:
+                        throw new IllegalArgumentException("Unknown mode was given: '" + mode +  "'");
+
+                }
+
+                revalidate();
+                repaint();
+            }
+        });
+
+         
         
+
     }
 
     public void displayGame(Game game){
         getContentPane().removeAll();
+        this.game = game;
+        mode = GameState.INGAME;
         GameDisplay gameDisplay = new GameDisplay(game, this);
         game.setGameDisplay(gameDisplay);
         repaint();
     }
 
-    public void displayMenu(MainMenu menu){
+    public void displayMenu(MainMenu mainMenu){
+        this.mainMenu = mainMenu; 
         getContentPane().removeAll();
-        MenuDisplay menuDisplay = new MenuDisplay(menu, this);
+        MenuDisplay menuDisplay = new MenuDisplay(mainMenu, this);
         menuDisplay.setPreferredSize(new Dimension(getHeight(), getWidth()));
         add(menuDisplay);
         repaint();
@@ -60,4 +115,7 @@ public class Display extends JFrame{
 
         this.size = new Dimension(frameWidth, frameHeight);
     }
+
+
+
 }

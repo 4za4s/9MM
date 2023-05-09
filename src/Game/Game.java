@@ -16,12 +16,13 @@ import Display.GameDisplay;
 public class Game {
     private GameDisplay gameDisplay;
     private Board board;
-    ArrayList<Player> players = new ArrayList<Player>();
+    private ArrayList<Player> players = new ArrayList<Player>();
     private Player inTurnPlayer;
     private int turn = 0;
     private int turnCounter = 0;
     private GameState gameState;
     private Piece selectedPiece; //piece that has been selected to be moved
+
 
     /**
      * Creates a new game, can be extended later to include different player types (AI, human, etc.)
@@ -47,7 +48,7 @@ public class Game {
             case PLACING:
                 //First phase of the game, players place their pieces
                 int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced();
-
+    
                 if (pos.getPiece() == null) {
                     pos.setPiece(inTurnPlayer.getPieces().get(lastPieceIndex));
                     inTurnPlayer.piecePlaced();
@@ -97,7 +98,7 @@ public class Game {
              
             //An unknown gamestate was given
             default:
-                throw new IllegalArgumentException("Unknown gamestate was given: '" + gameState +  "'");
+                throw new IllegalArgumentException("Unknown gamestate was given in game: '" + gameState +  "'");
                 
         }
 
@@ -127,7 +128,7 @@ public class Game {
                 inTurnPlayer.getColour());
         } else {
             selectedPiece = null;
-            gameDisplay.removeHighlights();
+           
         }
     }
 
@@ -141,9 +142,20 @@ public class Game {
         //Tells the display to display this game
         gameDisplay.createDisplay(board);
         gameDisplay.AddPlayerCounter(players);
+
+        gameDisplay.removeHighlights();
         
-        //Game starts with player 1 having some possible moves
-        gameDisplay.displayPossibleMoveHighlights(board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(0)),
-            inTurnPlayer.getColour());
+
+        //This function is not always called at the start of the game
+        Piece pieceToUse;
+        if (selectedPiece == null){
+            pieceToUse = inTurnPlayer.getPieces().get(0);
+        } else {
+            pieceToUse = selectedPiece;
+        }
+
+        gameDisplay.displayPossibleMoveHighlights(board.getPossibleMoves(gameState,pieceToUse),
+        inTurnPlayer.getColour());
+
     }
 }
