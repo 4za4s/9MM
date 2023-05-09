@@ -80,7 +80,7 @@ public class Game {
             // A piece can be moved anywhere 
             case MOVING:
                 //Make sure piece is moving to an empty neighbour
-                if (selectedPiece.getPosition().getEmptyNeighbours().contains(pos)) { //TODO: check if position is a neighbour
+                if (selectedPiece.getPosition().getEmptyNeighbours().contains(pos)) {
                     board.movePiece(selectedPiece, pos);
                     changeTurn();
                     gameDisplay.removeHighlights();

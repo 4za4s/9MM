@@ -100,14 +100,14 @@ public class GameDisplay{
      * @param playerColour Colour of the player who's turn it is, for the correct highlight colour
      */
     public void displayPossibleMoveHighlights(ArrayList<Position> possibleMoves, Color playerColour){
-        Color highLightcolour = new Color(
+        Color highlightcolour = new Color(
             playerColour.getRed(), 
             playerColour.getGreen(),
             playerColour.getBlue(),
             playerColour.getAlpha()*2/5
         );
 
-        layeredPaneHighlights.addHighlights(possibleMoves, highLightcolour);
+        layeredPaneHighlights.addHighlights(possibleMoves, highlightcolour);
     }
 
     /**
