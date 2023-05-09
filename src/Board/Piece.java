@@ -51,9 +51,8 @@ public class Piece {
             owner.pieceLost();
         }
         //updates the position to let it know the piece is no longer here
-        if (pos != null && pos.getPiece() != this) {
-            pos.setPiece(this);
-        }
+        pos.setPiece(this);
+        
     }
     
     /** 

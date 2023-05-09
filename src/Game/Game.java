@@ -14,14 +14,14 @@ import Display.GameDisplay;
  * Main class that handles all the game logic and actions
  */
 public class Game {
-    private GameDisplay display;
+    private GameDisplay gameDisplay;
     private Board board;
     ArrayList<Player> players = new ArrayList<Player>();
     private Player inTurnPlayer;
     private int turn = 0;
     private int turnCounter = 0;
     private GameState gameState;
-    private Piece selectedPiece;
+    private Piece selectedPiece; //piece that has been selected to be moved
 
     /**
      * Creates a new game, can be extended later to include different player types (AI, human, etc.)
@@ -55,14 +55,14 @@ public class Game {
                     //If all pieces have been placed - and it is the last player to do so
                     if (lastPieceIndex == inTurnPlayer.maxPieces - 1 && inTurnPlayer == players.get(players.size() - 1)) {
                         gameState = GameState.SELECTING;
-                        display.removeHighlights();
+                        gameDisplay.removeHighlights();
 
                         changeTurn();
                         break;
                     }
 
                     changeTurn();
-                    display.displayPossibleMoves(
+                    gameDisplay.displayPossibleMoveHighlights(
                             board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(lastPieceIndex)),
                             inTurnPlayer.getColour());
                 }
@@ -74,18 +74,18 @@ public class Game {
                 if (pos.getPiece() == null) {
                     break;
                 }
-                updatePieceSelection(pos, GameState.FLYING);
+                updatePieceSelection(pos, GameState.MOVING);
                 break;
 
             // A piece can be moved anywhere 
-            case FLYING:
-                if (pos.getPiece() == null) {
+            case MOVING:
+                //Make sure piece is moving to an empty neighbour
+                if (selectedPiece.getPosition().getEmptyNeighbours().contains(pos)) { //TODO: check if position is a neighbour
                     board.movePiece(selectedPiece, pos);
                     changeTurn();
-                    display.removeHighlights();
+                    gameDisplay.removeHighlights();
                     gameState = GameState.SELECTING;
-                } else {
-                    updatePieceSelection(pos, GameState.FLYING);
+
                 }
                 break;
              
@@ -96,7 +96,7 @@ public class Game {
         }
 
         //Always update the display after an action
-        display.updateDisplay(board);
+        gameDisplay.updateDisplay(board);
     }
 
     /**
@@ -104,23 +104,24 @@ public class Game {
      */
     public void changeTurn() {
         turn = (++turnCounter) % players.size();
+        System.out.println("Turn = " + turnCounter);
         inTurnPlayer = players.get(turn);
     }
 
     /** 
      * Enusres that a valid piece is selected and displays the possible moves for that piece
-     * @param pos the position of the piece clicked
+     * @param pos the position of the piece clicked. Assumes that pos has a piece
      * @param state different states have different possible moves
     */
-    public void updatePieceSelection(Position pos, GameState state) {
+    public void updatePieceSelection(Position pos, GameState state) {      
         if (pos.getPiece().getOwner() == inTurnPlayer) {
             selectedPiece = pos.getPiece();
             gameState = state;
-            display.displayPossibleMoves(board.getPossibleMoves(gameState, selectedPiece),
+            gameDisplay.displayPossibleMoveHighlights(board.getPossibleMoves(gameState, selectedPiece),
                 inTurnPlayer.getColour());
         } else {
             selectedPiece = null;
-            display.removeHighlights();
+            gameDisplay.removeHighlights();
         }
     }
 
@@ -128,14 +129,14 @@ public class Game {
      * Sets the display for this game
      * @param display the display to be used
      */
-    public void setDisplay(GameDisplay display) {
-        this.display = display;
+    public void setGameDisplay(GameDisplay display) {
+        this.gameDisplay = display;
 
         //Tells the display to display this game
         display.createDisplay(board);
         
         //Game starts with player 1 having some possible moves
-        display.displayPossibleMoves(board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(0)),
+        display.displayPossibleMoveHighlights(board.getPossibleMoves(gameState, inTurnPlayer.getPieces().get(0)),
             inTurnPlayer.getColour());
     }
 }

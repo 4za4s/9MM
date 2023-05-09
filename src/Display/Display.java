@@ -35,7 +35,7 @@ public class Display extends JFrame{
     public void displayGame(Game game){
         getContentPane().removeAll();
         GameDisplay gameDisplay = new GameDisplay(game, this);
-        game.setDisplay(gameDisplay);
+        game.setGameDisplay(gameDisplay);
         repaint();
     }
 

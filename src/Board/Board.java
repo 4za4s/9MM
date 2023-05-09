@@ -148,7 +148,7 @@ public class Board {
 
 
 
-            case FLYING:
+            case MOVING:
 
             
                 return piecePos.getEmptyNeighbours();
@@ -171,3 +171,4 @@ public class Board {
         return positions;
     }
 }
+

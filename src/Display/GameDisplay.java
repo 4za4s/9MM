@@ -99,7 +99,7 @@ public class GameDisplay{
      * @param possibleMoves the locations available
      * @param playerColour Colour of the player who's turn it is, for the correct highlight colour
      */
-    public void displayPossibleMoves(ArrayList<Position> possibleMoves, Color playerColour){
+    public void displayPossibleMoveHighlights(ArrayList<Position> possibleMoves, Color playerColour){
         Color highLightcolour = new Color(
             playerColour.getRed(), 
             playerColour.getGreen(),
