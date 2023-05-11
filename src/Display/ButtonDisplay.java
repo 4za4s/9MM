@@ -87,7 +87,7 @@ public class ButtonDisplay  extends JLayeredPane  implements ResizableDisplay{
 
         int minDim = Math.min(width, height);
  
-        boardPadding = (minDim * 8 ) / 60;
+        boardPadding = (minDim * 8 ) / 40;
         gap = (minDim - boardPadding * 2) / 6;
         slotSize = (minDim - boardPadding) / 20;
 

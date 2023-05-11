@@ -57,8 +57,6 @@ class SelectionHighlights extends JLayeredPane implements ResizableDisplay{
         
         g2.setColor(highlightColour);
 
-        System.out.println("highlightSize =" + highlightSize);
-
         for (Position pos : availableLocations){
             g2.fillRect(pos.getX()-offset, pos.getY()-offset, highlightSize, highlightSize); 
         }
@@ -70,7 +68,7 @@ class SelectionHighlights extends JLayeredPane implements ResizableDisplay{
         int height = (int) size.getHeight();
 
         int minDim = Math.min(width, height);
-        int boardPadding = (minDim * 8 ) / 60;
+        int boardPadding = (minDim * 8 ) / 40;
     
        
 

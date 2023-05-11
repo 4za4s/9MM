@@ -64,7 +64,7 @@ public class GameDisplay implements ResizableDisplay{
         int gap = effectiveSize/6;
         int slotSize = (minSize-boardPadding)/20; //(Accessibility feature)
 
-        Dimension size = new Dimension(display.getSize());
+        size = new Dimension(display.getSize());
 
         //Create layers
         layeredPaneBackground = new Background(size);
@@ -138,15 +138,14 @@ public class GameDisplay implements ResizableDisplay{
     public void AddPlayerCounter(ArrayList<Player> players){
         Player currentPlayer = players.get(0);
 
-        leftPieceCounter = new PieceCounter(currentPlayer);
+        leftPieceCounter = new PieceCounter(currentPlayer, true, size);
         leftPieceCounter.setSize(1000,1000); //TODO: set this properly later
-        leftPieceCounter.setLocation(55,100);
 
 
         currentPlayer = players.get(1);
-        rightPieceCounter = new PieceCounter(currentPlayer);
+        rightPieceCounter = new PieceCounter(currentPlayer, false, size);
         rightPieceCounter.setSize(1000,1000); //TODO: set this properly later
-        rightPieceCounter.setLocation(55,500);
+
 
         display.add(leftPieceCounter);
         display.add(rightPieceCounter);
@@ -159,8 +158,8 @@ public class GameDisplay implements ResizableDisplay{
         buttonDisplay.resizeDisplay(size);
         layeredPaneHighlights.resizeDisplay(size); 
         layeredPaneBackground.resizeDisplay(size); 
-        // leftPieceCounter.resizeDisplay(size);
-        // rightPieceCounter.resizeDisplay(size);
+        leftPieceCounter.resizeDisplay(size);
+        rightPieceCounter.resizeDisplay(size);
 
     }
 }

@@ -17,21 +17,25 @@ public class PieceCounter extends JLayeredPane implements ResizableDisplay{
     Color emptyPieceColor = Color.lightGray;
 
 
-    float scale = 1;
+    int backgroundWidth;
+    int backgroundHeight;
 
-    int backgroundWidth = 75;
-    int backgroundHeight = 275;
+    int pieceHeight;
+    int pieceGap;
 
-    int pieceHeight = 15;
-    int pieceGap = 5;
-
-    int piecesLeft = 3;
+    int piecesLeft;
 
     Player player;
 
-    public PieceCounter(Player player){
+    boolean leftSide; //if it goes on the left side of the board
+
+    public PieceCounter(Player player, boolean leftSide, Dimension size){
         this.player = player;
         playerColor = player.getColour();
+        this.leftSide = leftSide;
+
+        setBoardElementsSize(size);
+
 
     }
 
@@ -83,10 +87,38 @@ public class PieceCounter extends JLayeredPane implements ResizableDisplay{
     }
 
 
+    private void setBoardElementsSize(Dimension size){
+        int width = (int) size.getWidth();
+        int height = (int) size.getHeight();
+
+        int minDim = Math.min(width, height);
+        int boardPadding = (minDim * 8 ) / 40;
+        backgroundWidth = boardPadding / 3;
+        backgroundHeight = (int) (backgroundWidth * 3.8);
+
+
+        pieceHeight = backgroundWidth / 5;
+        pieceGap = pieceHeight / 3;
+
+
+        if (leftSide){
+            setLocation(boardPadding/ 3, height / 2 -  backgroundHeight  / 2 );
+
+        } else {
+            setLocation(height - (2 *boardPadding/ 3), height / 2 -  backgroundHeight  / 2 );
+
+        }
+
+ 
+        
+
+
+    }
+
+
     @Override
     public void resizeDisplay(Dimension size) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'resizeDisplay'");
+        setBoardElementsSize( size);
     }
     
 }
