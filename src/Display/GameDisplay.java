@@ -18,7 +18,7 @@ import Game.Game;
 /**
  * Manages the display
  */
-public class GameDisplay{
+public class GameDisplay implements ResizableDisplay{
     private Game game;
     private int boardPadding = 200; //padding to each side of the board
     private final int minSize = 700; //minimum size the board can display as 
@@ -35,9 +35,11 @@ public class GameDisplay{
     };
 
     private Display display;
-    private ButtonDisplay layeredPaneSlots; //button layer for game
+    private ButtonDisplay buttonDisplay; //button layer for game
     private SelectionHighlights layeredPaneHighlights; //highlight layer for game 
     private Background layeredPaneBackground; //background layer for game
+    PieceCounter leftPieceCounter;
+    PieceCounter rightPieceCounter;
 
    
     /**
@@ -46,6 +48,8 @@ public class GameDisplay{
     public GameDisplay(Game game, Display display){
         this.game = game;
         this.display = display;
+
+        //TODO: here
     }
 
     /**
@@ -53,31 +57,35 @@ public class GameDisplay{
      */
     public void createDisplay(Board board){
         //Work out values for the spacing
+
+        //TODO remove this
         int minSize = Math.min(display.getHeight(), display.getWidth());
         int effectiveSize = minSize - boardPadding * 2;
         int gap = effectiveSize/6;
         int slotSize = (minSize-boardPadding)/20; //(Accessibility feature)
 
+        Dimension size = new Dimension(display.getSize());
+
         //Create layers
-        layeredPaneBackground = new Background(boardPadding, gap, slotSize);
-        layeredPaneSlots = new ButtonDisplay();
-        layeredPaneHighlights = new SelectionHighlights(slotSize);
+        layeredPaneBackground = new Background(size);
+        buttonDisplay = new ButtonDisplay();
+        layeredPaneHighlights = new SelectionHighlights(size);
         
 
-        layeredPaneSlots.createButtonDisplay(game, board.getPositions(), buttonLocations, boardPadding, gap, slotSize);
+        buttonDisplay.createButtonDisplay(game, board.getPositions(), buttonLocations, size);
     
         //Add layers to the frame
         display.getContentPane().removeAll(); //TODO: shouldn't need this
-        display.add(layeredPaneSlots);
+        display.add(buttonDisplay);
         display.add(layeredPaneBackground);
         display.add(layeredPaneHighlights);
         
         
         //Set display sizes
-        layeredPaneSlots.setPreferredSize(new Dimension(display.getHeight(), display.getWidth()));
-        size = layeredPaneSlots.getPreferredSize();
+        buttonDisplay.setPreferredSize(new Dimension(display.getHeight(), display.getWidth()));
+        size = buttonDisplay.getPreferredSize();
         layeredPaneBackground.setSize(size);
-        layeredPaneSlots.setSize(size);
+        buttonDisplay.setSize(size);
         layeredPaneHighlights.setSize(size);
         
 
@@ -130,13 +138,13 @@ public class GameDisplay{
     public void AddPlayerCounter(ArrayList<Player> players){
         Player currentPlayer = players.get(0);
 
-        PieceCounter leftPieceCounter = new PieceCounter(currentPlayer);
+        leftPieceCounter = new PieceCounter(currentPlayer);
         leftPieceCounter.setSize(1000,1000); //TODO: set this properly later
         leftPieceCounter.setLocation(55,100);
 
 
         currentPlayer = players.get(1);
-        PieceCounter rightPieceCounter = new PieceCounter(currentPlayer);
+        rightPieceCounter = new PieceCounter(currentPlayer);
         rightPieceCounter.setSize(1000,1000); //TODO: set this properly later
         rightPieceCounter.setLocation(55,500);
 
@@ -144,6 +152,16 @@ public class GameDisplay{
         display.add(rightPieceCounter);
 
         
+    }
+
+    @Override
+    public void resizeDisplay(Dimension size) {
+        buttonDisplay.resizeDisplay(size);
+        layeredPaneHighlights.resizeDisplay(size); 
+        layeredPaneBackground.resizeDisplay(size); 
+        // leftPieceCounter.resizeDisplay(size);
+        // rightPieceCounter.resizeDisplay(size);
+
     }
 }
 

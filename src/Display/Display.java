@@ -16,6 +16,8 @@ public class Display extends JFrame{
     Game game;
     MainMenu mainMenu;
     GameState mode = GameState.PREGAME;
+    GameDisplay gameDisplay;
+    
     Display display = this;
     private final int minSize = 700; //minimum size the board can display as 
     private Dimension size;
@@ -50,20 +52,18 @@ public class Display extends JFrame{
             public void componentResized(ComponentEvent e) {
 
                 System.out.println("Size Changing");
-                getContentPane().removeAll();
-                
-                
+
+                Dimension size = display.getContentPane().getSize();
 
                 switch(mode){
                     case PREGAME:
-                        MenuDisplay menuDisplay = new MenuDisplay(mainMenu, display);
-                        menuDisplay.setPreferredSize(new Dimension(getHeight(), getWidth()));
-                        // add(menuDisplay);
+                        // TODO
+                        
                         break;
 
                     case INGAME:
-                        GameDisplay gameDisplay = new GameDisplay(game, display);
-                        game.setGameDisplay(gameDisplay);
+                        // GameDisplay gameDisplay = new GameDisplay(game, display);
+                        gameDisplay.resizeDisplay(size);
                         break;
 
                     case POSTGAME:
@@ -88,7 +88,7 @@ public class Display extends JFrame{
         getContentPane().removeAll();
         this.game = game;
         mode = GameState.INGAME;
-        GameDisplay gameDisplay = new GameDisplay(game, this);
+        gameDisplay = new GameDisplay(game, this);
         game.setGameDisplay(gameDisplay);
         repaint();
     }

@@ -1,13 +1,14 @@
 package Display;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 
 import Menu.MainMenu;
 
-public class MenuDisplay extends JLayeredPane {
+public class MenuDisplay extends JLayeredPane implements ResizableDisplay {
     private Display display;
 
     /**
@@ -27,5 +28,11 @@ public class MenuDisplay extends JLayeredPane {
         start.addActionListener(e -> menu.startGame(display));
 
         display.add(start); 
+    }
+
+    @Override
+    public void resizeDisplay(Dimension size) {
+        //TODO: Aaron
+        // throw new UnsupportedOperationException("Unimplemented method 'resizeDisplay'");
     }
 }

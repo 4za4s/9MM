@@ -1,5 +1,6 @@
 package Display;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -12,18 +13,19 @@ import Board.Position;
 /* Creates a drawing of selection highlights. This drawing has to be added to a panel to be viewed 
  * Highlights all locations in a list given
 */
-class SelectionHighlights extends JLayeredPane {
+class SelectionHighlights extends JLayeredPane implements ResizableDisplay{
     private int highlightSize; //how large to make highlighting
     private ArrayList<Position> availableLocations = new ArrayList<Position>(); //locations to highlight, represents possible moves for a piece
     private Color highlightColour; //highlight color to show available locations
     private int offset;
+    int slotSize;
 
     /**
      * Class constructor
      */
-    public SelectionHighlights(int slotSize) {
-        this.highlightSize = slotSize * 3 / 2;
-        this.offset = (highlightSize - slotSize)/2;
+    public SelectionHighlights(Dimension size) {
+        setBoardElementsSize( size);
+ 
     }
 
     /**
@@ -55,8 +57,33 @@ class SelectionHighlights extends JLayeredPane {
         
         g2.setColor(highlightColour);
 
+        System.out.println("highlightSize =" + highlightSize);
+
         for (Position pos : availableLocations){
             g2.fillRect(pos.getX()-offset, pos.getY()-offset, highlightSize, highlightSize); 
         }
     }
+
+    //TODO: this is semi duplicate code
+    private void setBoardElementsSize(Dimension size){
+        int width = (int) size.getWidth();
+        int height = (int) size.getHeight();
+
+        int minDim = Math.min(width, height);
+        int boardPadding = (minDim * 8 ) / 60;
+    
+       
+
+        slotSize = (minDim - boardPadding) / 20;
+        highlightSize = (slotSize * 3) / 2;
+        offset = (highlightSize - slotSize)/2;
+      
+    }
+
+
+    @Override
+    public void resizeDisplay(Dimension size) {
+        setBoardElementsSize( size);
+    }
+
 }

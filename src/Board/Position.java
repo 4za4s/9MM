@@ -14,6 +14,9 @@ public class Position extends JButton {
     private Position eastNeighbour;
     private Position westNeighbour;
 
+    int row;
+    int column; 
+
     /**
      * Class constructor, starting with a piece
      */
@@ -106,4 +109,22 @@ public class Position extends JButton {
             piece.setPosition(this);
         }
     }
+
+    public void setRowColumn(int row, int column){
+        this.row = row;
+        this.column = column;
+    }
+
+    public int getRow(){
+        return this.row;
+
+    }
+
+    public int getColumn(){
+        return column;
+    }
+
+
+
+
 }

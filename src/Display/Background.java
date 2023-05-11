@@ -1,5 +1,6 @@
 package Display;
 import java.awt.BasicStroke;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JLayeredPane;
@@ -8,7 +9,7 @@ import javax.swing.JLayeredPane;
 /**
  *  Creates a drawing of the background. This drawing has to be added to a panel to be viewed 
  */
-class Background extends JLayeredPane {
+class Background extends JLayeredPane implements ResizableDisplay{
 
     private int boardPadding; //how much padding to add to each side of the board
     private int gap; //how much space to put between the rings of the board
@@ -17,10 +18,10 @@ class Background extends JLayeredPane {
     /**
      * Class constructor
      */
-    public Background( int boardPadding, int gap, int slotSize) {
-        this.boardPadding = boardPadding;
-        this.gap = gap;
-        this.slotSize = slotSize;
+    public Background(Dimension size) {
+        setBoardElementsSize(size);
+  
+        
     }
 
     /**
@@ -59,4 +60,23 @@ class Background extends JLayeredPane {
         g2.drawLine(boardPadding, boardPadding + gap*3, boardPadding + gap*2, boardPadding + gap*3 ); //left line
         g2.drawLine(boardPadding + gap*4, boardPadding + gap*3, boardPadding + gap*6, boardPadding + gap*3 ); //right line  
     }
+
+    //TODO: this is duplicate code
+    private void setBoardElementsSize(Dimension size){
+        int width = (int) size.getWidth();
+        int height = (int) size.getHeight();
+
+        int minDim = Math.min(width, height);
+        boardPadding = (minDim * 8 ) / 60;
+        gap = (minDim - boardPadding * 2) / 6;
+        slotSize = (minDim - boardPadding) / 20;
+
+    }
+
+
+    @Override
+    public void resizeDisplay(Dimension size) {
+        setBoardElementsSize( size);
+    }
+
 }

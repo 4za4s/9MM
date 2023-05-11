@@ -2,6 +2,7 @@ package Display;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -10,7 +11,7 @@ import javax.swing.JLayeredPane;
 import Board.Player;
 
 /**n Display for how many pieces are left */
-public class PieceCounter extends JLayeredPane{
+public class PieceCounter extends JLayeredPane implements ResizableDisplay{
     Color backgroundColor = Color.black;
     Color playerColor;
     Color emptyPieceColor = Color.lightGray;
@@ -79,6 +80,13 @@ public class PieceCounter extends JLayeredPane{
         
 
        
+    }
+
+
+    @Override
+    public void resizeDisplay(Dimension size) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'resizeDisplay'");
     }
     
 }

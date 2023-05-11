@@ -1,6 +1,7 @@
 package Display;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.JLayeredPane;
@@ -11,8 +12,13 @@ import Game.Game;
 /**
  * Creates the buttons to represent pieces/empty spaces
  */
-public class ButtonDisplay  extends JLayeredPane {
+public class ButtonDisplay  extends JLayeredPane  implements ResizableDisplay{
     private Color defaultColour = Color.white;
+    private ArrayList<Position> buttons = new ArrayList<Position>();
+
+    int boardPadding; 
+    int gap; 
+    int slotSize;
  
     /**
      * Creates the buttons on the display
@@ -23,22 +29,25 @@ public class ButtonDisplay  extends JLayeredPane {
      * @param gap gap between each button
      * @param slotSize size of each button
      */
-    public void createButtonDisplay(Game game, ArrayList<Position> positions, int[][] buttonLocations, int boardPadding, int gap, int slotSize){
+    public void createButtonDisplay(Game game, ArrayList<Position> positions, int[][] buttonLocations,  Dimension size){
+
+        setBoardElementsSize(size);
+
         int index = 0;
         //Loop throught each location and add appropriate button
         for (Position pos : positions) {
             if (pos.getPiece() != null) {
                 Color colour = pos.getPiece().getColour();
                 int[] loc = buttonLocations[index];
-                makeNewButton(game, pos, colour, loc, boardPadding, gap, slotSize);
+                makeNewButton(game, pos, colour, loc);
             }
             else {
                 int[] loc = buttonLocations[index];
-                makeNewButton(game, pos, defaultColour, loc, boardPadding, gap, slotSize);
+                makeNewButton(game, pos, defaultColour, loc);
             }
             index++;
         }
-    }
+    } 
 
     /**
      * Makes a new button on the board. The board gets regularly cleared and 
@@ -51,7 +60,7 @@ public class ButtonDisplay  extends JLayeredPane {
      * @param gap gap between each button
      * @param slotSize size of each button
      */
-    public void makeNewButton(Game game, Position pos, Color colour, int[] loc, int boardPadding, int gap, int slotSize){
+    public void makeNewButton(Game game, Position pos, Color colour, int[] loc){
 
         //buttons are placed on a grid, so the location is used to calculate the x and y position on the display
         int y = boardPadding - slotSize / 2 + gap * loc[0];
@@ -65,5 +74,55 @@ public class ButtonDisplay  extends JLayeredPane {
         pos.addActionListener(e -> game.buttonPressed(pos));
 
         add(pos); 
+
+        buttons.add(pos);
+        pos.setRowColumn(loc[0], loc[1]);
+
+    }
+
+    //TODO: this is duplicate code
+    private void setBoardElementsSize(Dimension size){
+        int width = (int) size.getWidth();
+        int height = (int) size.getHeight();
+
+        int minDim = Math.min(width, height);
+ 
+        boardPadding = (minDim * 8 ) / 60;
+        gap = (minDim - boardPadding * 2) / 6;
+        slotSize = (minDim - boardPadding) / 20;
+
+    }
+
+
+    @Override
+    public void resizeDisplay(Dimension size) {
+
+        //Redo board size variables
+
+        //Go through each button
+
+        // For each button a new position for it based on its row/colmn 
+
+        setBoardElementsSize(size);
+
+
+        int row;
+        int column;
+        int x;
+        int y;
+
+        for (Position but : buttons){
+            row = but.getRow();
+            column = but.getColumn();
+
+            y = boardPadding - slotSize / 2 + gap * row;
+            x = boardPadding - slotSize / 2 + gap * column;
+    
+            //Put piece on board
+            but.setBounds(x,y,slotSize,slotSize);
+
+
+
+        }
     }
 }
