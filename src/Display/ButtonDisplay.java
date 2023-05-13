@@ -12,7 +12,7 @@ import Game.Game;
 /**
  * Creates the buttons to represent pieces/empty spaces
  */
-public class ButtonDisplay  extends JLayeredPane  implements ResizableDisplay{
+public class ButtonDisplay  extends JLayeredPane {
     private Color defaultColour = Color.white;
     private ArrayList<Position> buttons = new ArrayList<Position>();
 
@@ -93,8 +93,6 @@ public class ButtonDisplay  extends JLayeredPane  implements ResizableDisplay{
 
     }
 
-
-    @Override
     public void resizeDisplay(Dimension size) {
 
         //Redo board size variables
@@ -120,8 +118,6 @@ public class ButtonDisplay  extends JLayeredPane  implements ResizableDisplay{
     
             //Put piece on board
             but.setBounds(x,y,slotSize,slotSize);
-
-
 
         }
     }

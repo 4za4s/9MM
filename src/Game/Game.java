@@ -37,6 +37,10 @@ public class Game {
         gameState = GameState.PLACING;
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
     /**
      * Handles the game logic when a player clicks a position
      * @param pos the position that was clicked
@@ -84,8 +88,6 @@ public class Game {
                 if (selectedPiece.getPosition().getEmptyNeighbours().contains(pos)) {
                     board.movePiece(selectedPiece, pos);
                     changeTurn();
-                    
-                    
 
                 //Otherwise deselect piece selected
                 } else { 
@@ -103,7 +105,7 @@ public class Game {
         }
 
         //Always update the display after an action
-        gameDisplay.updateDisplay(board);
+        gameDisplay.updateDisplay();
     }
 
     /**
@@ -140,7 +142,7 @@ public class Game {
         this.gameDisplay = gameDisplay;
 
         //Tells the display to display this game
-        gameDisplay.createDisplay(board);
+        gameDisplay.createDisplay();
         gameDisplay.AddPlayerCounter(players);
 
         gameDisplay.removeHighlights();
@@ -156,6 +158,7 @@ public class Game {
 
         gameDisplay.displayPossibleMoveHighlights(board.getPossibleMoves(gameState,pieceToUse),
         inTurnPlayer.getColour());
-
     }
+
+    
 }

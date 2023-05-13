@@ -95,10 +95,6 @@ public class Board {
         positions.get(11).setEastNeighbour(null);
         positions.get(12).setWestNeighbour(null);
         positions.get(16).setNorthNeighbour(null);
-
-
-        
-    
     }
 
     /**

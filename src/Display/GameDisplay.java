@@ -1,14 +1,10 @@
 package Display;
 
-import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
-
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
+
+import javax.swing.JPopupMenu;
 
 import Board.Board;
 import Board.Player;
@@ -18,7 +14,7 @@ import Game.Game;
 /**
  * Manages the display
  */
-public class GameDisplay implements ResizableDisplay{
+public class GameDisplay extends AbstractDisplay {
     private Game game;
     private int boardPadding = 200; //padding to each side of the board
     private final int minSize = 700; //minimum size the board can display as 
@@ -34,7 +30,6 @@ public class GameDisplay implements ResizableDisplay{
         { 6, 0 }, { 6, 3 }, { 6, 6 } 
     };
 
-    private Display display;
     private ButtonDisplay buttonDisplay; //button layer for game
     private SelectionHighlights layeredPaneHighlights; //highlight layer for game 
     private Background layeredPaneBackground; //background layer for game
@@ -45,61 +40,57 @@ public class GameDisplay implements ResizableDisplay{
     /**
      * Class constructor
      */
-    public GameDisplay(Game game, Display display){
+    public GameDisplay(int Height, int Width, Game game, Window window){
+        super(Height, Width, window);
         this.game = game;
-        this.display = display;
-
-        //TODO: here
     }
 
     /**
      * Creates the game board. Not done at initialisation because variables need to be set later
      */
-    public void createDisplay(Board board){
+    @Override
+    public void createDisplay(){
         //Work out values for the spacing
 
         //TODO remove this
-        int minSize = Math.min(display.getHeight(), display.getWidth());
+        int minSize = Math.min(window.getHeight(), window.getWidth());
         int effectiveSize = minSize - boardPadding * 2;
         int gap = effectiveSize/6;
         int slotSize = (minSize-boardPadding)/20; //(Accessibility feature)
 
-        size = new Dimension(display.getSize());
+        size = new Dimension(window.getSize());
 
         //Create layers
         layeredPaneBackground = new Background(size);
         buttonDisplay = new ButtonDisplay();
         layeredPaneHighlights = new SelectionHighlights(size);
         
-
+        Board board = game.getBoard();
         buttonDisplay.createButtonDisplay(game, board.getPositions(), buttonLocations, size);
     
         //Add layers to the frame
-        display.getContentPane().removeAll(); //TODO: shouldn't need this
-        display.add(buttonDisplay);
-        display.add(layeredPaneBackground);
-        display.add(layeredPaneHighlights);
+        window.getContentPane().removeAll(); //TODO: shouldn't need this
+        window.add(buttonDisplay);
+        window.add(layeredPaneBackground);
+        window.add(layeredPaneHighlights);
         
         
         //Set display sizes
-        buttonDisplay.setPreferredSize(new Dimension(display.getHeight(), display.getWidth()));
+        buttonDisplay.setPreferredSize(new Dimension(window.getHeight(), window.getWidth()));
         size = buttonDisplay.getPreferredSize();
         layeredPaneBackground.setSize(size);
         buttonDisplay.setSize(size);
         layeredPaneHighlights.setSize(size);
-        
 
-        
-        
-
-        display.repaint();
+        window.repaint();
     }
 
     /**
      * Updates the display 
-     * @param board the current state of the board
      */
-    public void updateDisplay(Board board){
+    @Override
+    public void updateDisplay(){
+        Board board = game.getBoard();
         for (Position pos : board.getPositions()) {
             if (pos.getPiece() != null) {
                 pos.setBackground(pos.getPiece().getColour());
@@ -108,7 +99,12 @@ public class GameDisplay implements ResizableDisplay{
                 pos.setBackground(Color.white);
             }
         }
-       display.repaint();
+       window.repaint();
+    }
+
+    public void Win(String winner){
+        JPopupMenu win = new JPopupMenu(winner);
+        window.add(win);
     }
 
     /**
@@ -147,10 +143,8 @@ public class GameDisplay implements ResizableDisplay{
         rightPieceCounter.setSize(1000,1000); //TODO: set this properly later
 
 
-        display.add(leftPieceCounter);
-        display.add(rightPieceCounter);
-
-        
+        window.add(leftPieceCounter);
+        window.add(rightPieceCounter);
     }
 
     @Override
@@ -160,7 +154,6 @@ public class GameDisplay implements ResizableDisplay{
         layeredPaneBackground.resizeDisplay(size); 
         leftPieceCounter.resizeDisplay(size);
         rightPieceCounter.resizeDisplay(size);
-
     }
 }
 

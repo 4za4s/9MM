@@ -11,11 +11,10 @@ import javax.swing.JLayeredPane;
 import Board.Player;
 
 /**n Display for how many pieces are left */
-public class PieceCounter extends JLayeredPane implements ResizableDisplay{
+public class PieceCounter extends JLayeredPane {
     Color backgroundColor = Color.black;
     Color playerColor;
     Color emptyPieceColor = Color.lightGray;
-
 
     int backgroundWidth;
     int backgroundHeight;
@@ -35,8 +34,6 @@ public class PieceCounter extends JLayeredPane implements ResizableDisplay{
         this.leftSide = leftSide;
 
         setBoardElementsSize(size);
-
-
     }
 
 
@@ -67,7 +64,6 @@ public class PieceCounter extends JLayeredPane implements ResizableDisplay{
                 backgroundWidth * 8/10,
                 pieceHeight
                 );
-
         }
 
         //Display Missing pieces
@@ -79,11 +75,7 @@ public class PieceCounter extends JLayeredPane implements ResizableDisplay{
                 backgroundWidth * 8/10,
                 pieceHeight
                 );
-
         }
-        
-
-       
     }
 
 
@@ -103,22 +95,13 @@ public class PieceCounter extends JLayeredPane implements ResizableDisplay{
 
         if (leftSide){
             setLocation(boardPadding/ 3, height / 2 -  backgroundHeight  / 2 );
-
         } else {
-            setLocation(height - (2 *boardPadding/ 3), height / 2 -  backgroundHeight  / 2 );
-
+            setLocation(width - (2 *boardPadding/ 3), height / 2 -  backgroundHeight  / 2 );
         }
-
- 
-        
-
-
     }
 
-
-    @Override
     public void resizeDisplay(Dimension size) {
-        setBoardElementsSize( size);
+        setBoardElementsSize(size);
     }
     
 }

@@ -56,16 +56,13 @@ public class Position extends JButton {
     }
 
     public Position getEastNeighbour(){
-    return eastNeighbour;
+        return eastNeighbour;
     }
 
 
     public Position getWestNeighbour(){
-    return westNeighbour;
+        return westNeighbour;
     }
-
- 
-
 
     /**
      * Gets the neighbours of this position
@@ -123,8 +120,4 @@ public class Position extends JButton {
     public int getColumn(){
         return column;
     }
-
-
-
-
 }

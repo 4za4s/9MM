@@ -1,10 +1,7 @@
 package App;
 
-import javax.swing.JFrame;
+import Display.Window;
 
-import Display.Display;
-import Game.Game;
-import Menu.MainMenu;
 /**
  * This is the driver class for 9MM game
  */
@@ -13,8 +10,7 @@ public class App{
      * Main class for the game, will handle app stuff like the main menu later
      */
     public static void main(String[] args) {  
-        Display window = new Display();
-        window.displayMenu(new MainMenu());
+        Window window = new Window();
     }
 }
 

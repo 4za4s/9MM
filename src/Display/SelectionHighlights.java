@@ -13,7 +13,7 @@ import Board.Position;
 /* Creates a drawing of selection highlights. This drawing has to be added to a panel to be viewed 
  * Highlights all locations in a list given
 */
-class SelectionHighlights extends JLayeredPane implements ResizableDisplay{
+class SelectionHighlights extends JLayeredPane {
     private int highlightSize; //how large to make highlighting
     private ArrayList<Position> availableLocations = new ArrayList<Position>(); //locations to highlight, represents possible moves for a piece
     private Color highlightColour; //highlight color to show available locations
@@ -78,8 +78,6 @@ class SelectionHighlights extends JLayeredPane implements ResizableDisplay{
       
     }
 
-
-    @Override
     public void resizeDisplay(Dimension size) {
         setBoardElementsSize( size);
     }

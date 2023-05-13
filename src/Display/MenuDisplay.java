@@ -4,35 +4,40 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
-import javax.swing.JLayeredPane;
 
-import Menu.MainMenu;
-
-public class MenuDisplay extends JLayeredPane implements ResizableDisplay {
-    private Display display;
+public class MenuDisplay extends AbstractDisplay {
+    JButton start;
 
     /**
      * Class constructor
      */
-    public MenuDisplay(MainMenu menu, Display display){
-        this.display = display;
-        int y = 100;
-        int x = 100;
+    public MenuDisplay(int Width, int Height, Window window){
+        super(Width, Height, window);
+        start = new JButton("Start");
+        createDisplay();
+    }
+
+    @Override
+    public void createDisplay() {
+        int y = window.getHeight()/2-50;
+        int x = window.getWidth()/2-50;
 
         //Put piece on board
-        JButton start = new JButton("Start");
         start.setBounds(x,y,100,100);
         start.setBackground(Color.white);
 
         //creates a new listener for each position that will call the buttonPressed method in the game class
-        start.addActionListener(e -> menu.startGame(display));
+        start.addActionListener(e -> window.displayGame());
+        window.add(start); 
+    }
 
-        display.add(start); 
+    @Override
+    public void updateDisplay() {
     }
 
     @Override
     public void resizeDisplay(Dimension size) {
-        //TODO: Aaron
-        // throw new UnsupportedOperationException("Unimplemented method 'resizeDisplay'");
+        setPreferredSize(size); 
+        start.setBounds(size.width/2-50,size.height/2-50,100,100);
     }
 }
