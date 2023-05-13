@@ -142,8 +142,8 @@ public class Game {
         this.gameDisplay = gameDisplay;
 
         //Tells the display to display this game
-        gameDisplay.createDisplay();
-        gameDisplay.AddPlayerCounter(players);
+        gameDisplay.createDisplay(players);
+
 
         gameDisplay.removeHighlights();
         
