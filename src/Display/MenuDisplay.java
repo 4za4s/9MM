@@ -36,8 +36,9 @@ public class MenuDisplay extends AbstractDisplay {
     }
 
     @Override
-    public void resizeDisplay(Dimension size) {
-        setPreferredSize(size); 
+    public void resizeDisplay() {
+        Dimension size = getPreferredSize();
+        setPreferredSize(size); //TODO:  Aaron I changed this, change it back if you want
         start.setBounds(size.width/2-50,size.height/2-50,100,100);
     }
 }

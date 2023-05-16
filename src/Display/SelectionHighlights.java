@@ -1,6 +1,5 @@
 package Display;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -17,16 +16,11 @@ class SelectionHighlights extends JLayeredPane {
     private int highlightSize; //how large to make highlighting
     private ArrayList<Position> availableLocations = new ArrayList<Position>(); //locations to highlight, represents possible moves for a piece
     private Color highlightColour; //highlight color to show available locations
-    private int offset;
-    int slotSize;
 
     /**
      * Class constructor
      */
-    public SelectionHighlights(Dimension size) {
-        setBoardElementsSize( size);
- 
-    }
+
 
     /**
      * Adds highlights to the givel locations
@@ -58,28 +52,14 @@ class SelectionHighlights extends JLayeredPane {
         g2.setColor(highlightColour);
 
         for (Position pos : availableLocations){
-            g2.fillRect(pos.getX()-offset, pos.getY()-offset, highlightSize, highlightSize); 
+            g2.fillRect(pos.getX() , pos.getY(), highlightSize, highlightSize); 
         }
     }
 
-    //TODO: this is semi duplicate code
-    private void setBoardElementsSize(Dimension size){
-        int width = (int) size.getWidth();
-        int height = (int) size.getHeight();
 
-        int minDim = Math.min(width, height);
-        int boardPadding = (minDim * 8 ) / 40;
-    
-       
 
-        slotSize = (minDim - boardPadding) / 20;
-        highlightSize = (slotSize * 3) / 2;
-        offset = (highlightSize - slotSize)/2;
-      
-    }
-
-    public void resizeDisplay(Dimension size) {
-        setBoardElementsSize( size);
+    public void resizeDisplay(int highlightSize) {
+        this.highlightSize = highlightSize;
     }
 
 }

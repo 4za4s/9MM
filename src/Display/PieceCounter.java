@@ -2,7 +2,6 @@ package Display;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -26,14 +25,10 @@ public class PieceCounter extends JLayeredPane {
 
     Player player;
 
-    boolean leftSide; //if it goes on the left side of the board
-
-    public PieceCounter(Player player, boolean leftSide, Dimension size){
+    public PieceCounter(Player player){
         this.player = player;
         playerColor = player.getColour();
-        this.leftSide = leftSide;
 
-        setBoardElementsSize(size);
     }
 
 
@@ -79,30 +74,21 @@ public class PieceCounter extends JLayeredPane {
     }
 
 
-    private void setBoardElementsSize(Dimension size){
-        int width = (int) size.getWidth();
-        int height = (int) size.getHeight();
-
-        int minDim = Math.min(width, height);
-        int boardPadding = (minDim * 8 ) / 40;
-        backgroundWidth = boardPadding / 3;
-        backgroundHeight = (int) (backgroundWidth * 3.8);
-
+    public void resizeDisplay(int backgroundWidth, int backgroundHeight ) {
+        this.backgroundWidth = backgroundWidth;
+        this.backgroundHeight = backgroundHeight;
 
         pieceHeight = backgroundWidth / 5;
         pieceGap = pieceHeight / 3;
 
 
-        if (leftSide){
-            setLocation(boardPadding/ 3, height / 2 -  backgroundHeight  / 2 );
-        } else {
-            setLocation(width - (2 *boardPadding/ 3), height / 2 -  backgroundHeight  / 2 );
-        }
+        // if (isLeftSide){
+        //     setLocation(boardPadding / 3, height / 2 -  backgroundHeight  / 2 );
+        // } else {
+        //     setLocation(width - (2 *boardPadding/ 3), height / 2 -  backgroundHeight  / 2 );
+        // }
+
     }
 
-    public void resizeDisplay(Dimension size) {
-        setBoardElementsSize(size);
-    }
-    
 }
 

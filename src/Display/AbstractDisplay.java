@@ -16,7 +16,6 @@ public abstract class AbstractDisplay extends JLayeredPane {
 
     public abstract void updateDisplay();
 
-    public void resizeDisplay(Dimension size) {
-        this.setPreferredSize(size);
-    }
+    public abstract void resizeDisplay();
+
 }

@@ -16,6 +16,7 @@ public class Window extends JFrame{
     AbstractDisplay currentDisplay;
     Window window = this;
     private final int minSize = 700; //minimum size the board can display as 
+    private final int maxSize = 2000; //minimum size the board can display as 
     private Dimension size;
     private final Color backgroundColor = new Color(244,224,190);
 
@@ -35,8 +36,8 @@ public class Window extends JFrame{
         setSize(size);
         setVisible(true);
         setLayout(null); //try setLayout(new GridLayout()); if bored
-        setMinimumSize(new Dimension(600, 600));
-        setMaximumSize(new Dimension(2000, 2000));
+        setMinimumSize(new Dimension(minSize, minSize));
+        setMaximumSize(new Dimension(maxSize, maxSize));
         
         displayMenu();
 
@@ -52,7 +53,7 @@ public class Window extends JFrame{
                 System.out.println("Size Changing");
 
                 Dimension size = window.getContentPane().getSize();
-                currentDisplay.resizeDisplay(size);
+                currentDisplay.resizeDisplay();
 
                 revalidate();
                 repaint();

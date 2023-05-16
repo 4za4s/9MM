@@ -77,7 +77,7 @@ public class Game {
             case SELECTING:
                 selectedPiece = null;
                 if (pos.getPiece() == null) {
-                    break;
+                    break; 
                 }
                 updatePieceSelection(pos, GameState.MOVING);
                 break;
@@ -85,10 +85,17 @@ public class Game {
             // A piece can be moved anywhere 
             case MOVING:
                 //Make sure piece is moving to an empty neighbour
+
                 if (selectedPiece.getPosition().getEmptyNeighbours().contains(pos)) {
                     board.movePiece(selectedPiece, pos);
                     changeTurn();
 
+                //If user selects a different piece belonging to him, change selection to that piece
+                } else if (selectedPiece.getOwner() == inTurnPlayer && pos.getPiece() != null && pos.getPiece().getOwner() == selectedPiece.getOwner()) {
+                    updatePieceSelection(pos, GameState.MOVING);
+                    gameState = GameState.MOVING;
+                    break;
+                    
                 //Otherwise deselect piece selected
                 } else { 
                     selectedPiece = null;
@@ -126,6 +133,7 @@ public class Game {
         if (pos.getPiece().getOwner() == inTurnPlayer) {
             selectedPiece = pos.getPiece();
             gameState = state;
+
             gameDisplay.displayPossibleMoveHighlights(board.getPossibleMoves(gameState, selectedPiece),
                 inTurnPlayer.getColour());
         } else {
@@ -142,8 +150,8 @@ public class Game {
         this.gameDisplay = gameDisplay;
 
         //Tells the display to display this game
-        gameDisplay.createDisplay();
-        gameDisplay.AddPlayerCounter(players);
+        gameDisplay.createDisplay(players);
+
 
         gameDisplay.removeHighlights();
         
