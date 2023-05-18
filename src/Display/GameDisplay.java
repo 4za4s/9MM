@@ -47,6 +47,7 @@ public class GameDisplay extends AbstractDisplay {
     int highlightSize; //size of highlights
     int pieceCounterWidth; //width of the piece counter
     int pieceCounterHeight; //height of the piece counter
+    int lineWidth; //width of the lines
 
     
     
@@ -71,8 +72,8 @@ public class GameDisplay extends AbstractDisplay {
         background = new Background();
         buttonDisplay = new ButtonDisplay();
         selectionHighlights = new SelectionHighlights();
-        leftPieceCounter = new PieceCounter(players.get(0));
-        rightPieceCounter = new PieceCounter(players.get(1));
+        leftPieceCounter = new PieceCounter(players.get(0),players.get(1));
+        rightPieceCounter = new PieceCounter(players.get(1),players.get(0));
 
         buttonDisplay.createButtonDisplay(game, game.getBoard().getPositions(), buttonLocations, gap, slotSize);
     
@@ -137,21 +138,21 @@ public class GameDisplay extends AbstractDisplay {
 
         Dimension size = new Dimension(window.getSize());
 
-        //TODO: the maths here is very confusing. Make it less somehow?
-
         width = (int) size.getWidth();
         height = (int) size.getHeight();
 
         int minDim = Math.min(width, height);
         gap = (minDim * 12 / 20) / 6;
-        slotSize = gap  / 3;
+
+        lineWidth = gap/10;
+        slotSize = gap  / 2;
 
         highlightSize = (slotSize * 3) / 2;
        
         boardXPosStart = width / 2  - gap * 3 ;
         boardYPosStart = height / 2  - gap * 3 ;
 
-        pieceCounterWidth = slotSize * 5  / 3;
+        pieceCounterWidth = minDim / 17;
         pieceCounterHeight = (int) (pieceCounterWidth * 3.8);
 
     }
@@ -170,9 +171,9 @@ public class GameDisplay extends AbstractDisplay {
         selectionHighlights.setLocation(boardXPosStart - highlightSize / 2, boardYPosStart - highlightSize / 2);
         selectionHighlights.setSize(gap*6 + highlightSize, gap*6 + highlightSize);
 
-        background.resizeDisplay(gap, slotSize); 
-        background.setLocation(boardXPosStart, boardYPosStart);
-        background.setSize(gap*6, gap*6);
+        background.resizeDisplay(gap, lineWidth ); 
+        background.setLocation(boardXPosStart - lineWidth / 2, boardYPosStart - lineWidth / 2);
+        background.setSize(gap*6 + lineWidth, gap*6 + lineWidth);
 
         leftPieceCounter.resizeDisplay(pieceCounterWidth,pieceCounterHeight);
         leftPieceCounter.setLocation(boardXPosStart / 2 - pieceCounterWidth / 2,  height / 2 - pieceCounterHeight / 2 );

@@ -11,6 +11,7 @@ import javax.swing.JLayeredPane;
 class Background extends JLayeredPane {
     private int gap; //how much space to put between the rings of the board
     private int slotSize; //how big each piece is one the board
+    private int lineWidth; //width of lines
 
     /**
      * Draws the background, called when the panel is drawn
@@ -35,26 +36,24 @@ class Background extends JLayeredPane {
         // }
 
         // Set stoke size
-        g2.setStroke(new BasicStroke(slotSize / 2)); //Double width because half gets cut off by the frame
+        g2.setStroke(new BasicStroke(lineWidth)); //Double width because half gets cut off by the frame
 
         //Draw rectangles
-        g2.drawRect(0,0,gap*6,gap*6); // outer rectangle
-
-        g2.setStroke(new BasicStroke(slotSize / 4));
-        g2.drawRect( gap, gap, gap*4, gap*4); //middle rectangle
-        g2.drawRect(gap*2, gap*2, gap*2, gap*2); //inner rectangle
+        g2.drawRect(lineWidth / 2,lineWidth / 2,gap*6,gap*6); // outer rectangle
+        g2.drawRect(gap + lineWidth / 2, gap + lineWidth / 2, gap*4, gap*4); //middle rectangle
+        g2.drawRect(gap*2 + lineWidth / 2, gap*2 + lineWidth / 2, gap*2, gap*2); //inner rectangle
 
         //Make intesecting lines
-        g2.drawLine(gap*3, 0, gap*3, gap*2 ); //top line
-        g2.drawLine(gap*3, gap*4, gap*3, gap*6 ); //bottom line
-        g2.drawLine(0, gap*3, gap*2, gap*3 ); //left line
-        g2.drawLine(gap*4, gap*3, gap*6, gap*3 ); //right line  
+        g2.drawLine(gap*3 + lineWidth / 2, 0 + lineWidth / 2, gap*3 + lineWidth / 2, gap*2 +lineWidth / 2); //top line
+        g2.drawLine(gap*3 + lineWidth / 2, gap*4 + lineWidth / 2, gap*3 + lineWidth / 2, gap*6 + lineWidth / 2); //bottom line
+        g2.drawLine(lineWidth / 2, gap*3 + lineWidth / 2, gap*2 + lineWidth / 2, gap*3 + lineWidth / 2 ); //left line
+        g2.drawLine(gap*4 + lineWidth / 2 , gap*3 + lineWidth / 2, gap*6 + lineWidth / 2, gap*3 + lineWidth / 2 ); //right line  
     }
 
 
-    public void resizeDisplay(int gap, int slotSize) {
+    public void resizeDisplay(int gap, int lineWidth) {
         this.gap = gap;
-        this.slotSize = slotSize;
+        this.lineWidth = lineWidth;
 
 
     }

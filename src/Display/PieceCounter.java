@@ -14,6 +14,7 @@ public class PieceCounter extends JLayeredPane {
     Color backgroundColor = Color.black;
     Color playerColor;
     Color emptyPieceColor = Color.lightGray;
+    Color enemyColor;
 
     int backgroundWidth;
     int backgroundHeight;
@@ -21,21 +22,21 @@ public class PieceCounter extends JLayeredPane {
     int pieceHeight;
     int pieceGap;
 
-    int piecesLeft;
 
     Player player;
 
-    public PieceCounter(Player player){
+    public PieceCounter(Player player, Player enemy){
         this.player = player;
         playerColor = player.getColour();
-
+        enemyColor = enemy.getColour();
     }
 
 
     @Override
     public void paintComponent(Graphics g){
 
-        piecesLeft =  player.getNumOfPiecesPlaced() - player.getNoOfPiecesLost();
+        int piecesLeft =  player.getNumOfPiecesPlaced() - player.getNoOfPiecesLost();
+        int piecesTaken = player.getNoOfPiecesLost();
 
         Graphics2D g2 = (Graphics2D) g;
 
@@ -52,7 +53,7 @@ public class PieceCounter extends JLayeredPane {
 
         //Display myPieces
         g2.setColor(playerColor.darker());
-        for (int i = 9; i > 9 - piecesLeft; i--){
+        for (int i = 9; i > piecesLeft; i--){
             g2.fillRect(
                 backgroundWidth * 1/10,
                 backgroundWidth + (pieceGap + pieceHeight) * i,
@@ -61,9 +62,11 @@ public class PieceCounter extends JLayeredPane {
                 );
         }
 
+
+
         //Display Missing pieces
         g2.setColor(emptyPieceColor);
-        for (int i = 9 - piecesLeft; i > 0; i--){
+        for (int i = piecesTaken; i > 0; i--){
             g2.fillRect(
                 backgroundWidth * 1/10,
                 backgroundWidth + (pieceGap + pieceHeight) * i,
@@ -71,6 +74,19 @@ public class PieceCounter extends JLayeredPane {
                 pieceHeight
                 );
         }
+
+        // Display Taken pieces
+        g2.setColor(enemyColor);
+        for (int i = piecesTaken; i > 0; i--){
+            System.out.println(piecesTaken);
+            g2.fillRect(
+                backgroundWidth * 1/10,
+                backgroundWidth + (pieceGap + pieceHeight) * i,
+                backgroundWidth * 8/10,
+                pieceHeight
+                );
+        }
+        
 
     }
 
@@ -83,12 +99,6 @@ public class PieceCounter extends JLayeredPane {
         pieceGap = pieceHeight / 3;
         
 
-
-        // if (isLeftSide){
-        //     setLocation(boardPadding / 3, height / 2 -  backgroundHeight  / 2 );
-        // } else {
-        //     setLocation(width - (2 *boardPadding/ 3), height / 2 -  backgroundHeight  / 2 );
-        // }
 
     }
 
