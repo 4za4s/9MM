@@ -7,7 +7,7 @@ import Display.Window;
  */
 public class App{
     /**
-     * Main class for the game, will handle app stuff like the main menu later
+     * Main class for the game
      */
     public static void main(String[] args) {  
         Window window = new Window();
