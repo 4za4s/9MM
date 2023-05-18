@@ -52,8 +52,8 @@ public class Window extends JFrame{
 
                 System.out.println("Size Changing");
 
-                Dimension size = window.getContentPane().getSize();
-                currentDisplay.resizeDisplay();
+                size = window.getContentPane().getSize();
+                currentDisplay.resizeDisplay(size);
 
                 revalidate();
                 repaint();
@@ -67,6 +67,8 @@ public class Window extends JFrame{
         GameDisplay gameDisplay = new GameDisplay(getHeight(), getWidth(), game, this);
         game.setGameDisplay(gameDisplay);
         currentDisplay = gameDisplay;
+        size = window.getContentPane().getSize();
+        currentDisplay.resizeDisplay(size);
         add(gameDisplay);
         repaint();
     }
@@ -75,6 +77,8 @@ public class Window extends JFrame{
         getContentPane().removeAll();
         MenuDisplay menuDisplay = new MenuDisplay(getHeight(), getWidth(), this);
         currentDisplay = menuDisplay;
+        size = window.getContentPane().getSize();
+        currentDisplay.resizeDisplay(size);
         add(menuDisplay);
         repaint();
     }
@@ -89,6 +93,7 @@ public class Window extends JFrame{
         // game is roughly the same size on most screens
         int frameHeight = Math.max(minSize,(int)size.getHeight()*5/6);
         int frameWidth = Math.max(minSize,frameHeight*13/14);
+        this.setLocation((int) size.getWidth()/2 - frameWidth/2, (int) size.getHeight()/2-frameHeight/2);
 
         this.size = new Dimension(frameWidth, frameHeight);
     }

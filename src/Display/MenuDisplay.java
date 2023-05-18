@@ -14,11 +14,7 @@ public class MenuDisplay extends AbstractDisplay {
     public MenuDisplay(int Width, int Height, Window window){
         super(Width, Height, window);
         start = new JButton("Start");
-        createDisplay();
-    }
 
-    @Override
-    public void createDisplay() {
         int y = window.getHeight()/2-50;
         int x = window.getWidth()/2-50;
 
@@ -36,8 +32,7 @@ public class MenuDisplay extends AbstractDisplay {
     }
 
     @Override
-    public void resizeDisplay() {
-        Dimension size = getPreferredSize();
+    public void resizeDisplay(Dimension size) {
         setPreferredSize(size); //TODO:  Aaron I changed this, change it back if you want
         start.setBounds(size.width/2-50,size.height/2-50,100,100);
     }

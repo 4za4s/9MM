@@ -3,6 +3,7 @@ package Display;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 
 import Board.Position;
@@ -14,6 +15,7 @@ import Game.Game;
 public class ButtonDisplay extends JLayeredPane {
     private Color defaultColour = Color.white;
     private ArrayList<Position> buttons = new ArrayList<Position>();
+    private JButton restart;
 
     int gap; 
     int slotSize;
@@ -28,7 +30,7 @@ public class ButtonDisplay extends JLayeredPane {
      */
     public void createButtonDisplay(Game game, ArrayList<Position> positions, int[][] buttonLocations, int gap, int slotSize) {
 
-        resizeDisplay(gap, slotSize);
+        //resizeDisplay(gap, slotSize);
 
         int index = 0;
         //Loop throught each location and add appropriate button

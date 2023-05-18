@@ -56,17 +56,8 @@ public class GameDisplay extends AbstractDisplay {
     public GameDisplay(int Height, int Width, Game game, Window window){
         super(Height, Width, window);
         this.game = game;
-    }
 
-    /**
-     * Creates the game board. Not done at initialisation because variables need to be set later
-     */
-    public void createDisplay(ArrayList<Player> players){
-
-        //Work out values for the spacing
-        setBoardElementsSize();
-        
-
+        ArrayList<Player> players = game.getPlayers();
         //Create layers
         background = new Background();
         buttonDisplay = new ButtonDisplay();
@@ -76,7 +67,6 @@ public class GameDisplay extends AbstractDisplay {
 
         buttonDisplay.createButtonDisplay(game, game.getBoard().getPositions(), buttonLocations, gap, slotSize);
     
-        resizeDisplay();  
 
         //Add layers to the frame
         window.add(buttonDisplay);
@@ -133,9 +123,7 @@ public class GameDisplay extends AbstractDisplay {
         selectionHighlights.removeHighlights();
     }
 
-    private void setBoardElementsSize(){
-
-        Dimension size = new Dimension(window.getSize());
+    private void setBoardElementsSize(Dimension size){
 
         //TODO: the maths here is very confusing. Make it less somehow?
 
@@ -158,9 +146,9 @@ public class GameDisplay extends AbstractDisplay {
 
 
 
-    public void resizeDisplay() {
+    public void resizeDisplay(Dimension size) {
 
-        setBoardElementsSize();
+        setBoardElementsSize(size);
 
         buttonDisplay.resizeDisplay(gap, slotSize);
         buttonDisplay.setLocation(boardXPosStart - slotSize / 2, boardYPosStart - slotSize / 2);
@@ -183,14 +171,5 @@ public class GameDisplay extends AbstractDisplay {
         rightPieceCounter.setSize(pieceCounterWidth, pieceCounterHeight);
 
     }
-
-
-
-    @Override
-    public void createDisplay() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createDisplay'");
-    }
-    
 }
 

@@ -149,10 +149,6 @@ public class Game {
     public void setGameDisplay(GameDisplay gameDisplay) {
         this.gameDisplay = gameDisplay;
 
-        //Tells the display to display this game
-        gameDisplay.createDisplay(players);
-
-
         gameDisplay.removeHighlights();
         
 
@@ -166,6 +162,10 @@ public class Game {
 
         gameDisplay.displayPossibleMoveHighlights(board.getPossibleMoves(gameState,pieceToUse),
         inTurnPlayer.getColour());
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
     
