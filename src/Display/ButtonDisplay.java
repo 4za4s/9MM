@@ -15,7 +15,6 @@ import Game.Game;
 public class ButtonDisplay extends JLayeredPane {
     private Color defaultColour = Color.white;
     private ArrayList<Position> buttons = new ArrayList<Position>();
-    private JButton restart;
 
     int gap; 
     int slotSize;
@@ -67,7 +66,9 @@ public class ButtonDisplay extends JLayeredPane {
 
         //Put piece on board
         pos.setBounds(x,y,slotSize,slotSize);
-        pos.setBackground(colour);
+        pos.setForeground(colour);
+        pos.setContentAreaFilled(false);
+        pos.setBorder(new RoundedBorder(slotSize));
 
         //creates a new listener for each position that will call the buttonPressed method in the game class
         pos.addActionListener(e -> game.buttonPressed(pos));
@@ -76,7 +77,6 @@ public class ButtonDisplay extends JLayeredPane {
 
         buttons.add(pos);
         pos.setRowColumn(loc[0], loc[1]);
-
     }
 
     public void resizeDisplay(int gap, int slotSize ) {
@@ -94,6 +94,7 @@ public class ButtonDisplay extends JLayeredPane {
         int y;
 
         for (Position but : buttons){
+            
             row = but.getRow();
             column = but.getColumn();
 

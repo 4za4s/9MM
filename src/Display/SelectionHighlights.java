@@ -52,7 +52,7 @@ class SelectionHighlights extends JLayeredPane {
         g2.setColor(highlightColour);
 
         for (Position pos : availableLocations){
-            g2.fillRect(pos.getX() , pos.getY(), highlightSize, highlightSize); 
+            g2.fillOval(pos.getX() , pos.getY(), highlightSize, highlightSize); 
         }
     }
 

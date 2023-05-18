@@ -18,11 +18,9 @@ public class MenuDisplay extends AbstractDisplay {
         int y = window.getHeight()/2-50;
         int x = window.getWidth()/2-50;
 
-        //Put piece on board
         start.setBounds(x,y,100,100);
         start.setBackground(Color.white);
-
-        //creates a new listener for each position that will call the buttonPressed method in the game class
+        
         start.addActionListener(e -> window.displayGame());
         window.add(start); 
     }

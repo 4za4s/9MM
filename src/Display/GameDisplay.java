@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 
 import Board.Board;
@@ -32,6 +33,7 @@ public class GameDisplay extends AbstractDisplay {
     private Background background; //background layer for game
     PieceCounter leftPieceCounter;
     PieceCounter rightPieceCounter;
+    JButton exit;
 
 
 
@@ -66,6 +68,17 @@ public class GameDisplay extends AbstractDisplay {
         rightPieceCounter = new PieceCounter(players.get(1));
 
         buttonDisplay.createButtonDisplay(game, game.getBoard().getPositions(), buttonLocations, gap, slotSize);
+
+        exit = new JButton("EXIT");
+
+        int y = window.getHeight()/2-50;
+        int x = window.getWidth()/2-50;
+
+        exit.setBounds(x,y,100,100);
+        exit.setBackground(Color.white);
+
+        exit.addActionListener(e -> window.displayMenu());
+        window.add(exit); 
     
 
         //Add layers to the frame
@@ -86,10 +99,10 @@ public class GameDisplay extends AbstractDisplay {
         Board board = game.getBoard();
         for (Position pos : board.getPositions()) {
             if (pos.getPiece() != null) {
-                pos.setBackground(pos.getPiece().getColour());
+                pos.setForeground(pos.getPiece().getColour());
             }
             else {
-                pos.setBackground(Color.white);
+                pos.setForeground(Color.white);
             }
         }
        window.repaint();
@@ -132,14 +145,14 @@ public class GameDisplay extends AbstractDisplay {
 
         int minDim = Math.min(width, height);
         gap = (minDim * 12 / 20) / 6;
-        slotSize = gap  / 3;
+        slotSize = gap/2;
 
         highlightSize = (slotSize * 3) / 2;
        
         boardXPosStart = width / 2  - gap * 3 ;
         boardYPosStart = height / 2  - gap * 3 ;
 
-        pieceCounterWidth = slotSize * 5  / 3;
+        pieceCounterWidth = minDim / 17;
         pieceCounterHeight = (int) (pieceCounterWidth * 3.8);
 
     }
@@ -169,6 +182,8 @@ public class GameDisplay extends AbstractDisplay {
         rightPieceCounter.resizeDisplay(pieceCounterWidth,pieceCounterHeight);
         rightPieceCounter.setLocation(width - boardXPosStart / 2 - pieceCounterWidth / 2,  height / 2 - pieceCounterHeight / 2 );
         rightPieceCounter.setSize(pieceCounterWidth, pieceCounterHeight);
+
+        exit.setBounds(size.width/2-50,size.height/2-50,100,100);
 
     }
 }

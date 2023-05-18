@@ -7,6 +7,7 @@ import java.awt.Color;
 public class Piece {
     private Player owner; //who owns the piece
     private Position pos; //where the piece is on the board
+    private boolean inMill;
 
     /**
      * Class constructor. starting on a position
@@ -53,6 +54,10 @@ public class Piece {
         //updates the position to let it know the piece is no longer here
         pos.setPiece(this);
         
+    }
+
+    public boolean isInMill() {
+        return inMill;
     }
     
     /** 
