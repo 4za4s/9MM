@@ -43,7 +43,7 @@ public class PieceCounter extends JLayeredPane {
 
         //Background
         g2.setColor(backgroundColor);
-        g2.fillRect(0,0,backgroundWidth,backgroundHeight); 
+        g2.fillRect(0,0,backgroundWidth, backgroundWidth * 6/10  + pieceHeight * 12 + pieceGap * 11); 
 
         //Draw player indicator
         g2.setColor(playerColor);
@@ -71,6 +71,7 @@ public class PieceCounter extends JLayeredPane {
                 pieceHeight
                 );
         }
+
     }
 
 
@@ -80,6 +81,7 @@ public class PieceCounter extends JLayeredPane {
 
         pieceHeight = backgroundWidth / 5;
         pieceGap = pieceHeight / 3;
+        
 
 
         // if (isLeftSide){
