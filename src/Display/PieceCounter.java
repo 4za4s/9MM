@@ -23,12 +23,14 @@ public class PieceCounter extends JLayeredPane {
     int pieceGap;
 
 
+
     Player player;
 
     public PieceCounter(Player player, Player enemy){
         this.player = player;
         playerColor = player.getColour();
         enemyColor = enemy.getColour();
+
     }
 
 
@@ -66,7 +68,7 @@ public class PieceCounter extends JLayeredPane {
 
         //Display Missing pieces
         g2.setColor(emptyPieceColor);
-        for (int i = piecesTaken; i > 0; i--){
+        for (int i = player.maxPieces; i > 0; i--){
             g2.fillRect(
                 backgroundWidth * 1/10,
                 backgroundWidth + (pieceGap + pieceHeight) * i,
