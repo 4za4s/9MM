@@ -22,6 +22,7 @@ public class Game {
     private int turnCounter = 0;
     private GameState gameState;
     private Piece selectedPiece; //piece that has been selected to be moved
+    private int score;
 
 
     /**
@@ -104,6 +105,9 @@ public class Game {
                 gameState = GameState.SELECTING;
                 gameDisplay.removeHighlights();
                 break;
+            case TAKING:
+                
+
              
             //An unknown gamestate was given
             default:
@@ -149,10 +153,6 @@ public class Game {
     public void setGameDisplay(GameDisplay gameDisplay) {
         this.gameDisplay = gameDisplay;
 
-        //Tells the display to display this game
-        gameDisplay.createDisplay(players);
-
-
         gameDisplay.removeHighlights();
         
 
@@ -168,5 +168,7 @@ public class Game {
         inTurnPlayer.getColour());
     }
 
-    
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 }

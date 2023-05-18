@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 
 import Board.Board;
@@ -32,6 +33,7 @@ public class GameDisplay extends AbstractDisplay {
     private Background background; //background layer for game
     PieceCounter leftPieceCounter;
     PieceCounter rightPieceCounter;
+    JButton exit;
 
 
 
@@ -57,17 +59,8 @@ public class GameDisplay extends AbstractDisplay {
     public GameDisplay(int Height, int Width, Game game, Window window){
         super(Height, Width, window);
         this.game = game;
-    }
 
-    /**
-     * Creates the game board. Not done at initialisation because variables need to be set later
-     */
-    public void createDisplay(ArrayList<Player> players){
-
-        //Work out values for the spacing
-        setBoardElementsSize();
-        
-
+        ArrayList<Player> players = game.getPlayers();
         //Create layers
         background = new Background();
         buttonDisplay = new ButtonDisplay();
@@ -76,8 +69,18 @@ public class GameDisplay extends AbstractDisplay {
         rightPieceCounter = new PieceCounter(players.get(1),players.get(0));
 
         buttonDisplay.createButtonDisplay(game, game.getBoard().getPositions(), buttonLocations, gap, slotSize);
+
+        exit = new JButton("EXIT");
+
+        int y = window.getHeight()/2-50;
+        int x = window.getWidth()/2-50;
+
+        exit.setBounds(x,y,100,100);
+        exit.setBackground(Color.white);
+
+        exit.addActionListener(e -> window.displayMenu());
+        window.add(exit); 
     
-        resizeDisplay();  
 
         //Add layers to the frame
         window.add(buttonDisplay);
@@ -97,10 +100,10 @@ public class GameDisplay extends AbstractDisplay {
         Board board = game.getBoard();
         for (Position pos : board.getPositions()) {
             if (pos.getPiece() != null) {
-                pos.setBackground(pos.getPiece().getColour());
+                pos.setForeground(pos.getPiece().getColour());
             }
             else {
-                pos.setBackground(Color.white);
+                pos.setForeground(Color.white);
             }
         }
        window.repaint();
@@ -134,9 +137,7 @@ public class GameDisplay extends AbstractDisplay {
         selectionHighlights.removeHighlights();
     }
 
-    private void setBoardElementsSize(){
-
-        Dimension size = new Dimension(window.getSize());
+    private void setBoardElementsSize(Dimension size){
 
         width = (int) size.getWidth();
         height = (int) size.getHeight();
@@ -159,9 +160,9 @@ public class GameDisplay extends AbstractDisplay {
 
 
 
-    public void resizeDisplay() {
+    public void resizeDisplay(Dimension size) {
 
-        setBoardElementsSize();
+        setBoardElementsSize(size);
 
         buttonDisplay.resizeDisplay(gap, slotSize);
         buttonDisplay.setLocation(boardXPosStart - slotSize / 2, boardYPosStart - slotSize / 2);
@@ -183,15 +184,8 @@ public class GameDisplay extends AbstractDisplay {
         rightPieceCounter.setLocation(width - boardXPosStart / 2 - pieceCounterWidth / 2,  height / 2 - pieceCounterHeight / 2 );
         rightPieceCounter.setSize(pieceCounterWidth, pieceCounterHeight);
 
+        exit.setBounds(size.width/2-50,size.height/2-50,100,100);
+
     }
-
-
-
-    @Override
-    public void createDisplay() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createDisplay'");
-    }
-    
 }
 

@@ -1,6 +1,7 @@
 package Board;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.ArrayList;
 
 /**
@@ -8,6 +9,7 @@ import java.util.ArrayList;
  */
 public class Player {
     private Color colour;
+    private Image image;
     private String playerName;
     private ArrayList<Piece> pieces = new ArrayList<Piece>();
     private int piecesPlaced = 0;
@@ -19,6 +21,15 @@ public class Player {
      */
     public Player(Color colour, String playerName){
         this.colour = colour;
+        this.playerName = playerName;
+
+        for (int i = 0; i < maxPieces; i++) {
+            pieces.add(new Piece(this));
+        }
+    }
+
+    public Player(Image image, String playerName){
+        this.image = image;
         this.playerName = playerName;
 
         for (int i = 0; i < maxPieces; i++) {
