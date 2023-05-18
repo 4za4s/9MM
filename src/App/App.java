@@ -10,7 +10,7 @@ public class App{
      * Main class for the game
      */
     public static void main(String[] args) {  
-        Window window = new Window();
+        new Window();
     }
 }
 

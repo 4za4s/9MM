@@ -33,12 +33,30 @@ public class PieceCounter extends JLayeredPane {
 
     }
 
+    /**
+     * Finds the colour that the slot at position i in the piece counter should be
+     * @param i
+     * @return
+     */
+    private Color getSlotColor(int i){
+        //Player's piece
+        if (i > player.getNumOfPiecesPlaced() - player.getNoOfPiecesLost() ) {
+            return playerColor.darker();
+    
+        //Empty slot
+        } else if (i > player.getNoOfPiecesLost()){
+            return emptyPieceColor;
+        
+        //Enemy Piece
+        } else {
+            return enemyColor.darker();
+        }
+
+    }
+
 
     @Override
     public void paintComponent(Graphics g){
-
-        int piecesLeft =  player.getNumOfPiecesPlaced() - player.getNoOfPiecesLost();
-        int piecesTaken = player.getNoOfPiecesLost();
 
         Graphics2D g2 = (Graphics2D) g;
 
@@ -46,51 +64,26 @@ public class PieceCounter extends JLayeredPane {
 
         //Background
         g2.setColor(backgroundColor);
-        g2.fillRect(0,0,backgroundWidth, backgroundWidth * 6/10  + pieceHeight * 12 + pieceGap * 11); 
+        g2.fillRect(0,0,backgroundWidth, backgroundWidth + pieceHeight * player.maxPieces + pieceGap * (player.maxPieces + 1)); 
 
         //Draw player indicator
         g2.setColor(playerColor);
         g2.fillOval(backgroundWidth * 2/10, backgroundWidth * 2/10, backgroundWidth * 6/10, backgroundWidth * 6/10);
 
 
-        //Display myPieces
-        g2.setColor(playerColor.darker());
-        for (int i = 9; i > piecesLeft; i--){
-            g2.fillRect(
-                backgroundWidth * 1/10,
-                backgroundWidth + (pieceGap + pieceHeight) * i,
-                backgroundWidth * 8/10,
-                pieceHeight
-                );
-        }
-
-
-
-        //Display Missing pieces
-        g2.setColor(emptyPieceColor);
+        //Display pieces
         for (int i = player.maxPieces; i > 0; i--){
+            g2.setColor(getSlotColor(i));
             g2.fillRect(
                 backgroundWidth * 1/10,
-                backgroundWidth + (pieceGap + pieceHeight) * i,
+                backgroundWidth + (pieceGap + pieceHeight) * (i -1),
                 backgroundWidth * 8/10,
                 pieceHeight
                 );
         }
-
-        // Display Taken pieces
-        g2.setColor(enemyColor);
-        for (int i = piecesTaken; i > 0; i--){
-            System.out.println(piecesTaken);
-            g2.fillRect(
-                backgroundWidth * 1/10,
-                backgroundWidth + (pieceGap + pieceHeight) * i,
-                backgroundWidth * 8/10,
-                pieceHeight
-                );
-        }
-        
-
     }
+
+
 
 
     public void resizeDisplay(int backgroundWidth, int backgroundHeight ) {

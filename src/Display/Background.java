@@ -10,7 +10,6 @@ import javax.swing.JLayeredPane;
  */
 class Background extends JLayeredPane {
     private int gap; //how much space to put between the rings of the board
-    private int slotSize; //how big each piece is one the board
     private int lineWidth; //width of lines
 
     /**

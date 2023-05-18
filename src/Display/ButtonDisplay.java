@@ -3,7 +3,6 @@ package Display;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 
 import Board.Position;
