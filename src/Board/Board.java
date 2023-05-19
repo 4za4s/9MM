@@ -104,10 +104,12 @@ public class Board {
      */
     public void movePiece(Piece piece, Position newPosition) {
         //remove the piece from the current position
-        piece.getPosition().setPiece(null);
-
-        //place it on the new position
-        piece.setPosition(newPosition);
+        if (piece != null) {
+            piece.setPosition(newPosition);
+        }
+        if (newPosition != null) {
+            newPosition.setPiece(piece);
+        }
     }
 
     /**
@@ -116,8 +118,7 @@ public class Board {
      * @param piece the piece to get the moves for
      * @return ArrayList of possible moves
      */
-    public ArrayList<Position> getPossibleMoves(GameState gameState, Piece piece) {
-        Position piecePos = piece.getPosition();
+    public ArrayList<Position> getPossibleMoves(GameState gameState, Piece piece, Player player) {
 
         switch (gameState) {
             // Currently pieces can move anywhere no matter the game state
@@ -140,12 +141,24 @@ public class Board {
 
 
             case MOVING:
-                return piecePos.getEmptyNeighbours();
+                if (piece == null){
+                    return new ArrayList<Position>();
+                }
+                return piece.getPosition().getEmptyNeighbours();
+            case TAKING:
+                possibleMoves = new ArrayList<Position>();
+
+                //fill with possible moves
+                for (Position position : positions) {
+                    if (position.getPiece() != null && position.getPiece().getOwner() != player) {
+                        possibleMoves.add(position);
+                    }
+                }
+            return possibleMoves;
  
 
             default:
-                //all cases should be acounted for
-                throw new IllegalArgumentException("Unknown gamestate was given in board: '" + gameState +  "'");
+                return new ArrayList<Position>();
         }    
     }
     

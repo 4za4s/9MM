@@ -5,12 +5,14 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JPopupMenu;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import Board.Board;
 import Board.Player;
 import Board.Position;
 import Game.Game;
+import Game.GameState;
 
 /**
  * Manages the display
@@ -34,7 +36,7 @@ public class GameDisplay extends AbstractDisplay {
     PieceCounter leftPieceCounter;
     PieceCounter rightPieceCounter;
     JButton exit;
-
+    JLabel playerTurn;
 
 
 
@@ -72,14 +74,16 @@ public class GameDisplay extends AbstractDisplay {
 
         exit = new JButton("EXIT");
 
-        int y = window.getHeight()/2-50;
-        int x = window.getWidth()/2-50;
-
-        exit.setBounds(x,y,100,100);
         exit.setBackground(Color.white);
 
         exit.addActionListener(e -> window.displayMenu());
         window.add(exit); 
+
+        playerTurn = new JLabel("Currently " + game.getInTurnPlayer().getName() + "'s Turn",SwingConstants.CENTER);
+        playerTurn.setBorder(new javax.swing.border.LineBorder(Color.black, 3));
+        playerTurn.setOpaque(true);
+        playerTurn.setBackground(Color.white);
+        window.add(playerTurn);
     
 
         //Add layers to the frame
@@ -106,12 +110,15 @@ public class GameDisplay extends AbstractDisplay {
                 pos.setForeground(Color.white);
             }
         }
-       window.repaint();
-    }
 
-    public void Win(String winner){
-        JPopupMenu win = new JPopupMenu(winner);
-        window.add(win);
+        removeHighlights();
+
+        if (game.getGameState() != GameState.POSTGAME) {
+            displayPossibleMoveHighlights(board.getPossibleMoves(game.getGameState(), game.getSelectedPiece(), game.getInTurnPlayer()), game.getInTurnPlayer().getColour());
+            playerTurn.setText("Currently " + game.getInTurnPlayer().getName() + "'s Turn");
+        }
+
+        window.repaint();
     }
 
     /**
@@ -143,10 +150,10 @@ public class GameDisplay extends AbstractDisplay {
         height = (int) size.getHeight();
 
         int minDim = Math.min(width, height);
-        gap = (minDim * 12 / 20) / 6;
+        gap = (minDim / 10);
 
         lineWidth = gap/10;
-        slotSize = gap  / 2;
+        slotSize = gap/2;
 
         highlightSize = (slotSize * 3) / 2;
        
@@ -158,7 +165,9 @@ public class GameDisplay extends AbstractDisplay {
 
     }
 
-
+    public void playerWins(Player player){
+        playerTurn.setText(player.getName() + " Wins!");
+    }
 
     public void resizeDisplay(Dimension size) {
 
@@ -172,7 +181,7 @@ public class GameDisplay extends AbstractDisplay {
         selectionHighlights.setLocation(boardXPosStart - highlightSize / 2, boardYPosStart - highlightSize / 2);
         selectionHighlights.setSize(gap*6 + highlightSize, gap*6 + highlightSize);
 
-        background.resizeDisplay(gap, lineWidth ); 
+        background.resizeDisplay(gap, lineWidth); 
         background.setLocation(boardXPosStart - lineWidth / 2, boardYPosStart - lineWidth / 2);
         background.setSize(gap*6 + lineWidth, gap*6 + lineWidth);
 
@@ -184,8 +193,8 @@ public class GameDisplay extends AbstractDisplay {
         rightPieceCounter.setLocation(width - boardXPosStart / 2 - pieceCounterWidth / 2,  height / 2 - pieceCounterHeight / 2 );
         rightPieceCounter.setSize(pieceCounterWidth, pieceCounterHeight);
 
-        exit.setBounds(size.width/2-50,size.height/2-50,100,100);
-
+        exit.setBounds(size.width/2-gap,boardYPosStart+gap*13/2,gap*2,gap);
+        playerTurn.setBounds(window.getWidth()/2 - gap*3,boardYPosStart-100,gap*6,gap);
     }
 }
 

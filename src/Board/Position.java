@@ -101,10 +101,6 @@ public class Position extends JButton {
      */
     public void setPiece(Piece piece){
         this.piece = piece;
-        //updates the piece to let it know it is now on this position
-        if (piece != null && piece.getPosition() != this) {
-            piece.setPosition(this);
-        }
     }
 
     public void setRowColumn(int row, int column){
