@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import Board.Board;
+import Board.Mills;
 import Board.Piece;
 import Board.Player;
 import Board.Position;
@@ -22,7 +23,7 @@ public class Game {
     private int turnCounter = 0;
     private GameState gameState;
     private Piece selectedPiece; //piece that has been selected to be moved
-    private int score;
+    private Mills mills;
 
 
     /**
@@ -104,10 +105,25 @@ public class Game {
                 } 
                 gameState = GameState.SELECTING;
                 gameDisplay.removeHighlights();
-                break;
-            case TAKING:
-                
 
+                if(true ) { //TODO: Implement Logic
+                    gameState = GameState.TAKING;
+                } 
+
+                break;
+            
+            // A piece can take another piece
+            case TAKING:
+                //Make sure that the piece is an opponent's piece
+                if(selectedPiece != null && selectedPiece.getOwner() != inTurnPlayer) { 
+                    System.out.println("Taking piece");
+                    selectedPiece.getOwner().pieceLost();
+                    pos.setPiece(null);
+                } 
+
+
+            
+                break;
              
             //An unknown gamestate was given
             default:
@@ -152,6 +168,7 @@ public class Game {
      */
     public void setGameDisplay(GameDisplay gameDisplay) {
         this.gameDisplay = gameDisplay;
+
 
         gameDisplay.removeHighlights();
         
