@@ -104,17 +104,17 @@ public class Board {
      * @param piece the piece to move
      * @param newPosition the position to move the piece to
      */
-    public void movePiece(Piece piece, Position newPosition) {
+    public int movePiece(Piece piece, Position newPosition) {
         //remove the piece from the current position
         if (piece != null) {
+            mills.removeMill(piece.getPosition());
             piece.setPosition(newPosition);
-            if (mills.isInMill(piece.getPosition())) {
-                
-            }
         }
         if (newPosition != null) {
             newPosition.setPiece(piece);
         }
+
+        return mills.createMill(piece);
     }
 
     /**
@@ -143,7 +143,6 @@ public class Board {
             case SELECTING:
                 ArrayList<Position> possibleMoves = new ArrayList<Position>();
                 return possibleMoves;
-
 
             case MOVING:
                 if (piece == null){

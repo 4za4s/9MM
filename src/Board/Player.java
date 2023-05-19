@@ -12,7 +12,7 @@ public class Player {
     private ArrayList<Piece> pieces = new ArrayList<Piece>();
     private int piecesPlaced = 0;
     private int piecesLost = 0;
-    public final int maxPieces = 3;
+    public final int maxPieces = 5;
 
     /**
      * Class constructor

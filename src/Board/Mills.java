@@ -22,15 +22,19 @@ public class Mills {
 		return false;
 	}
 
-	public void addMill(Position[] mill){
-		millArray.add(mill);
+	public boolean addMill(Position[] mill){
+		if (mill != null && mill.length == 3){
+			millArray.add(mill);
+			return true;
+		}
+		return false;
 	}
 
 	public void removeMill(Position pos){
-		for (Position[] posLst : millArray) {
-			for (Position posVar : posLst) {
-				if (posVar == pos){
-					millArray.remove(posLst);
+		for (int i = 0; i < millArray.size(); i++) {
+			for (int j = 0; j < millArray.get(i).length; j++) {
+				if (millArray.get(i)[j] == pos){
+					millArray.remove(i);
 					break;
 				}
 			}
@@ -61,36 +65,73 @@ public class Mills {
 		return null;
 	}
 
-	/* Recreates the mills list */
-// 	public ArrayList<Position[]> getMills(){
-// 		millArray = new ArrayList<Position[]>();
+	public int createMill(Piece piece){
+		int mills = 0;
+		if (piece.getPosition() == null){
+			return mills;
+		}
+		Position[] mill = new Position[3];
+		Player owner = piece.getOwner();
+		Position pos = piece.getPosition();
 
-// 		for (Position pos : board.getPositions()){
+		if (addMill(horizontalMill(piece))){
+			mills++;
+		} 
+		if (addMill(verticalMill(piece))){
+			mills++;
+		} 
+		if (pos.getWestNeighbour() != null && addMill(horizontalMill(pos.getWestNeighbour().getPiece()))){
+			mills++;
+		} 
+		if (pos.getEastNeighbour() != null && addMill(horizontalMill(pos.getEastNeighbour().getPiece()))){
+			mills++;
+		} 
+		if (pos.getNorthNeighbour() != null && addMill(verticalMill(pos.getNorthNeighbour().getPiece()))){
+			mills++;
+		} 
+		if (pos.getSouthNeighbour() != null && addMill(verticalMill(pos.getSouthNeighbour().getPiece()))){
+			mills++;
+		} 
+		return mills;
+	}
 
-// 			try { //East / West
-// 			if (pos.getWestNeighbour().getPiece().getOwner() == pos.getEastNeighbour().getPiece().getOwner() && 
-// 			pos.getEastNeighbour().getPiece().getOwner() == pos.getPiece().getOwner()){
-// 				Position[] mill = {pos.getWestNeighbour(),pos,pos.getEastNeighbour()};
-// 				millArray.add(mill);
-// 			}
+	public Position[] horizontalMill(Piece piece){
+		if (piece == null || piece.getPosition() == null){
+			return null;
+		}
+		Player owner = piece.getOwner();
+		Position pos = piece.getPosition();
 
+		try { 
+			Player west = pos.getWestNeighbour().getPiece().getOwner();
+			Player east = pos.getEastNeighbour().getPiece().getOwner();
+			if (west == east && east == owner){
+				Position[] mill = {pos.getWestNeighbour(),pos,pos.getEastNeighbour()};
+				return mill;
+			}
+		} catch (Exception NullPointerException) {
+			return null;
+		}
+		return null;
+	}	
 
-// 			} catch (Exception NullPointerException) {}
+	public Position[] verticalMill(Piece piece){
+		if (piece == null || piece.getPosition() == null){
+			return null;
+		}
+		Player owner = piece.getOwner();
+		Position pos = piece.getPosition();
 
-// 			try { //North / South
-// 				if (pos.getNorthNeighbour().getPiece().getOwner() == pos.getSouthNeighbour().getPiece().getOwner() && 
-// 				pos.getSouthNeighbour().getPiece().getOwner() == pos.getPiece().getOwner()){
-// 					Position[] mill = {pos.getNorthNeighbour(),pos,pos.getSouthNeighbour()};
-// 					millArray.add(mill);
-// 				}
-	
-	
-// 				} catch (Exception NullPointerException) {}
-
-// 		}
-
-// 		return millArray;
-// 	}
-
-
+		try { 
+			Player north = pos.getNorthNeighbour().getPiece().getOwner();
+			Player south = pos.getSouthNeighbour().getPiece().getOwner();
+			if (north == south && south == owner){
+				Position[] mill = {pos.getNorthNeighbour(),pos,pos.getSouthNeighbour()};
+				return mill;
+			}
+		} catch (Exception NullPointerException) {
+			return null;
+		}
+		return null;
+	}	
 }

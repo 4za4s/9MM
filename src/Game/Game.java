@@ -21,7 +21,9 @@ public class Game {
     private int turn = 0;
     private int turnCounter = 0;
     private GameState gameState;
+    private GameState previousGameState;
     private Piece selectedPiece; //piece that has been selected to be moved
+    private int toTake = 0;
 
 
     /**
@@ -57,6 +59,7 @@ public class Game {
 
             //Place a piece
             case PLACING:
+                previousGameState = gameState;
                 //First phase of the game, players place their pieces
                 int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced();
                 Piece piece = inTurnPlayer.getPieces().get(lastPieceIndex);
@@ -77,6 +80,7 @@ public class Game {
 
             // Select a piece to move
             case SELECTING:
+                previousGameState = gameState;
                 if (pos.getPiece() == null || pos.getPiece().getOwner() != inTurnPlayer) {
                     selectedPiece = null;
                 } else {
@@ -89,14 +93,15 @@ public class Game {
             case MOVING:
                 if (selectedPiece.getPosition().getEmptyNeighbours().contains(pos)) {
                     //Make sure piece is moving to an empty neighbour
-                    board.movePiece(selectedPiece, pos);
-                    if (turn == 1){
+                    int toTake = board.movePiece(selectedPiece, pos);
+                    if (toTake > 0){
                         gameState = GameState.TAKING;
                         selectedPiece = null;
                         break;
                     }
                     gameState = GameState.SELECTING;
                     changeTurn();
+                    checkPossibleMoves(inTurnPlayer);
                     break;
                 } else if (pos.getPiece() != null && selectedPiece != pos.getPiece() && pos.getPiece().getOwner() == inTurnPlayer) {
                     //If user selects a different piece belonging to him, change selection to that piece
@@ -112,7 +117,7 @@ public class Game {
                 selectedPiece = pos.getPiece();
                 //Make sure that the piece is an opponent's piece
                 if(selectedPiece != null && selectedPiece.getOwner() != inTurnPlayer) { 
-                    //TODO: aaron above logic needs: and not in mill
+
                     Player opponent = selectedPiece.getOwner();
                     System.out.println("Taking piece");
                     opponent.pieceLost();
@@ -124,7 +129,13 @@ public class Game {
                         break;
                     }
                     
-                    changeTurn();
+                    if (toTake <= 0) {
+                        gameState = previousGameState;
+                        changeTurn();
+                        checkPossibleMoves(inTurnPlayer);
+                    } else {
+                        toTake--;
+                    }
                 } 
                 selectedPiece = null;
                 break;
@@ -144,6 +155,37 @@ public class Game {
         turn = (++turnCounter) % players.size();
         System.out.println("Turn = " + turnCounter);
         inTurnPlayer = players.get(turn);
+    }
+
+    public boolean canTakePiece(Piece piece, Player opponent) {
+        if (piece == null) {
+            return false;
+        }
+        if (piece.getOwner() == inTurnPlayer) {
+            return false;
+        }
+        if (piece.isInMill()) {
+            for (Piece p : opponent.getPieces()) {
+                if (!p.isInMill()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean checkPossibleMoves(Player player){
+        if (inTurnPlayer.getNumOfPiecesPlaced() > 3) {
+            for (Piece p : inTurnPlayer.getPieces()) {
+                if (p.getPosition() != null && board.getPossibleMoves(GameState.MOVING, p, inTurnPlayer).size() != 0) {
+                    return true;
+                }
+            }
+        }
+        gameState = GameState.POSTGAME;
+        changeTurn();
+        gameDisplay.playerWins(inTurnPlayer);
+        return false;
     }
 
     /** 
