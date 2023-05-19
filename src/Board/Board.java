@@ -127,7 +127,7 @@ public class Board {
 
         switch (gameState) {
             // Currently pieces can move anywhere no matter the game state
-
+            case FLYING:
             case PLACING: 
                 //start with empty list always
                 possibleMoves = new ArrayList<Position>();

@@ -64,8 +64,12 @@ public class Game {
                 int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced();
                 Piece piece = inTurnPlayer.getPieces().get(lastPieceIndex);
                 if (pos.getPiece() == null) {
-                    board.movePiece(piece, pos);
+                    toTake = board.movePiece(piece, pos);
                     inTurnPlayer.piecePlaced();
+                    if (toTake > 0){
+                        gameState = GameState.TAKING;
+                        break;
+                    }
 
                     //If all pieces have been placed - and it is the last player to do so
                     if (lastPieceIndex == inTurnPlayer.maxPieces - 1 && inTurnPlayer == players.get(players.size() - 1)) {
@@ -85,15 +89,23 @@ public class Game {
                     selectedPiece = null;
                 } else {
                     selectedPiece = pos.getPiece();
-                    gameState = GameState.MOVING;
+                    if (inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() > 3){
+                        gameState = GameState.MOVING;
+                    } else {
+                        gameState = GameState.FLYING;
+                    }
                 }
                 break;
 
             // A piece can be moved anywhere 
+            case FLYING:
             case MOVING:
-                if (selectedPiece.getPosition().getEmptyNeighbours().contains(pos)) {
+                if (
+                    (gameState == GameState.FLYING && pos.getPiece() == null)||
+                    (gameState == GameState.MOVING && selectedPiece.getPosition().getEmptyNeighbours().contains(pos))
+                    ) {
                     //Make sure piece is moving to an empty neighbour
-                    int toTake = board.movePiece(selectedPiece, pos);
+                    toTake = board.movePiece(selectedPiece, pos);
                     if (toTake > 0){
                         gameState = GameState.TAKING;
                         selectedPiece = null;
@@ -105,10 +117,11 @@ public class Game {
                     break;
                 } else if (pos.getPiece() != null && selectedPiece != pos.getPiece() && pos.getPiece().getOwner() == inTurnPlayer) {
                     //If user selects a different piece belonging to him, change selection to that piece
-                    updatePieceSelection(selectedPiece, pos);
+                    selectedPiece = pos.getPiece();
                 } else {
                     //Otherwise deselect piece selected
                     gameState = GameState.SELECTING;
+                    selectedPiece = null;
                 }
                 break;
             
@@ -122,19 +135,17 @@ public class Game {
                     System.out.println("Taking piece");
                     opponent.pieceLost();
                     board.movePiece(selectedPiece, null);
-                    
-                    if (opponent.getNumOfPiecesPlaced() - opponent.getNoOfPiecesLost() < 3){
+                    toTake--;
+                    if (opponent.getPieces().size() - opponent.getNoOfPiecesLost() < 3){
                         gameDisplay.playerWins(inTurnPlayer);
                         gameState = GameState.POSTGAME;
                         break;
                     }
-                    
+                    System.out.println(toTake);
                     if (toTake <= 0) {
                         gameState = previousGameState;
                         changeTurn();
                         checkPossibleMoves(inTurnPlayer);
-                    } else {
-                        toTake--;
                     }
                 } 
                 selectedPiece = null;
@@ -175,30 +186,19 @@ public class Game {
     }
 
     public boolean checkPossibleMoves(Player player){
-        if (inTurnPlayer.getNumOfPiecesPlaced() > 3) {
-            for (Piece p : inTurnPlayer.getPieces()) {
-                if (p.getPosition() != null && board.getPossibleMoves(GameState.MOVING, p, inTurnPlayer).size() != 0) {
-                    return true;
-                }
+        if (gameState == GameState.PLACING) {
+            return true;
+        }
+
+        for (Piece p : inTurnPlayer.getPieces()) {
+            if (p.getPosition() != null && board.getPossibleMoves(GameState.MOVING, p, inTurnPlayer).size() != 0) {
+                return true;
             }
         }
         gameState = GameState.POSTGAME;
         changeTurn();
         gameDisplay.playerWins(inTurnPlayer);
         return false;
-    }
-
-    /** 
-     * Enusres that a valid piece is selected and displays the possible moves for that piece
-     * @param pos the position of the piece clicked. Assumes that pos has a piece
-     * @param state different states have different possible moves
-    */
-    public void updatePieceSelection(Piece selectedPiece, Position pos) {      
-        if (pos.getPiece().getOwner() == inTurnPlayer) {
-            selectedPiece = pos.getPiece();
-        } else {
-            selectedPiece = null;
-        }
     }
 
     public Player getInTurnPlayer() {
