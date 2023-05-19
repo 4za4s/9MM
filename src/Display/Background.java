@@ -35,8 +35,8 @@ class Background extends JLayeredPane {
         // }
 
         // Set stoke size
-        g2.setStroke(new BasicStroke(lineWidth)); //Double width because half gets cut off by the frame
-
+        g2.setStroke(new BasicStroke(lineWidth));
+    
         //Draw rectangles
         g2.drawRect(lineWidth / 2,lineWidth / 2,gap*6,gap*6); // outer rectangle
         g2.drawRect(gap + lineWidth / 2, gap + lineWidth / 2, gap*4, gap*4); //middle rectangle

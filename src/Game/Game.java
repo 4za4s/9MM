@@ -31,6 +31,8 @@ public class Game {
      */
     public Game() {
         this.board = new Board();
+        mills = new Mills(board);
+
         this.players.add(new Player(Color.blue, "Player 1"));
         this.players.add(new Player(Color.red, "Player 2"));
         inTurnPlayer = players.get(turn);
@@ -48,6 +50,8 @@ public class Game {
      * @param pos the position that was clicked
      */
     public void buttonPressed(Position pos) {
+
+        System.out.println(gameState);
         switch (gameState) { 
 
             //Place a piece
@@ -106,9 +110,9 @@ public class Game {
                 gameState = GameState.SELECTING;
                 gameDisplay.removeHighlights();
 
-                if(true ) { //TODO: Implement Logic
-                    gameState = GameState.TAKING;
-                } 
+                // if(true ) { //TODO: Implement Logic
+                //     gameState = GameState.TAKING;
+                // } 
 
                 break;
             
@@ -116,9 +120,8 @@ public class Game {
             case TAKING:
                 //Make sure that the piece is an opponent's piece
                 if(selectedPiece != null && selectedPiece.getOwner() != inTurnPlayer) { 
-                    System.out.println("Taking piece");
-                    selectedPiece.getOwner().pieceLost();
-                    pos.setPiece(null);
+                    board.movePiece(selectedPiece, null);
+                    //TODO: aaron above logic needs: and not in mill
                 } 
 
 
@@ -187,5 +190,9 @@ public class Game {
 
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    public Mills getMills(){
+        return this.mills;
     }
 }
