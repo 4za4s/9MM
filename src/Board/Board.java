@@ -11,6 +11,7 @@ import Game.GameState;
 public class Board {
     ArrayList<Position> positions = new ArrayList<Position>();
     ArrayList<Position> possibleMoves;
+    Mills mills;
 
     private int[][] positionLocations = { 
         { 0, 0 }, { 0, 3 }, { 0, 6 },   // {row,column}
@@ -28,8 +29,9 @@ public class Board {
      * Class constructor
      */
     public Board(){
-        //24 total positions on the board
+        this.mills = new Mills();
 
+        //24 total positions on the board
         //Create positions
         for (int i = 24; i > 0; i--) {
             positions.add(new Position());
@@ -106,6 +108,9 @@ public class Board {
         //remove the piece from the current position
         if (piece != null) {
             piece.setPosition(newPosition);
+            if (mills.isInMill(piece.getPosition())) {
+                
+            }
         }
         if (newPosition != null) {
             newPosition.setPiece(piece);
@@ -168,6 +173,10 @@ public class Board {
      */
     public ArrayList<Position> getPositions(){
         return positions;
+    }
+
+    public Mills getMills(){
+        return mills;
     }
 }
 

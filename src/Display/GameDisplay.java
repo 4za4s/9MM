@@ -33,6 +33,7 @@ public class GameDisplay extends AbstractDisplay {
     private ButtonDisplay buttonDisplay; //button layer for game
     private SelectionHighlights selectionHighlights; //highlight layer for game 
     private Background background; //background layer for game
+    private MillHighlights millHighlights;
     PieceCounter leftPieceCounter;
     PieceCounter rightPieceCounter;
     JButton exit;
@@ -52,6 +53,7 @@ public class GameDisplay extends AbstractDisplay {
     int pieceCounterWidth; //width of the piece counter
     int pieceCounterHeight; //height of the piece counter
     int lineWidth; //width of the lines
+    int millHighlightsWidth; //How wide mill highlights are
 
     
     
@@ -69,6 +71,7 @@ public class GameDisplay extends AbstractDisplay {
         selectionHighlights = new SelectionHighlights();
         leftPieceCounter = new PieceCounter(players.get(0),players.get(1));
         rightPieceCounter = new PieceCounter(players.get(1),players.get(0));
+        millHighlights = new MillHighlights(players.get(0),players.get(1), game.getBoard().getMills());
 
         buttonDisplay.createButtonDisplay(game, game.getBoard().getPositions(), buttonLocations, gap, slotSize);
 
@@ -92,6 +95,7 @@ public class GameDisplay extends AbstractDisplay {
         window.add(selectionHighlights);
         window.add(leftPieceCounter);
         window.add(rightPieceCounter);
+        window.add(millHighlights);
     
         window.repaint();
     }
@@ -153,7 +157,9 @@ public class GameDisplay extends AbstractDisplay {
         gap = (minDim / 10);
 
         lineWidth = gap/10;
-        slotSize = gap/2;
+
+        millHighlightsWidth = lineWidth * 5 / 2;
+        slotSize = gap  / 2;
 
         highlightSize = (slotSize * 3) / 2;
        
@@ -162,6 +168,7 @@ public class GameDisplay extends AbstractDisplay {
 
         pieceCounterWidth = minDim / 17;
         pieceCounterHeight = (int) (pieceCounterWidth * 3.8);
+
 
     }
 
@@ -193,8 +200,13 @@ public class GameDisplay extends AbstractDisplay {
         rightPieceCounter.setLocation(width - boardXPosStart / 2 - pieceCounterWidth / 2,  height / 2 - pieceCounterHeight / 2 );
         rightPieceCounter.setSize(pieceCounterWidth, pieceCounterHeight);
 
+        millHighlights.resizeDisplay(millHighlightsWidth); //Needs to be resized after button display
+        millHighlights.setLocation(boardXPosStart - millHighlightsWidth / 2, boardYPosStart - millHighlightsWidth / 2);
+        millHighlights.setSize(gap*6 + millHighlightsWidth, gap*6 + millHighlightsWidth);
+        
         exit.setBounds(size.width/2-gap,boardYPosStart+gap*13/2,gap*2,gap);
         playerTurn.setBounds(window.getWidth()/2 - gap*3,boardYPosStart-100,gap*6,gap);
+
     }
 }
 

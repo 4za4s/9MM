@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import Board.Board;
-import Board.Mills;
 import Board.Piece;
 import Board.Player;
 import Board.Position;
@@ -30,6 +29,7 @@ public class Game {
      */
     public Game() {
         this.board = new Board();
+
         this.players.add(new Player(Color.blue, "Player 1"));
         this.players.add(new Player(Color.red, "Player 2"));
         inTurnPlayer = players.get(turn);
@@ -51,6 +51,8 @@ public class Game {
      * @param pos the position that was clicked
      */
     public void buttonPressed(Position pos) {
+
+        System.out.println(gameState);
         switch (gameState) { 
 
             //Place a piece
@@ -110,6 +112,7 @@ public class Game {
                 selectedPiece = pos.getPiece();
                 //Make sure that the piece is an opponent's piece
                 if(selectedPiece != null && selectedPiece.getOwner() != inTurnPlayer) { 
+                    //TODO: aaron above logic needs: and not in mill
                     Player opponent = selectedPiece.getOwner();
                     System.out.println("Taking piece");
                     opponent.pieceLost();
