@@ -15,8 +15,8 @@ public class MenuDisplay extends AbstractDisplay {
     /**
      * Class constructor
      */
-    public MenuDisplay(int Width, int Height, Window window){
-        super(Width, Height, window);
+    public MenuDisplay(int width, int height, Window window){
+        super(width, height, window);
         start = new JButton("Start");
 
         title = new JLabel("Nine Man's Morris",SwingConstants.CENTER);

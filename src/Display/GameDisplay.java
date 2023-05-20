@@ -59,8 +59,8 @@ public class GameDisplay extends AbstractDisplay {
     /**
      * Class constructor
      */
-    public GameDisplay(int Height, int Width, Game game, Window window){
-        super(Height, Width, window);
+    public GameDisplay(int height, int width, Game game, Window window){
+        super(height, width, window);
         this.game = game;
 
         ArrayList<Player> players = game.getPlayers();
