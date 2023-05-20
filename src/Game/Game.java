@@ -18,10 +18,10 @@ public class Game {
     private Board board;
     private ArrayList<Player> players = new ArrayList<Player>();
     private Player inTurnPlayer;
+    private Player notInTurnPlayer;
     private int turn = 0;
     private int turnCounter = 0;
     private GameState gameState;
-    private GameState previousGameState;
     private Piece selectedPiece; //piece that has been selected to be moved
     private int toTake = 0;
 
@@ -35,6 +35,7 @@ public class Game {
         this.players.add(new Player(Color.blue, "Player 1"));
         this.players.add(new Player(Color.red, "Player 2"));
         inTurnPlayer = players.get(turn);
+        notInTurnPlayer = players.get(turn + 1);
 
         //Place pieces
         gameState = GameState.PLACING;
@@ -59,10 +60,11 @@ public class Game {
 
             //Place a piece
             case PLACING:
-                previousGameState = gameState;
                 //First phase of the game, players place their pieces
-                int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced();
+                int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost();
                 Piece piece = inTurnPlayer.getPieces().get(lastPieceIndex);
+
+                // if (board.isAPossibleMove(gameState, pos.getPiece(), inTurnPlayer)){ //TODO: use this
                 if (pos.getPiece() == null) {
                     toTake = board.movePiece(piece, pos);
                     inTurnPlayer.piecePlaced();
@@ -72,7 +74,7 @@ public class Game {
                     }
 
                     //If all pieces have been placed - and it is the last player to do so
-                    if (lastPieceIndex == inTurnPlayer.maxPieces - 1 && inTurnPlayer == players.get(players.size() - 1)) {
+                    if (inTurnPlayer.getNumOfPiecesPlaced() == inTurnPlayer.maxPieces && inTurnPlayer == players.get(players.size() - 1)) {
                         gameState = GameState.SELECTING;
                         changeTurn();
                         break;
@@ -84,7 +86,6 @@ public class Game {
 
             // Select a piece to move
             case SELECTING:
-                previousGameState = gameState;
                 if (pos.getPiece() == null || pos.getPiece().getOwner() != inTurnPlayer) {
                     selectedPiece = null;
                 } else {
@@ -113,10 +114,11 @@ public class Game {
                     }
                     gameState = GameState.SELECTING;
                     changeTurn();
-                    checkPossibleMoves(inTurnPlayer);
+                    checkForPossibleMoves(inTurnPlayer);
                     break;
+                     //If user selects a different piece belonging to him, change selection to that piece
                 } else if (pos.getPiece() != null && selectedPiece != pos.getPiece() && pos.getPiece().getOwner() == inTurnPlayer) {
-                    //If user selects a different piece belonging to him, change selection to that piece
+                   
                     selectedPiece = pos.getPiece();
                 } else {
                     //Otherwise deselect piece selected
@@ -128,9 +130,8 @@ public class Game {
             // A piece can take another piece
             case TAKING:
                 selectedPiece = pos.getPiece();
-                //Make sure that the piece is an opponent's piece
-                if(selectedPiece != null && selectedPiece.getOwner() != inTurnPlayer) { 
 
+                if (board.isAPossibleMove(gameState, selectedPiece, notInTurnPlayer)){ //TODO: not coming true
                     Player opponent = selectedPiece.getOwner();
                     System.out.println("Taking piece");
                     opponent.pieceLost();
@@ -142,16 +143,31 @@ public class Game {
                         break;
                     }
                     System.out.println(toTake);
+
+                    //No more pieces to take this turn
                     if (toTake <= 0) {
-                        gameState = previousGameState;
+
+                        //Work out correct new gamestate
                         changeTurn();
-                        checkPossibleMoves(inTurnPlayer);
+
+                            if  (inTurnPlayer.getNumOfPiecesPlaced() < inTurnPlayer.maxPieces){
+                            gameState = GameState.PLACING; //todo: delete this variable?
+
+                        } else {
+                            gameState = GameState.SELECTING;
+                        }
+
+                        checkForPossibleMoves(inTurnPlayer);
                     }
                 } 
                 selectedPiece = null;
                 break;
+
+
+
             //An unknown gamestate was given
             default:
+            //TODO: give an error message here
                 break; 
         }
 
@@ -165,7 +181,9 @@ public class Game {
     public void changeTurn() {
         turn = (++turnCounter) % players.size();
         System.out.println("Turn = " + turnCounter);
+        notInTurnPlayer = inTurnPlayer;
         inTurnPlayer = players.get(turn);
+        
     }
 
     public boolean canTakePiece(Piece piece, Player opponent) {
@@ -185,13 +203,13 @@ public class Game {
         return true;
     }
 
-    public boolean checkPossibleMoves(Player player){
+    public boolean checkForPossibleMoves(Player player){
         if (gameState == GameState.PLACING) {
             return true;
         }
 
         for (Piece p : inTurnPlayer.getPieces()) {
-            if (p.getPosition() != null && board.getPossibleMoves(GameState.MOVING, p, inTurnPlayer).size() != 0) {
+            if (p.getPosition() != null && board.getPossibleMoves(GameState.MOVING, p, notInTurnPlayer).size() != 0) {
                 return true;
             }
         }

@@ -75,6 +75,7 @@ public class Window extends JFrame{
 
     public void displayMenu(){
         getContentPane().removeAll();
+        getContentPane().setBackground(backgroundColor);
         MenuDisplay menuDisplay = new MenuDisplay(getHeight(), getWidth(), this);
         currentDisplay = menuDisplay;
         size = window.getContentPane().getSize();

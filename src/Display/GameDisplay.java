@@ -115,6 +115,7 @@ public class GameDisplay extends AbstractDisplay {
             }
         }
 
+
         removeHighlights();
 
         if (game.getGameState() != GameState.POSTGAME) {
@@ -169,11 +170,23 @@ public class GameDisplay extends AbstractDisplay {
         pieceCounterWidth = minDim / 17;
         pieceCounterHeight = (int) (pieceCounterWidth * 3.8);
 
+        
+
 
     }
 
     public void playerWins(Player player){
         playerTurn.setText(player.getName() + " Wins!");
+
+        Color baseWinnerColor = new Color(
+            game.getInTurnPlayer().getColour().getRed(), 
+            game.getInTurnPlayer().getColour().getGreen(),
+            game.getInTurnPlayer().getColour().getBlue(),
+            game.getInTurnPlayer().getColour().getAlpha()*1/5
+        );
+
+
+        window.getContentPane().setBackground(baseWinnerColor);
     }
 
     public void resizeDisplay(Dimension size) {
@@ -204,8 +217,10 @@ public class GameDisplay extends AbstractDisplay {
         millHighlights.setLocation(boardXPosStart - millHighlightsWidth / 2, boardYPosStart - millHighlightsWidth / 2);
         millHighlights.setSize(gap*6 + millHighlightsWidth, gap*6 + millHighlightsWidth);
         
-        exit.setBounds(size.width/2-gap,boardYPosStart+gap*13/2,gap*2,gap);
-        playerTurn.setBounds(window.getWidth()/2 - gap*3,boardYPosStart-100,gap*6,gap);
+        playerTurn.setBounds(width/2 - gap*3,boardYPosStart/3,gap*6,boardYPosStart/3);
+
+        exit.setBounds(width/2-gap,height * 6 / 7 ,gap*2,boardYPosStart/3);
+
 
     }
 }

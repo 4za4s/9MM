@@ -22,12 +22,12 @@ public class PieceCounter extends JLayeredPane {
     int pieceHeight;
     int pieceGap;
 
-
-
     Player player;
+    Player enemy;
 
     public PieceCounter(Player player, Player enemy){
         this.player = player;
+        this.enemy = enemy;
         playerColor = player.getColour();
         enemyColor = enemy.getColour();
 
@@ -40,11 +40,11 @@ public class PieceCounter extends JLayeredPane {
      */
     private Color getSlotColor(int i){
         //Player's piece
-        if (i > player.getNumOfPiecesPlaced() - player.getNoOfPiecesLost() ) {
+        if (i > player.getNumOfPiecesPlaced()) {
             return playerColor.darker();
     
         //Empty slot
-        } else if (i > player.getNoOfPiecesLost()){
+        } else if (i > enemy.getNoOfPiecesLost()){
             return emptyPieceColor;
         
         //Enemy Piece

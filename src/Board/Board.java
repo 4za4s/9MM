@@ -150,20 +150,57 @@ public class Board {
                 }
                 return piece.getPosition().getEmptyNeighbours();
             case TAKING:
+
                 possibleMoves = new ArrayList<Position>();
 
-                //fill with possible moves
-                for (Position position : positions) {
-                    if (position.getPiece() != null && position.getPiece().getOwner() != player) {
-                        possibleMoves.add(position);
+                //first work out if player to take has pieces in a mill
+                if ( mills.playerHasPieceNotInMill(player)){
+
+                    for (Position position : positions) {
+                        if (position.getPiece() != null && 
+                            position.getPiece().getOwner() != player &&
+                            !mills.isInMill(position)) {
+                            possibleMoves.add(position);
+                        }
                     }
+                    
+
+                } else { //Allow any piece to be taken
+                    for (Position position : positions) {
+                        if (position.getPiece() != null && 
+                            position.getPiece().getOwner() != player) {
+                            possibleMoves.add(position);
+                        }
+                    }
+
                 }
+
+
             return possibleMoves;
  
 
             default:
                 return new ArrayList<Position>();
         }    
+    }
+
+    /**
+     * Works out if a move is possible
+     * @param gameState
+     * @param piece
+     * @param player
+     * @return
+     */
+    public boolean isAPossibleMove(GameState gameState, Piece piece, Player player){
+        ArrayList<Position>  possibleMoves = getPossibleMoves( gameState,  piece,  player);
+
+        for (Position pos : possibleMoves ){
+            if  (piece != null && piece.getPosition() == pos){
+                return true;
+            }
+        }
+
+        return false;
     }
     
     /**

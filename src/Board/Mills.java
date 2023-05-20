@@ -7,8 +7,33 @@ import java.util.ArrayList;
 /* Manages the Mills for a game */
 public class Mills {
 
-	//Dtores all of the mills
+	//Stores all of the mills
 	ArrayList<Position[]> millArray = new ArrayList<Position[]>();
+
+	public boolean hasPieceInMill(Player player){
+		for (Position[] posLst : millArray){
+			if (posLst[0].getPiece().getOwner() == player){
+				return true;
+			}
+
+		}
+		return false;
+	}
+
+	public boolean playerHasPieceNotInMill(Player player){
+
+		ArrayList<Piece> pieces = player.getPieces();
+		for (Piece piece : pieces) {
+			System.out.println(piece.getPosition() != null);
+			
+			if (piece.getPosition() != null && !isInMill(piece.getPosition()) ){
+				return true;
+			}
+		}
+
+		return false;
+
+	}
 
 	public boolean isInMill(Position pos){
 		//Scan though the whole 
@@ -56,6 +81,7 @@ public class Mills {
 		return millArray;
 	}
 
+
 	public Position[] verticalMill(Position pos){
 		Position north = pos.getNorthNeighbour();
 		Position south = pos.getSouthNeighbour();
@@ -70,8 +96,7 @@ public class Mills {
 		if (piece.getPosition() == null){
 			return mills;
 		}
-		Position[] mill = new Position[3];
-		Player owner = piece.getOwner();
+
 		Position pos = piece.getPosition();
 
 		if (addMill(horizontalMill(piece))){
@@ -110,7 +135,6 @@ public class Mills {
 				return mill;
 			}
 		} catch (Exception NullPointerException) {
-			return null;
 		}
 		return null;
 	}	
@@ -130,7 +154,6 @@ public class Mills {
 				return mill;
 			}
 		} catch (Exception NullPointerException) {
-			return null;
 		}
 		return null;
 	}	
