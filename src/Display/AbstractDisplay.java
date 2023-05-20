@@ -7,9 +7,9 @@ import javax.swing.JLayeredPane;
 public abstract class AbstractDisplay extends JLayeredPane {
     Window window;
 
-    public AbstractDisplay(int Width, int Height, Window window){
+    public AbstractDisplay(int width, int height, Window window){
         this.window = window;
-        setPreferredSize(new Dimension(Height, Width));
+        setPreferredSize(new Dimension(height, width));
     }
 
     public abstract void updateDisplay();
