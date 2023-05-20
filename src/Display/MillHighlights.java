@@ -13,25 +13,20 @@ import Board.Player;
 import Board.Position;
 
 public class MillHighlights extends JLayeredPane{
-
-    Color millHighlightColour;
-
    
 
-    Player player1;
-    Color player1Color; 
+    private Player player1;
+    private Color player1Color; 
 
-    Player player2;
-    Color player2Color; 
+    private Color player2Color; 
 
-    int millHighlightsWidth;
+    private int millHighlightsWidth;
 
-    Mills mills;
+    private Mills mills;
 
 
     public MillHighlights(Player player1, Player player2, Mills mills){
         this.player1 = player1;
-        this.player2 = player2;
         this.mills = mills;
         
         player1Color = new Color(

@@ -2,17 +2,15 @@ package Display;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 import Board.Board;
 import Board.Player;
 import Board.Position;
 import Game.Game;
-import Game.GameState;
 
 /**
  * Manages the display
@@ -37,23 +35,24 @@ public class GameDisplay extends AbstractDisplay {
     PieceCounter leftPieceCounter;
     PieceCounter rightPieceCounter;
     JButton exit;
-    JLabel playerTurn;
+    TurnText turnText;
 
 
 
 
     //Commonly used variables for all of the size elements needed
-    int gap;
-    int slotSize;
-    int width; //total width of display
-    int height; //total height of display
-    int boardXPosStart; // x pos for start of board
-    int boardYPosStart;  // y pos for start of board
-    int highlightSize; //size of highlights
-    int pieceCounterWidth; //width of the piece counter
-    int pieceCounterHeight; //height of the piece counter
-    int lineWidth; //width of the lines
-    int millHighlightsWidth; //How wide mill highlights are
+    private int gap;
+    private int slotSize;
+    private  int width; //total width of display
+    private int height; //total height of display
+    private int boardXPosStart; // x pos for start of board
+    private int boardYPosStart;  // y pos for start of board
+    private int highlightSize; //size of highlights
+    private int pieceCounterWidth; //width of the piece counter
+    private int pieceCounterHeight; //height of the piece counter
+    private int lineWidth; //width of the lines
+    private int millHighlightsWidth; //How wide mill highlights are
+    private int fontSize; //Size of font for text
 
     
     
@@ -82,11 +81,12 @@ public class GameDisplay extends AbstractDisplay {
         exit.addActionListener(e -> window.displayMenu());
         window.add(exit); 
 
-        playerTurn = new JLabel("Currently " + game.getInTurnPlayer().getName() + "'s Turn",SwingConstants.CENTER);
-        playerTurn.setBorder(new javax.swing.border.LineBorder(Color.black, 3));
-        playerTurn.setOpaque(true);
-        playerTurn.setBackground(Color.white);
-        window.add(playerTurn);
+        // playerTurn = new JLabel("Currently " + game.getInTurnPlayer().getName() + "'s Turn",SwingConstants.CENTER);
+        turnText = new TurnText();
+        turnText.setBorder(new javax.swing.border.LineBorder(Color.black, 3));
+        turnText.setOpaque(true);
+        turnText.setBackground(Color.white);
+        window.add(turnText);
     
 
         //Add layers to the frame
@@ -115,14 +115,13 @@ public class GameDisplay extends AbstractDisplay {
             }
         }
 
-
         removeHighlights();
+        turnText.setText(game.getInTurnPlayer(), game.getGameState());
 
-        if (game.getGameState() != GameState.POSTGAME) {
-            displayPossibleMoveHighlights(board.getPossibleMoves(game.getGameState(), game.getSelectedPiece(), game.getInTurnPlayer()), game.getInTurnPlayer().getColour());
-            playerTurn.setText("Currently " + game.getInTurnPlayer().getName() + "'s Turn");
-        }
-
+        displayPossibleMoveHighlights(board.getPossibleMoves(game.getGameState(), 
+                                          game.getSelectedPiece(), game.getInTurnPlayer(),game.getNotInTurnPlayer()), 
+                                          game.getInTurnPlayer().getColour()); 
+                        
         window.repaint();
     }
 
@@ -167,6 +166,8 @@ public class GameDisplay extends AbstractDisplay {
         boardXPosStart = width / 2  - gap * 3 ;
         boardYPosStart = height / 2  - gap * 3 ;
 
+        fontSize = minDim / 50;
+
         pieceCounterWidth = minDim / 17;
         pieceCounterHeight = (int) (pieceCounterWidth * 3.8);
 
@@ -176,7 +177,7 @@ public class GameDisplay extends AbstractDisplay {
     }
 
     public void playerWins(Player player){
-        playerTurn.setText(player.getName() + " Wins!");
+        
 
         Color baseWinnerColor = new Color(
             game.getInTurnPlayer().getColour().getRed(), 
@@ -217,9 +218,11 @@ public class GameDisplay extends AbstractDisplay {
         millHighlights.setLocation(boardXPosStart - millHighlightsWidth / 2, boardYPosStart - millHighlightsWidth / 2);
         millHighlights.setSize(gap*6 + millHighlightsWidth, gap*6 + millHighlightsWidth);
         
-        playerTurn.setBounds(width/2 - gap*3,boardYPosStart/3,gap*6,boardYPosStart/3);
+        turnText.setBounds(width/2 - gap*3,boardYPosStart/3,gap*6,boardYPosStart/3);
+        turnText.setFont(new Font("Serif", Font.PLAIN, fontSize));
 
         exit.setBounds(width/2-gap,height * 6 / 7 ,gap*2,boardYPosStart/3);
+        exit.setFont(new Font("Serif", Font.BOLD, fontSize));
 
 
     }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Mills {
 
 	//Stores all of the mills
-	ArrayList<Position[]> millArray = new ArrayList<Position[]>();
+	private ArrayList<Position[]> millArray = new ArrayList<Position[]>();
 
 	public boolean hasPieceInMill(Player player){
 		for (Position[] posLst : millArray){
@@ -24,7 +24,6 @@ public class Mills {
 
 		ArrayList<Piece> pieces = player.getPieces();
 		for (Piece piece : pieces) {
-			System.out.println(piece.getPosition() != null);
 			
 			if (piece.getPosition() != null && !isInMill(piece.getPosition()) ){
 				return true;

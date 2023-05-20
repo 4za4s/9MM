@@ -9,12 +9,10 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
 
 import Game.Game;
-import Game.GameState;
 
 public class Window extends JFrame{
-    GameState mode = GameState.PREGAME;
-    AbstractDisplay currentDisplay;
-    Window window = this;
+    private AbstractDisplay currentDisplay;
+    private Window window = this;
     private final int minSize = 700; //minimum size the board can display as 
     private final int maxSize = 2000; //minimum size the board can display as 
     private Dimension size;

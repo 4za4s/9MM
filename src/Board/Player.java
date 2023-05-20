@@ -8,11 +8,11 @@ import java.util.ArrayList;
  */
 public class Player {
     private Color colour;
-    private String playerName;
-    private ArrayList<Piece> pieces = new ArrayList<Piece>();
-    private int piecesPlaced = 0;
-    private int piecesLost = 0;
-    public final int maxPieces = 4;
+    private String playerName; //name of player
+    private ArrayList<Piece> pieces = new ArrayList<Piece>(); //list of pieces player owns
+    private int piecesPlaced = 0; //how many pieces a player has plaed so far
+    private int piecesLost = 0; //how many pieces playe has lost
+    public final int maxPieces = 9; //how many pieces a player can place
 
     /**
      * Class constructor

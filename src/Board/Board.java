@@ -9,9 +9,9 @@ import Game.GameState;
  * movement
  */
 public class Board {
-    ArrayList<Position> positions = new ArrayList<Position>();
-    ArrayList<Position> possibleMoves;
-    Mills mills;
+    private ArrayList<Position> positions = new ArrayList<Position>();
+    private ArrayList<Position> possibleMoves;
+    private Mills mills;
 
     private int[][] positionLocations = { 
         { 0, 0 }, { 0, 3 }, { 0, 6 },   // {row,column}
@@ -123,7 +123,7 @@ public class Board {
      * @param piece the piece to get the moves for
      * @return ArrayList of possible moves
      */
-    public ArrayList<Position> getPossibleMoves(GameState gameState, Piece piece, Player player) {
+    public ArrayList<Position> getPossibleMoves(GameState gameState, Piece piece, Player inTurnPlayer, Player notInTurnPlayer) {
 
         switch (gameState) {
             // Currently pieces can move anywhere no matter the game state
@@ -154,13 +154,12 @@ public class Board {
                 possibleMoves = new ArrayList<Position>();
 
                 //first work out if player to take has pieces in a mill
-                if ( mills.playerHasPieceNotInMill(player)){
+                if ( mills.playerHasPieceNotInMill(notInTurnPlayer)){
 
-                    for (Position position : positions) {
-                        if (position.getPiece() != null && 
-                            position.getPiece().getOwner() != player &&
-                            !mills.isInMill(position)) {
-                            possibleMoves.add(position);
+                    for (Piece playerPiece : notInTurnPlayer.getPieces()) {
+                        if (playerPiece.getPosition() != null && 
+                            !mills.isInMill(playerPiece.getPosition())) {
+                            possibleMoves.add(playerPiece.getPosition() );
                         }
                     }
                     
@@ -168,7 +167,7 @@ public class Board {
                 } else { //Allow any piece to be taken
                     for (Position position : positions) {
                         if (position.getPiece() != null && 
-                            position.getPiece().getOwner() != player) {
+                            position.getPiece().getOwner() != inTurnPlayer) {
                             possibleMoves.add(position);
                         }
                     }
@@ -191,8 +190,8 @@ public class Board {
      * @param player
      * @return
      */
-    public boolean isAPossibleMove(GameState gameState, Piece piece, Player player){
-        ArrayList<Position>  possibleMoves = getPossibleMoves( gameState,  piece,  player);
+    public boolean isAPossibleMove(GameState gameState, Piece piece, Player inTurnPlayer, Player notInTurnPlayer){
+        ArrayList<Position> possibleMoves = getPossibleMoves( gameState,  piece,  inTurnPlayer, notInTurnPlayer);
 
         for (Position pos : possibleMoves ){
             if  (piece != null && piece.getPosition() == pos){

@@ -15,8 +15,8 @@ public class ButtonDisplay extends JLayeredPane {
     private Color defaultColour = Color.white;
     private ArrayList<Position> buttons = new ArrayList<Position>();
 
-    int gap; 
-    int slotSize;
+    private int gap; 
+    private int slotSize;
  
     /**
      * Creates the buttons on the display

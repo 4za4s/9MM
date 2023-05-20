@@ -32,8 +32,8 @@ public class Game {
     public Game() {
         this.board = new Board();
 
-        this.players.add(new Player(Color.blue, "Player 1"));
-        this.players.add(new Player(Color.red, "Player 2"));
+        this.players.add(new Player(Color.blue, "Player Blue"));
+        this.players.add(new Player(Color.red, "Player Red"));
         inTurnPlayer = players.get(turn);
         notInTurnPlayer = players.get(turn + 1);
 
@@ -64,7 +64,7 @@ public class Game {
                 int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost();
                 Piece piece = inTurnPlayer.getPieces().get(lastPieceIndex);
 
-                // if (board.isAPossibleMove(gameState, pos.getPiece(), inTurnPlayer)){ //TODO: use this
+                // if (board.isAPossibleMove(gameState, pos.getPiece(), inTurnPlayer)){ //TODO: later refine code to use this
                 if (pos.getPiece() == null) {
                     toTake = board.movePiece(piece, pos);
                     inTurnPlayer.piecePlaced();
@@ -131,7 +131,7 @@ public class Game {
             case TAKING:
                 selectedPiece = pos.getPiece();
 
-                if (board.isAPossibleMove(gameState, selectedPiece, notInTurnPlayer)){ //TODO: not coming true
+                if (board.isAPossibleMove(gameState, selectedPiece, inTurnPlayer, notInTurnPlayer)){ //TODO: not coming true
                     Player opponent = selectedPiece.getOwner();
                     System.out.println("Taking piece");
                     opponent.pieceLost();
@@ -157,7 +157,15 @@ public class Game {
                             gameState = GameState.SELECTING;
                         }
 
+                        //Win conditions
                         checkForPossibleMoves(inTurnPlayer);
+
+                        if (inTurnPlayer.getNoOfPiecesLost() == inTurnPlayer.maxPieces - 2){
+                            gameState = GameState.POSTGAME;
+                            changeTurn();
+                            gameDisplay.playerWins(inTurnPlayer);
+                        }
+                            
                     }
                 } 
                 selectedPiece = null;
@@ -209,7 +217,7 @@ public class Game {
         }
 
         for (Piece p : inTurnPlayer.getPieces()) {
-            if (p.getPosition() != null && board.getPossibleMoves(GameState.MOVING, p, notInTurnPlayer).size() != 0) {
+            if (p.getPosition() != null && board.getPossibleMoves(GameState.MOVING, p, notInTurnPlayer, null).size() != 0) { //TODO: put inTurnPlayer in proper spot
                 return true;
             }
         }
@@ -222,6 +230,11 @@ public class Game {
     public Player getInTurnPlayer() {
         return inTurnPlayer;
     }
+
+    public Player getNotInTurnPlayer() {
+        return notInTurnPlayer;
+    }
+
 
     public Piece getSelectedPiece() {
         return selectedPiece;

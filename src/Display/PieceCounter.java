@@ -11,19 +11,19 @@ import Board.Player;
 
 /**n Display for how many pieces are left */
 public class PieceCounter extends JLayeredPane {
-    Color backgroundColor = Color.black;
-    Color playerColor;
-    Color emptyPieceColor = Color.lightGray;
-    Color enemyColor;
+    private Color backgroundColor = Color.black;
+    private Color playerColor;
+    private Color emptyPieceColor = Color.lightGray;
+    private Color enemyColor;
 
-    int backgroundWidth;
-    int backgroundHeight;
+    private int backgroundWidth;
+    // private int backgroundHeight; //TODO: use?
 
-    int pieceHeight;
-    int pieceGap;
+    private int pieceHeight;
+    private int pieceGap;
 
-    Player player;
-    Player enemy;
+    private Player player;
+    private Player enemy;
 
     public PieceCounter(Player player, Player enemy){
         this.player = player;
@@ -88,7 +88,6 @@ public class PieceCounter extends JLayeredPane {
 
     public void resizeDisplay(int backgroundWidth, int backgroundHeight ) {
         this.backgroundWidth = backgroundWidth;
-        this.backgroundHeight = backgroundHeight;
 
         pieceHeight = backgroundWidth / 5;
         pieceGap = pieceHeight / 3;

@@ -14,8 +14,8 @@ public class Position extends JButton {
     private Position eastNeighbour;
     private Position westNeighbour;
 
-    int row;
-    int column; 
+    private int row;
+    private int column; 
 
     /**
      * Class constructor, starting with a piece
