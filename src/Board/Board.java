@@ -126,7 +126,6 @@ public class Board {
     public ArrayList<Position> getPossibleMoves(GameState gameState, Piece piece, Player inTurnPlayer, Player notInTurnPlayer) {
 
         switch (gameState) {
-            // Currently pieces can move anywhere no matter the game state
             case FLYING:
             case PLACING: 
                 //start with empty list always

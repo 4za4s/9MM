@@ -15,7 +15,7 @@ import Game.Game;
 /**
  * Manages the display
  */
-public class GameDisplay extends AbstractDisplay {
+public class GameDisplay extends Display {
     private Game game;
     private int[][] buttonLocations = { 
         { 0, 0 }, { 0, 3 }, { 0, 6 },   // {row,column}

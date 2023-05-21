@@ -55,7 +55,10 @@ public class Game {
      */
     public void buttonPressed(Position pos) {
 
+        System.out.println("=================");
         System.out.println(gameState);
+        System.out.println(inTurnPlayer.getName() + " pieces lost: " + inTurnPlayer.getNoOfPiecesLost());
+        // System.out.println("Number of pieces left =  " + (opponent.getPieces().size() - opponent.getNoOfPiecesLost()));
         switch (gameState) { 
 
             //Place a piece
@@ -90,7 +93,7 @@ public class Game {
                     selectedPiece = null;
                 } else {
                     selectedPiece = pos.getPiece();
-                    if (inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() > 3){
+                    if (inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() > 3){ //TODO: I think this no work: inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() > 3
                         gameState = GameState.MOVING;
                     } else {
                         gameState = GameState.FLYING;
@@ -131,7 +134,7 @@ public class Game {
             case TAKING:
                 selectedPiece = pos.getPiece();
 
-                if (board.isAPossibleMove(gameState, selectedPiece, inTurnPlayer, notInTurnPlayer)){ //TODO: not coming true
+                if (board.isAPossibleMove(gameState, selectedPiece, inTurnPlayer, notInTurnPlayer)){ 
                     Player opponent = selectedPiece.getOwner();
                     System.out.println("Taking piece");
                     opponent.pieceLost();
@@ -151,7 +154,7 @@ public class Game {
                         changeTurn();
 
                             if  (inTurnPlayer.getNumOfPiecesPlaced() < inTurnPlayer.maxPieces){
-                            gameState = GameState.PLACING; //todo: delete this variable?
+                            gameState = GameState.PLACING; 
 
                         } else {
                             gameState = GameState.SELECTING;

@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-public class MenuDisplay extends AbstractDisplay {
+public class MenuDisplay extends Display {
     private JButton start;
     private JLabel title;
 
