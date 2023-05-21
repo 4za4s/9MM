@@ -54,20 +54,15 @@ public class Game {
      * @param pos the position that was clicked
      */
     public void buttonPressed(Position pos) {
-
-        System.out.println("=================");
-        System.out.println(gameState);
-        System.out.println(inTurnPlayer.getName() + " pieces lost: " + inTurnPlayer.getNoOfPiecesLost());
-        // System.out.println("Number of pieces left =  " + (opponent.getPieces().size() - opponent.getNoOfPiecesLost()));
+        
         switch (gameState) { 
 
             //Place a piece
             case PLACING:
                 //First phase of the game, players place their pieces
-                int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost();
+                int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced();
                 Piece piece = inTurnPlayer.getPieces().get(lastPieceIndex);
 
-                // if (board.isAPossibleMove(gameState, pos.getPiece(), inTurnPlayer)){ //TODO: later refine code to use this
                 if (pos.getPiece() == null) {
                     toTake = board.movePiece(piece, pos);
                     inTurnPlayer.piecePlaced();

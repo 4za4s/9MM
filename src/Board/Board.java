@@ -192,13 +192,11 @@ public class Board {
     public boolean isAPossibleMove(GameState gameState, Piece piece, Player inTurnPlayer, Player notInTurnPlayer){
         ArrayList<Position> possibleMoves = getPossibleMoves( gameState,  piece,  inTurnPlayer, notInTurnPlayer);
 
-        for (Position pos : possibleMoves ){
-            if  (piece != null && piece.getPosition() == pos){
-                return true;
-            }
+        if  (piece == null){
+                return false;
         }
 
-        return false;
+        return possibleMoves.contains(piece.getPosition());
     }
     
     /**
