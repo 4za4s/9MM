@@ -32,10 +32,10 @@ public class GameDisplay extends Display {
     private SelectionHighlights selectionHighlights; //highlight layer for game 
     private Background background; //background layer for game
     private MillHighlights millHighlights;
-    PieceCounter leftPieceCounter;
-    PieceCounter rightPieceCounter;
-    JButton exit;
-    TurnText turnText;
+    private PieceCounter leftPieceCounter;
+    private PieceCounter rightPieceCounter;
+    private JButton exit;
+    private TurnText turnText;
 
 
 

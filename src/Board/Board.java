@@ -166,7 +166,7 @@ public class Board {
                 } else { //Allow any piece to be taken
                     for (Position position : positions) {
                         if (position.getPiece() != null && 
-                            position.getPiece().getOwner() != inTurnPlayer) {
+                        position.getPiece().getOwner() != inTurnPlayer) {
                             possibleMoves.add(position);
                         }
                     }
