@@ -43,7 +43,7 @@ public class GameDisplay extends Display {
     //Commonly used variables for all of the size elements needed
     private int gap;
     private int slotSize;
-    private  int width; //total width of display
+    private int width; //total width of display
     private int height; //total height of display
     private int boardXPosStart; // x pos for start of board
     private int boardYPosStart;  // y pos for start of board
@@ -80,8 +80,7 @@ public class GameDisplay extends Display {
 
         exit.addActionListener(e -> window.displayMenu());
         window.add(exit); 
-
-        // playerTurn = new JLabel("Currently " + game.getInTurnPlayer().getName() + "'s Turn",SwingConstants.CENTER);
+;
         turnText = new TurnText();
         turnText.setBorder(new javax.swing.border.LineBorder(Color.black, 3));
         turnText.setOpaque(true);
@@ -105,6 +104,7 @@ public class GameDisplay extends Display {
      */
     @Override
     public void updateDisplay(){
+
         Board board = game.getBoard();
         for (Position pos : board.getPositions()) {
             if (pos.getPiece() != null) {
@@ -131,12 +131,16 @@ public class GameDisplay extends Display {
      * @param playerColour Colour of the player who's turn it is, for the correct highlight colour
      */
     public void displayPossibleMoveHighlights(ArrayList<Position> possibleMoves, Color playerColour){
+
         Color highlightcolour = new Color(
-            playerColour.getRed(), 
-            playerColour.getGreen(),
-            playerColour.getBlue(),
-            playerColour.getAlpha()*2/5
+            255  -  playerColour.getRed() / 5, 
+            255 -  playerColour.getGreen() / 5,
+            255 -  playerColour.getBlue() / 5
         );
+
+        window.getContentPane().setBackground(highlightcolour);
+
+       
 
         selectionHighlights.addHighlights(possibleMoves, highlightcolour);
     }
