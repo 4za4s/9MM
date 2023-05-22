@@ -15,7 +15,7 @@ import Game.Game;
 /**
  * Manages the display
  */
-public class GameDisplay extends AbstractDisplay {
+public class GameDisplay extends Display {
     private Game game;
     private int[][] buttonLocations = { 
         { 0, 0 }, { 0, 3 }, { 0, 6 },   // {row,column}
@@ -32,10 +32,10 @@ public class GameDisplay extends AbstractDisplay {
     private SelectionHighlights selectionHighlights; //highlight layer for game 
     private Background background; //background layer for game
     private MillHighlights millHighlights;
-    PieceCounter leftPieceCounter;
-    PieceCounter rightPieceCounter;
-    JButton exit;
-    TurnText turnText;
+    private PieceCounter leftPieceCounter;
+    private PieceCounter rightPieceCounter;
+    private JButton exit;
+    private TurnText turnText;
 
 
 

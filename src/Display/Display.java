@@ -4,10 +4,10 @@ import java.awt.Dimension;
 
 import javax.swing.JLayeredPane;
 
-public abstract class AbstractDisplay extends JLayeredPane {
+public abstract class Display extends JLayeredPane {
     Window window;
 
-    public AbstractDisplay(int width, int height, Window window){
+    public Display(int width, int height, Window window){
         this.window = window;
         setPreferredSize(new Dimension(height, width));
     }

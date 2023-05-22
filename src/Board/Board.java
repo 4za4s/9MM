@@ -126,7 +126,6 @@ public class Board {
     public ArrayList<Position> getPossibleMoves(GameState gameState, Piece piece, Player inTurnPlayer, Player notInTurnPlayer) {
 
         switch (gameState) {
-            // Currently pieces can move anywhere no matter the game state
             case FLYING:
             case PLACING: 
                 //start with empty list always
@@ -167,7 +166,7 @@ public class Board {
                 } else { //Allow any piece to be taken
                     for (Position position : positions) {
                         if (position.getPiece() != null && 
-                            position.getPiece().getOwner() != inTurnPlayer) {
+                        position.getPiece().getOwner() != inTurnPlayer) {
                             possibleMoves.add(position);
                         }
                     }
@@ -193,13 +192,11 @@ public class Board {
     public boolean isAPossibleMove(GameState gameState, Piece piece, Player inTurnPlayer, Player notInTurnPlayer){
         ArrayList<Position> possibleMoves = getPossibleMoves( gameState,  piece,  inTurnPlayer, notInTurnPlayer);
 
-        for (Position pos : possibleMoves ){
-            if  (piece != null && piece.getPosition() == pos){
-                return true;
-            }
+        if  (piece == null){
+                return false;
         }
 
-        return false;
+        return possibleMoves.contains(piece.getPosition());
     }
     
     /**

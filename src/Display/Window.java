@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import Game.Game;
 
 public class Window extends JFrame{
-    private AbstractDisplay currentDisplay;
+    private Display currentDisplay;
     private Window window = this;
     private final int minSize = 700; //minimum size the board can display as 
     private final int maxSize = 2000; //minimum size the board can display as 

@@ -54,17 +54,15 @@ public class Game {
      * @param pos the position that was clicked
      */
     public void buttonPressed(Position pos) {
-
-        System.out.println(gameState);
+        
         switch (gameState) { 
 
             //Place a piece
             case PLACING:
                 //First phase of the game, players place their pieces
-                int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost();
+                int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced();
                 Piece piece = inTurnPlayer.getPieces().get(lastPieceIndex);
 
-                // if (board.isAPossibleMove(gameState, pos.getPiece(), inTurnPlayer)){ //TODO: later refine code to use this
                 if (pos.getPiece() == null) {
                     toTake = board.movePiece(piece, pos);
                     inTurnPlayer.piecePlaced();
@@ -90,7 +88,7 @@ public class Game {
                     selectedPiece = null;
                 } else {
                     selectedPiece = pos.getPiece();
-                    if (inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() > 3){
+                    if (inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() > 3){ //TODO: I think this no work: inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() > 3
                         gameState = GameState.MOVING;
                     } else {
                         gameState = GameState.FLYING;
@@ -131,7 +129,7 @@ public class Game {
             case TAKING:
                 selectedPiece = pos.getPiece();
 
-                if (board.isAPossibleMove(gameState, selectedPiece, inTurnPlayer, notInTurnPlayer)){ //TODO: not coming true
+                if (board.isAPossibleMove(gameState, selectedPiece, inTurnPlayer, notInTurnPlayer)){ 
                     Player opponent = selectedPiece.getOwner();
                     System.out.println("Taking piece");
                     opponent.pieceLost();
@@ -151,7 +149,7 @@ public class Game {
                         changeTurn();
 
                             if  (inTurnPlayer.getNumOfPiecesPlaced() < inTurnPlayer.maxPieces){
-                            gameState = GameState.PLACING; //todo: delete this variable?
+                            gameState = GameState.PLACING; 
 
                         } else {
                             gameState = GameState.SELECTING;
