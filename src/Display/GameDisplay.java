@@ -105,6 +105,9 @@ public class GameDisplay extends Display {
     @Override
     public void updateDisplay(){
 
+
+       
+
         Board board = game.getBoard();
         for (Position pos : board.getPositions()) {
             if (pos.getPiece() != null) {
@@ -133,14 +136,12 @@ public class GameDisplay extends Display {
     public void displayPossibleMoveHighlights(ArrayList<Position> possibleMoves, Color playerColour){
 
         Color highlightcolour = new Color(
-            255  -  playerColour.getRed() / 5, 
-            255 -  playerColour.getGreen() / 5,
-            255 -  playerColour.getBlue() / 5
+            playerColour.getRed(), 
+            playerColour.getGreen(),
+            playerColour.getBlue(),
+            playerColour.getAlpha()*2/5
         );
 
-        window.getContentPane().setBackground(highlightcolour);
-
-       
 
         selectionHighlights.addHighlights(possibleMoves, highlightcolour);
     }
@@ -183,11 +184,11 @@ public class GameDisplay extends Display {
     public void playerWins(Player player){
         
 
+        //Colour which is a lighter version of the player's icon
         Color baseWinnerColor = new Color(
-            game.getInTurnPlayer().getColour().getRed(), 
-            game.getInTurnPlayer().getColour().getGreen(),
-            game.getInTurnPlayer().getColour().getBlue(),
-            game.getInTurnPlayer().getColour().getAlpha()*1/5
+            255  - (255 - game.getInTurnPlayer().getColour().getRed() )/ 5, 
+            255 -  (255 - game.getInTurnPlayer().getColour().getGreen()) / 5,
+            255 -  (255 - game.getInTurnPlayer().getColour().getBlue()) / 5
         );
 
 
