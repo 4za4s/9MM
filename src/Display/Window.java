@@ -25,7 +25,7 @@ public class Window extends JFrame{
      * Class constructor
      */
     public Window(){
-        super("9 Mans Morris");
+        super("Nine Man's Morris");
         //Frame settings
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
