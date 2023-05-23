@@ -12,19 +12,20 @@ import Board.Mills;
 import Board.Player;
 import Board.Position;
 
+/**
+ * Highlights mills on the board
+ */
 public class MillHighlights extends JLayeredPane{
    
+    private Player player1; //a player of the game
+    private Color player1Color; //one colour use to work out highlight colour
+    private Color player2Color; //another colour use to work out highlight colour
+    private int millHighlightsWidth; //how wide should highights be
+    private Mills mills; //mills for board being highlighted
 
-    private Player player1;
-    private Color player1Color; 
-
-    private Color player2Color; 
-
-    private int millHighlightsWidth;
-
-    private Mills mills;
-
-
+    /**
+     * Class constructor
+     */
     public MillHighlights(Player player1, Player player2, Mills mills){
         this.player1 = player1;
         this.mills = mills;
@@ -46,14 +47,8 @@ public class MillHighlights extends JLayeredPane{
 
     }
 
-
-     /**
-     * Draws mill highlights
-     */
     @Override
     public void paintComponent(Graphics g ){
-
-        
 
         Graphics2D g2 = (Graphics2D) g;
 
@@ -89,14 +84,14 @@ public class MillHighlights extends JLayeredPane{
                         millStartYpos + millHighlightsWidth /2,
                         millEndXpos + millHighlightsWidth /2,
                         millEndYpos + millHighlightsWidth /2);
-            
-
         }
-
-
     }
 
 
+    /**
+     * Resizes the highlights
+     * @param millHighlightsWidth what width to resize highlights to
+     */
     public void resizeDisplay(int millHighlightsWidth){
         this.millHighlightsWidth = millHighlightsWidth;
 

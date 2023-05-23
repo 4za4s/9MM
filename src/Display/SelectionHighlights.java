@@ -56,8 +56,10 @@ class SelectionHighlights extends JLayeredPane {
         }
     }
 
-
-
+    /**
+     * Resizes the highlights
+     * @param highlightSize size to resize the highlights to
+     */
     public void resizeDisplay(int highlightSize) {
         this.highlightSize = highlightSize;
     }

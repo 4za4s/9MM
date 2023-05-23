@@ -7,27 +7,33 @@ import java.awt.Insets;
 import javax.swing.border.Border;
 
 
-// Made using : https://stackoverflow.com/questions/423950/rounded-swing-jbutton-using-java
+/**
+ * Aloows for the positions to be round when they are displayed. Made using
+ * advice from: https://stackoverflow.com/questions/423950/rounded-swing-jbutton-using-java
+ */
 public class RoundedBorder implements Border {
 
-    private int radius;
+    private int radius; //radius of positions
 
 
+    /**
+     * Constructor
+     */
     public RoundedBorder(int radius) {
         this.radius = radius;
     }
 
-
+    @Override
     public Insets getBorderInsets(Component c) {
         return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
     }
 
-
+    @Override
     public boolean isBorderOpaque() {
         return true;
     }
 
-
+    @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Color colour = g.getColor();
         g.setColor(Color.black);

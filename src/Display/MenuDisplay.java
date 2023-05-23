@@ -9,8 +9,9 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 public class MenuDisplay extends Display {
-    private JButton start;
-    private JLabel title;
+
+    private JButton start; //start game button
+    private JLabel title; //game title
 
     /**
      * Class constructor

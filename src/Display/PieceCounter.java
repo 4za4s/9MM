@@ -4,12 +4,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
 import javax.swing.JLayeredPane;
-
 import Board.Player;
 
-/**n Display for how many pieces are left */
+/**
+ * Display for how many pieces are left
+ */
 public class PieceCounter extends JLayeredPane {
     private Color backgroundColor = Color.black;
     private Color playerColor;
@@ -17,7 +17,6 @@ public class PieceCounter extends JLayeredPane {
     private Color enemyColor;
 
     private int backgroundWidth;
-    // private int backgroundHeight; //TODO: use?
 
     private int pieceHeight;
     private int pieceGap;
@@ -34,7 +33,7 @@ public class PieceCounter extends JLayeredPane {
     }
 
     /**
-     * Finds the colour that the slot at position i in the piece counter should be
+     * Finds the colour that the slot at position 'i' in the piece counter should be
      * @param i
      * @return
      */
@@ -85,8 +84,11 @@ public class PieceCounter extends JLayeredPane {
 
 
 
-
-    public void resizeDisplay(int backgroundWidth, int backgroundHeight ) {
+    /**
+     * Resizes accoording to input
+     * @param backgroundWidth how wide to be
+     */
+    public void resizeDisplay(int backgroundWidth ) {
         this.backgroundWidth = backgroundWidth;
 
         pieceHeight = backgroundWidth / 5;

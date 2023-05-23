@@ -4,10 +4,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 /**
- * Represents one of the players of the game
+ * One of the players of the 9MM game
  */
 public class Player {
-    private Color colour;
+    private Color colour; // colour of player's pieces
     private String playerName; //name of player
     private ArrayList<Piece> pieces = new ArrayList<Piece>(); //list of pieces player owns
     private int piecesPlaced = 0; //how many pieces a player has plaed so far

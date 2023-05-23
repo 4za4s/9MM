@@ -4,12 +4,19 @@ import java.util.ArrayList;
 
 
 
-/* Manages the Mills for a game */
+/**
+ * Manages the Mills for a game 
+ */
 public class Mills {
 
-	//Stores all of the mills
-	private ArrayList<Position[]> millArray = new ArrayList<Position[]>();
+	
+	private ArrayList<Position[]> millArray = new ArrayList<Position[]>(); //Stores all of the mills
 
+	/**
+	 * Works out if a players has a piece is in a mill
+	 * @param player placer to check
+	 * @return if player has a piece in a mill
+	 */
 	public boolean hasPieceInMill(Player player){
 		for (Position[] posLst : millArray){
 			if (posLst[0].getPiece().getOwner() == player){
@@ -20,12 +27,17 @@ public class Mills {
 		return false;
 	}
 
+	/**
+	 * Works out if a players has a piece NOT in a mill
+	 * @param player placer to check
+	 * @return if a player has a piece not in a mill
+	 */
 	public boolean playerHasPieceNotInMill(Player player){
 
 		ArrayList<Piece> pieces = player.getPieces();
 		for (Piece piece : pieces) {
 			
-			if (piece.getPosition() != null && !isInMill(piece.getPosition()) ){
+			if (piece.getPosition() != null && !isInMill(piece) ){
 				return true;
 			}
 		}
@@ -34,11 +46,16 @@ public class Mills {
 
 	}
 
-	public boolean isInMill(Position pos){
-		//Scan though the whole 
+	/**
+	 * If a piece is in a mill
+	 * @param piece piece to check
+	 * @return if the piece is in a mill
+	 */
+	public boolean isInMill(Piece piece){
+		//Scan though all mills to check
 		for (Position[] posLst : millArray) {
 			for (Position posVar : posLst) {
-				if (posVar == pos){
+				if (posVar.getPiece() == piece){
 					return true;
 				}
 			}
@@ -46,6 +63,11 @@ public class Mills {
 		return false;
 	}
 
+	/**
+	 * Adds a mill
+	 * @param mill mill to add
+	 * @return if the mill was successfully added
+	 */
 	public boolean addMill(Position[] mill){
 		if (mill != null && mill.length == 3){
 			millArray.add(mill);
@@ -54,6 +76,10 @@ public class Mills {
 		return false;
 	}
 
+	/**
+	 * Removes mills that include a position
+	 * @param pos position to check
+	 */
 	public void removeMill(Position pos){
 		for (int i = 0; i < millArray.size(); i++) {
 			for (int j = 0; j < millArray.get(i).length; j++) {
@@ -65,61 +91,58 @@ public class Mills {
 		}
 	}
 
-	public Position[] getMill(Position pos){
-		for (Position[] posLst : millArray) {
-			for (Position posVar : posLst) {
-				if (posVar == pos){
-					return posLst;
-				}
-			}
-		}
-		return null;
-	}
 
+
+	/**
+	 * Get all of the mills
+	 * @return list of mills
+	 */
 	public ArrayList<Position[]> getMills(){
 		return millArray;
 	}
 
 
-	public Position[] verticalMill(Position pos){
-		Position north = pos.getNorthNeighbour();
-		Position south = pos.getSouthNeighbour();
-		if (north == null && south == null){
-			return null;
-		}
-		return null;
-	}
-
+	/**
+	 * Creates mills if the piece is in a mill
+	 * @param piece piece to check
+	 * @return number of mills created
+	 */
 	public int createMill(Piece piece){
-		int mills = 0;
+		int millsCreated = 0;
 		if (piece.getPosition() == null){
-			return mills;
+			return millsCreated;
 		}
 
 		Position pos = piece.getPosition();
 
 		if (addMill(horizontalMill(piece))){
-			mills++;
+			millsCreated++;
 		} 
 		if (addMill(verticalMill(piece))){
-			mills++;
+			millsCreated++;
 		} 
 		if (pos.getWestNeighbour() != null && addMill(horizontalMill(pos.getWestNeighbour().getPiece()))){
-			mills++;
+			millsCreated++;
 		} 
 		if (pos.getEastNeighbour() != null && addMill(horizontalMill(pos.getEastNeighbour().getPiece()))){
-			mills++;
+			millsCreated++;
 		} 
 		if (pos.getNorthNeighbour() != null && addMill(verticalMill(pos.getNorthNeighbour().getPiece()))){
-			mills++;
+			millsCreated++;
 		} 
 		if (pos.getSouthNeighbour() != null && addMill(verticalMill(pos.getSouthNeighbour().getPiece()))){
-			mills++;
+			millsCreated++;
 		} 
-		return mills;
+		return millsCreated;
 	}
 
-	public Position[] horizontalMill(Piece piece){
+
+	/**
+	 * Makes a horizontal mill
+	 * @param piece piece to make mill around
+	 * @return the new mill if the piece creates a mil
+	 */
+	private Position[] horizontalMill(Piece piece){
 		if (piece == null || piece.getPosition() == null){
 			return null;
 		}
@@ -138,7 +161,12 @@ public class Mills {
 		return null;
 	}	
 
-	public Position[] verticalMill(Piece piece){
+	/**
+	 * Makes a vertical mill
+	 * @param piece piece to make mill around
+	 * @return the new mill if the piece creates a mil
+	 */
+	private Position[] verticalMill(Piece piece){
 		if (piece == null || piece.getPosition() == null){
 			return null;
 		}

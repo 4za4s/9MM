@@ -50,6 +50,11 @@ class Background extends JLayeredPane {
     }
 
 
+    /**
+     * Resizes the display to match given inputs
+     * @param gap distance between concentric squares
+     * @param lineWidth how thick to make lines
+     */
     public void resizeDisplay(int gap, int lineWidth) {
         this.gap = gap;
         this.lineWidth = lineWidth;

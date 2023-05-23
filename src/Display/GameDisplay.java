@@ -13,10 +13,10 @@ import Board.Position;
 import Game.Game;
 
 /**
- * Manages the display
+ * Manages the display for a game
  */
 public class GameDisplay extends Display {
-    private Game game;
+    private Game game; //game that this class manages display for
     private int[][] buttonLocations = { 
         { 0, 0 }, { 0, 3 }, { 0, 6 },   // {row,column}
         { 1, 1 }, { 1, 3 }, { 1, 5 }, 
@@ -31,18 +31,16 @@ public class GameDisplay extends Display {
     private ButtonDisplay buttonDisplay; //button layer for game
     private SelectionHighlights selectionHighlights; //highlight layer for game 
     private Background background; //background layer for game
-    private MillHighlights millHighlights;
-    private PieceCounter leftPieceCounter;
-    private PieceCounter rightPieceCounter;
-    private JButton exit;
-    private TurnText turnText;
+    private MillHighlights millHighlights; //highlighs the mills
+    private PieceCounter leftPieceCounter; //shows left piece counter
+    private PieceCounter rightPieceCounter; //shows right piece counter
+    private JButton exit; //exit button
+    private TurnText turnText; //text telling player what to do
 
 
-
-
-    //Commonly used variables for all of the size elements needed
-    private int gap;
-    private int slotSize;
+    //Variables for all of the size elements needed
+    private int gap; //distance between concentric squares of buttons
+    private int slotSize; //size of buttons
     private int width; //total width of display
     private int height; //total height of display
     private int boardXPosStart; // x pos for start of board
@@ -99,14 +97,9 @@ public class GameDisplay extends Display {
         window.repaint();
     }
 
-    /**
-     * Updates the display 
-     */
+ 
     @Override
     public void updateDisplay(){
-
-
-       
 
         Board board = game.getBoard();
         for (Position pos : board.getPositions()) {
@@ -181,12 +174,16 @@ public class GameDisplay extends Display {
 
     }
 
+    /**
+     * What to display when a player wins
+     * @param player play who won
+     */
     public void playerWins(Player player){
         
 
         //Colour which is a lighter version of the player's icon
         Color baseWinnerColor = new Color(
-            255  - (255 - game.getInTurnPlayer().getColour().getRed() )/ 5, 
+            255  - (255 - game.getInTurnPlayer().getColour().getRed() ) / 5, 
             255 -  (255 - game.getInTurnPlayer().getColour().getGreen()) / 5,
             255 -  (255 - game.getInTurnPlayer().getColour().getBlue()) / 5
         );
@@ -195,6 +192,8 @@ public class GameDisplay extends Display {
         window.getContentPane().setBackground(baseWinnerColor);
     }
 
+
+    @Override
     public void resizeDisplay(Dimension size) {
 
         setBoardElementsSize(size);
@@ -211,15 +210,15 @@ public class GameDisplay extends Display {
         background.setLocation(boardXPosStart - lineWidth / 2, boardYPosStart - lineWidth / 2);
         background.setSize(gap*6 + lineWidth, gap*6 + lineWidth);
 
-        leftPieceCounter.resizeDisplay(pieceCounterWidth,pieceCounterHeight);
+        leftPieceCounter.resizeDisplay(pieceCounterWidth);
         leftPieceCounter.setLocation(boardXPosStart / 2 - pieceCounterWidth / 2,  height / 2 - pieceCounterHeight / 2 );
         leftPieceCounter.setSize(pieceCounterWidth, pieceCounterHeight);
 
-        rightPieceCounter.resizeDisplay(pieceCounterWidth,pieceCounterHeight);
+        rightPieceCounter.resizeDisplay(pieceCounterWidth);
         rightPieceCounter.setLocation(width - boardXPosStart / 2 - pieceCounterWidth / 2,  height / 2 - pieceCounterHeight / 2 );
         rightPieceCounter.setSize(pieceCounterWidth, pieceCounterHeight);
 
-        millHighlights.resizeDisplay(millHighlightsWidth); //Needs to be resized after button display
+        millHighlights.resizeDisplay(millHighlightsWidth);
         millHighlights.setLocation(boardXPosStart - millHighlightsWidth / 2, boardYPosStart - millHighlightsWidth / 2);
         millHighlights.setSize(gap*6 + millHighlightsWidth, gap*6 + millHighlightsWidth);
         

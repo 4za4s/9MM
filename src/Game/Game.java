@@ -11,19 +11,19 @@ import Display.GameDisplay;
 
 
 /**
- * Main class that handles all the game logic and actions
+ * Handles all the game logic and actions
  */
 public class Game {
-    private GameDisplay gameDisplay;
-    private Board board;
-    private ArrayList<Player> players = new ArrayList<Player>();
-    private Player inTurnPlayer;
-    private Player notInTurnPlayer;
-    private int turn = 0;
-    private int turnCounter = 0;
-    private GameState gameState;
+    private GameDisplay gameDisplay; //display for the game
+    private Board board; //board the game is moving pieces around on
+    private ArrayList<Player> players = new ArrayList<Player>(); //players of the game 
+    private Player inTurnPlayer; //player whos turn it is to make an action
+    private Player notInTurnPlayer; //player who is not in turn to make an action
+    private int turnIndex = 0; //index in list of player whose turn it is
+    private int turnCounter = 0; //counter for nubmer of turns passes
+    private GameState gameState; //what state the game is in
     private Piece selectedPiece; //piece that has been selected to be moved
-    private int toTake = 0;
+    private int toTake = 0; //how many pieces are left to take. In 1 turn a player can take up to 2 pieces
 
 
     /**
@@ -34,17 +34,25 @@ public class Game {
 
         this.players.add(new Player(Color.blue, "Player Blue"));
         this.players.add(new Player(Color.red, "Player Red"));
-        inTurnPlayer = players.get(turn);
-        notInTurnPlayer = players.get(turn + 1);
+        inTurnPlayer = players.get(turnIndex);
+        notInTurnPlayer = players.get(turnIndex + 1);
 
         //Place pieces
         gameState = GameState.PLACING;
     }
 
+    /**
+     * Get the board the game is base on
+     * @return the board
+     */
     public Board getBoard() {
         return board;
     }
 
+    /**
+     * Get current game state
+     * @return current game state
+     */
     public GameState getGameState() {
         return gameState;
     }
@@ -129,7 +137,7 @@ public class Game {
             case TAKING:
                 selectedPiece = pos.getPiece();
 
-                if (board.isAPossibleMove(gameState, selectedPiece, inTurnPlayer, notInTurnPlayer)){ 
+                if (board.canTakePiece(gameState, selectedPiece, inTurnPlayer, notInTurnPlayer)){ 
                     Player opponent = selectedPiece.getOwner();
                     System.out.println("Taking piece");
                     opponent.pieceLost();
@@ -160,8 +168,7 @@ public class Game {
 
                         if (inTurnPlayer.getNoOfPiecesLost() == inTurnPlayer.maxPieces - 2){
                             gameState = GameState.POSTGAME;
-                            changeTurn();
-                            gameDisplay.playerWins(inTurnPlayer);
+                            gameDisplay.playerWins(notInTurnPlayer);
                         }
                             
                     }
@@ -185,30 +192,18 @@ public class Game {
      * Changes the player who is in turn
      */
     public void changeTurn() {
-        turn = (++turnCounter) % players.size();
+        turnIndex = (++turnCounter) % players.size();
         System.out.println("Turn = " + turnCounter);
         notInTurnPlayer = inTurnPlayer;
-        inTurnPlayer = players.get(turn);
+        inTurnPlayer = players.get(turnIndex);
         
     }
 
-    public boolean canTakePiece(Piece piece, Player opponent) {
-        if (piece == null) {
-            return false;
-        }
-        if (piece.getOwner() == inTurnPlayer) {
-            return false;
-        }
-        if (piece.isInMill()) {
-            for (Piece p : opponent.getPieces()) {
-                if (!p.isInMill()) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
+    /**
+     * Checks if it is possible for a ;layer to make any moves. Important because no moves = lose
+     * @param player player to check
+     * @return if any moves are possible
+     */
     public boolean checkForPossibleMoves(Player player){
         if (gameState == GameState.PLACING) {
             return true;
@@ -225,15 +220,27 @@ public class Game {
         return false;
     }
 
+    /**
+     * Gets player who is in turn
+     * @return player who is in turn
+     */
     public Player getInTurnPlayer() {
         return inTurnPlayer;
     }
 
+    /**
+     * Gets player who is not in turn
+     * @return player who is not in turn
+     */
     public Player getNotInTurnPlayer() {
         return notInTurnPlayer;
     }
 
 
+    /**
+     * Gets currently selected piece (eg the piece which you have just selected to be move)
+     * @return
+     */
     public Piece getSelectedPiece() {
         return selectedPiece;
     }
@@ -247,6 +254,10 @@ public class Game {
         gameDisplay.updateDisplay();
     }
 
+    /**
+     * Gets list of all players
+     * @return alist of all players
+     */
     public ArrayList<Player> getPlayers() {
         return players;
     }

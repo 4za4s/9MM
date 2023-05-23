@@ -10,13 +10,16 @@ import javax.swing.JFrame;
 
 import Game.Game;
 
+/**
+ * The computer window that the game runs in (all new games will share this window)
+ */
 public class Window extends JFrame{
-    private Display currentDisplay;
-    private Window window = this;
+    private Display currentDisplay; //what is currently being display - eg a game
+    private Window window = this; //this
     private final int minSize = 700; //minimum size the board can display as 
     private final int maxSize = 2000; //minimum size the board can display as 
-    private Dimension size;
-    private final Color backgroundColor = new Color(244,224,190);
+    private Dimension size; //how big this window is
+    private final Color backgroundColor = new Color(244,224,190); //Background colour of this window
 
     /**
      * Class constructor
@@ -42,7 +45,11 @@ public class Window extends JFrame{
         resizing();
     }
 
-    /* Enables resizing */
+
+    /**
+     * Listerner to check for resizing. Enables
+     *  resizing the window to resize its contents
+     */
     private void resizing(){
 
         addComponentListener(new ComponentAdapter() {
@@ -59,6 +66,9 @@ public class Window extends JFrame{
         });
     }
 
+    /**
+     * Display a game on the window
+     */
     public void displayGame(){
         getContentPane().removeAll();
         Game game = new Game();
@@ -71,6 +81,9 @@ public class Window extends JFrame{
         repaint();
     }
 
+    /**
+     * Display the main menu on the window
+     */
     public void displayMenu(){
         getContentPane().removeAll();
         getContentPane().setBackground(backgroundColor);
@@ -83,13 +96,11 @@ public class Window extends JFrame{
     }
 
     /**
-     * Set window size of game relative to display
+     * Set window size of game relative to display. Height and Width calculated relative 
+     * to the screen so the game is roughly the same size on most screens
      */
     private void setWindowSize(){
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        
-        // Height and Width calculated relative to the screen so the 
-        // game is roughly the same size on most screens
         int frameHeight = Math.max(minSize,(int)size.getHeight()*5/6);
         int frameWidth = Math.max(minSize,frameHeight*13/14);
         this.setLocation((int) size.getWidth()/2 - frameWidth/2, (int) size.getHeight()/2-frameHeight/2);

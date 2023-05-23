@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 
 /**
- * Represent a position on the board, holds a single piece or nothing and has a list of neighbours
+ * RA position on the board, holds a single piece or nothing and has a list of its neighbours
  */
 public class Position extends JButton {
-    private Piece piece;
-    private Position northNeighbour;
-    private Position southNeighbour;
-    private Position eastNeighbour;
-    private Position westNeighbour;
+    private Piece piece; //the piece it holds
+    private Position northNeighbour; //north neighbour
+    private Position southNeighbour; //south neighbour
+    private Position eastNeighbour; //east neighbour
+    private Position westNeighbour; //west neightbour
 
-    private int row;
-    private int column; 
+    private int row; //row of the piece (on the board)
+    private int column; //column of the piece (on the board)
 
     /**
      * Class constructor, starting with a piece
@@ -31,35 +31,70 @@ public class Position extends JButton {
         this.piece = null;
     }
 
+    /**
+     * Sets the north neighbour of the position 
+     * @param northNeighbour the postition to set as north neighbour
+     */
     public void setNorthNeighbour(Position northNeighbour){
         this.northNeighbour = northNeighbour;
     }
 
+    /**
+     * Sets the south neighbour of the position 
+     * @param southNeighbour the postition to set as south neighbour
+     */
     public void setSouthNeighbour(Position southNeighbour){
         this.southNeighbour = southNeighbour;
     }
 
+    /**
+     * Sets the east neighbour of the position 
+     * @param eastNeighbour the postition to set as east neighbour
+     */
     public void setEastNeighbour(Position eastNeighbour){
         this.eastNeighbour = eastNeighbour;
     }
 
+    /**
+     * Sets the west neighbour of the position 
+     * @param westNeighbour the postition to set as west neighbour
+     */
     public void setWestNeighbour(Position westNeighbour){
         this.westNeighbour = westNeighbour;
     }
 
+    /**
+     * Gets north neighbour of the piece
+     * @return the north neighbour
+     */
     public Position getNorthNeighbour(){
        return northNeighbour;
     }
 
+    /**
+     * Gets south neighbour of the piece
+     * @return the south neighbour
+     */
     public Position getSouthNeighbour(){
         return southNeighbour;
     }
 
+
+
+    /**
+     * Gets east neighbour of the piece
+     * @return the east neighbour
+     */
     public Position getEastNeighbour(){
         return eastNeighbour;
     }
 
 
+
+    /**
+     * Gets west neighbour of the piece
+     * @return the west neighbour
+     */
     public Position getWestNeighbour(){
         return westNeighbour;
     }
@@ -103,16 +138,29 @@ public class Position extends JButton {
         this.piece = piece;
     }
 
+    /**
+     * sets the row and column variables
+     * @param row row to set
+     * @param column column to set
+     */
     public void setRowColumn(int row, int column){
         this.row = row;
         this.column = column;
     }
 
+    /**
+     * Gets the row
+     * @return row
+     */
     public int getRow(){
         return this.row;
 
     }
 
+    /**
+     * Gets the column
+     * @return column
+     */
     public int getColumn(){
         return column;
     }
