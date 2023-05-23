@@ -117,12 +117,6 @@ public class Board {
         return mills.createMill(piece);
     }
 
-    /**
-      
-     * @param gameState the current game state
-     * @param piece the piece to get the moves for
-     * @return
-     */
 
      /**
       * Calculates the possible moves for a piece

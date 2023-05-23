@@ -183,9 +183,9 @@ public class GameDisplay extends Display {
 
         //Colour which is a lighter version of the player's icon
         Color baseWinnerColor = new Color(
-            255  - (255 - game.getInTurnPlayer().getColour().getRed() ) / 5, 
-            255 -  (255 - game.getInTurnPlayer().getColour().getGreen()) / 5,
-            255 -  (255 - game.getInTurnPlayer().getColour().getBlue()) / 5
+            255  - (255 - player.getColour().getRed() ) / 5, 
+            255 -  (255 - player.getColour().getGreen()) / 5,
+            255 -  (255 - player.getColour().getBlue()) / 5
         );
 
 

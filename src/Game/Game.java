@@ -96,7 +96,7 @@ public class Game {
                     selectedPiece = null;
                 } else {
                     selectedPiece = pos.getPiece();
-                    if (inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() > 3){ //TODO: I think this no work: inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() > 3
+                    if (inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() > 3){ 
                         gameState = GameState.MOVING;
                     } else {
                         gameState = GameState.FLYING;
@@ -176,11 +176,8 @@ public class Game {
                 selectedPiece = null;
                 break;
 
-
-
             //An unknown gamestate was given
             default:
-            //TODO: give an error message here
                 break; 
         }
 
@@ -209,14 +206,15 @@ public class Game {
             return true;
         }
 
+        //Find a possible move
         for (Piece p : inTurnPlayer.getPieces()) {
-            if (p.getPosition() != null && board.getPossibleMoves(GameState.MOVING, p, notInTurnPlayer, null).size() != 0) { //TODO: put inTurnPlayer in proper spot
+            if (p.getPosition() != null &&
+            board.getPossibleMoves(GameState.MOVING, p, inTurnPlayer, notInTurnPlayer).size() != 0) {
                 return true;
             }
         }
         gameState = GameState.POSTGAME;
-        changeTurn();
-        gameDisplay.playerWins(inTurnPlayer);
+        gameDisplay.playerWins(notInTurnPlayer);
         return false;
     }
 

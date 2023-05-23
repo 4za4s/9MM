@@ -30,7 +30,7 @@ class Background extends JLayeredPane {
         //     g2.drawImage(img, 0,0,1300,1300, this);
 
         // } catch (IOException e) {
-        //     // TODO Auto-generated catch block
+        // 
         //     e.printStackTrace(); 
         // }
 
