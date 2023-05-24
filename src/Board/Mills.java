@@ -85,6 +85,8 @@ public class Mills {
 			for (int j = 0; j < millArray.get(i).length; j++) {
 				if (millArray.get(i)[j] == pos){
 					millArray.remove(i);
+					removeMill(pos);
+					return;
 				}
 			}
 		}
