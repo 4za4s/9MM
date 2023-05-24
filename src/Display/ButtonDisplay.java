@@ -1,10 +1,7 @@
 package Display;
-
 import java.awt.Color;
 import java.util.ArrayList;
-
 import javax.swing.JLayeredPane;
-
 import Board.Position;
 import Game.Game;
 
@@ -12,11 +9,12 @@ import Game.Game;
  * Creates the buttons to represent pieces/empty spaces
  */
 public class ButtonDisplay extends JLayeredPane {
-    private Color defaultColour = Color.white;
-    private ArrayList<Position> buttons = new ArrayList<Position>();
 
-    private int gap; 
-    private int slotSize;
+    private Color defaultColour = Color.white; //default colour for buttons 
+    private ArrayList<Position> buttons = new ArrayList<Position>(); //list of positions (buttons) to place
+
+    private int gap;  //distance between concentric squares of buttons
+    private int slotSize; //size of buttons
  
     /**
      * Creates the buttons on the display
@@ -27,8 +25,6 @@ public class ButtonDisplay extends JLayeredPane {
      * @param slotSize size of each button
      */
     public void createButtonDisplay(Game game, ArrayList<Position> positions, int[][] buttonLocations, int gap, int slotSize) {
-
-        //resizeDisplay(gap, slotSize);
 
         int index = 0;
         //Loop throught each location and add appropriate button
@@ -78,6 +74,11 @@ public class ButtonDisplay extends JLayeredPane {
         pos.setRowColumn(loc[0], loc[1]);
     }
 
+    /**
+     * Resizes the size and positions of the display elements
+     * @param gap distance between concentric squares of buttons 
+     * @param slotSize size of buttons
+     */
     public void resizeDisplay(int gap, int slotSize ) {
 
         this.gap = gap;
@@ -97,8 +98,8 @@ public class ButtonDisplay extends JLayeredPane {
             row = but.getRow();
             column = but.getColumn();
 
-            y =  gap * row;
-            x =   gap * column;
+            y = gap * row;
+            x = gap * column;
     
             //Put piece on board
             but.setBounds(x,y,slotSize,slotSize);

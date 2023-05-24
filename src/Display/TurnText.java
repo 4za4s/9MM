@@ -6,13 +6,23 @@ import javax.swing.SwingConstants;
 import Board.Player;
 import Game.GameState;
 
+/**
+ * Text to give player guidance during game
+ */
 public class TurnText extends JLabel{
 
+    /**
+     * Constructor
+     */
     public TurnText(){
         super("",SwingConstants.CENTER);
-        // layerTurn = new JLabel("Currently " + game.getInTurnPlayer().getName() + "'s Turn",SwingConstants.CENTER);
     }
     
+    /**
+     * Change the text
+     * @param player player text is refering to
+     * @param gameState current game state
+     */
     public void setText(Player player, GameState gameState){
         String textUpper = player.getName();
         String textLower = getGameStateText( gameState);
@@ -20,6 +30,11 @@ public class TurnText extends JLabel{
 
     }
 
+    /**
+     * Work out specific text to add based on a game state
+     * @param gameState gamestate
+     * @return specific text to add
+     */
     private String getGameStateText(GameState gameState){
 
         switch (gameState){

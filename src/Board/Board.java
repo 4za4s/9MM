@@ -9,11 +9,11 @@ import Game.GameState;
  * movement
  */
 public class Board {
-    private ArrayList<Position> positions = new ArrayList<Position>();
-    private ArrayList<Position> possibleMoves;
-    private Mills mills;
+    private ArrayList<Position> positions = new ArrayList<Position>(); //list of all positions on the board
+    private ArrayList<Position> possibleMoves; // list possible moves that can currently be made
+    private Mills mills; // mills on the board
 
-    private int[][] positionLocations = { 
+    private int[][] positionLocations = {  //locations of positions on the board
         { 0, 0 }, { 0, 3 }, { 0, 6 },   // {row,column}
         { 1, 1 }, { 1, 3 }, { 1, 5 }, 
         { 2, 2 }, { 2, 3 }, { 2, 4 }, 
@@ -37,7 +37,7 @@ public class Board {
             positions.add(new Position());
         }
 
-        //For each posiion, set the position that is the closest left as its left neighbour]
+        //For each posiion, set the position that is the closest in x direction as its x neighbour
         int westMinDist; 
         int eastMinDist; 
         int northMinDist;
@@ -92,7 +92,7 @@ public class Board {
                 }
             }
         }
-        //Four exceptions (across the centre square)
+        //Four exceptions for neighbour (across the centre square)
         positions.get(7).setSouthNeighbour(null);
         positions.get(11).setEastNeighbour(null);
         positions.get(12).setWestNeighbour(null);
@@ -117,15 +117,20 @@ public class Board {
         return mills.createMill(piece);
     }
 
-    /**
-     * Calculates the possible moves for a piece
-     * @param gameState the current game state
-     * @param piece the piece to get the moves for
-     * @return ArrayList of possible moves
-     */
+
+     /**
+      * Calculates the possible moves for a piece
+      * @param gameState the current game state
+      * @param piece the piece to get the moves for
+      * @param inTurnPlayer player that is in turn
+      * @param notInTurnPlayer player that is not in turn
+      * @return ArrayList of possible moves
+      */
     public ArrayList<Position> getPossibleMoves(GameState gameState, Piece piece, Player inTurnPlayer, Player notInTurnPlayer) {
 
         switch (gameState) {
+
+            //Placing and flying have same output
             case FLYING:
             case PLACING: 
                 //start with empty list always
@@ -148,6 +153,7 @@ public class Board {
                     return new ArrayList<Position>();
                 }
                 return piece.getPosition().getEmptyNeighbours();
+
             case TAKING:
 
                 possibleMoves = new ArrayList<Position>();
@@ -157,7 +163,7 @@ public class Board {
 
                     for (Piece playerPiece : notInTurnPlayer.getPieces()) {
                         if (playerPiece.getPosition() != null && 
-                            !mills.isInMill(playerPiece.getPosition())) {
+                            !mills.isInMill(playerPiece)) {
                             possibleMoves.add(playerPiece.getPosition() );
                         }
                     }
@@ -166,7 +172,7 @@ public class Board {
                 } else { //Allow any piece to be taken
                     for (Position position : positions) {
                         if (position.getPiece() != null && 
-                            position.getPiece().getOwner() != inTurnPlayer) {
+                        position.getPiece().getOwner() != inTurnPlayer) {
                             possibleMoves.add(position);
                         }
                     }
@@ -182,23 +188,22 @@ public class Board {
         }    
     }
 
-    /**
-     * Works out if a move is possible
-     * @param gameState
-     * @param piece
-     * @param player
-     * @return
-     */
-    public boolean isAPossibleMove(GameState gameState, Piece piece, Player inTurnPlayer, Player notInTurnPlayer){
+     /**
+      * Works out if a piece can be taken
+      * @param gameState current game state
+      * @param piece piece to check
+      * @param inTurnPlayer player currently in turn
+      * @param notInTurnPlayer player currently not in turn
+      * @return if the peice can be taken
+      */
+    public boolean canTakePiece(GameState gameState, Piece piece, Player inTurnPlayer, Player notInTurnPlayer){
         ArrayList<Position> possibleMoves = getPossibleMoves( gameState,  piece,  inTurnPlayer, notInTurnPlayer);
 
-        for (Position pos : possibleMoves ){
-            if  (piece != null && piece.getPosition() == pos){
-                return true;
-            }
+        if  (piece == null){
+                return false;
         }
 
-        return false;
+        return possibleMoves.contains(piece.getPosition());
     }
     
     /**
@@ -209,6 +214,10 @@ public class Board {
         return positions;
     }
 
+    /**
+     * Gets related mills class
+     * @return mills class
+     */
     public Mills getMills(){
         return mills;
     }

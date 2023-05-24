@@ -9,5 +9,5 @@ public enum GameState {
     MOVING, //Move a piece to a neighbour
     FLYING, //Move anywhere :)
     TAKING, //Take opponents piece
-    POSTGAME, //End menu
+    POSTGAME //End menu
 }

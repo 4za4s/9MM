@@ -30,7 +30,7 @@ class Background extends JLayeredPane {
         //     g2.drawImage(img, 0,0,1300,1300, this);
 
         // } catch (IOException e) {
-        //     // TODO Auto-generated catch block
+        // 
         //     e.printStackTrace(); 
         // }
 
@@ -50,6 +50,11 @@ class Background extends JLayeredPane {
     }
 
 
+    /**
+     * Resizes the display to match given inputs
+     * @param gap distance between concentric squares
+     * @param lineWidth how thick to make lines
+     */
     public void resizeDisplay(int gap, int lineWidth) {
         this.gap = gap;
         this.lineWidth = lineWidth;

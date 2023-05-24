@@ -2,12 +2,11 @@ package Board;
 import java.awt.Color;
 
 /** 
- * Represents a piece on the board
+ * A player's tokens. When player looses too many of these he loses
  */
 public class Piece {
     private Player owner; //who owns the piece
     private Position pos; //where the piece is on the board
-    private boolean inMill;
 
     /**
      * Class constructor. starting on a position
@@ -50,10 +49,6 @@ public class Piece {
         }
 
         this.pos = pos;
-    }
-
-    public boolean isInMill() {
-        return inMill;
     }
     
     /** 

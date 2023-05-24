@@ -9,14 +9,15 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 public class MenuDisplay extends Display {
-    private JButton start;
-    private JLabel title;
+
+    private JButton start; //start game button
+    private JLabel title; //game title
 
     /**
      * Class constructor
      */
-    public MenuDisplay(int Width, int Height, Window window){
-        super(Width, Height, window);
+    public MenuDisplay(int width, int height, Window window){
+        super(width, height, window);
         start = new JButton("Start");
 
         title = new JLabel("Nine Man's Morris",SwingConstants.CENTER);
