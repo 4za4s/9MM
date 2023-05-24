@@ -139,7 +139,6 @@ public class Game {
 
                 if (board.canTakePiece(gameState, selectedPiece, inTurnPlayer, notInTurnPlayer)){ 
                     Player opponent = selectedPiece.getOwner();
-                    System.out.println("Taking piece");
                     opponent.pieceLost();
                     board.movePiece(selectedPiece, null);
                     toTake--;
@@ -148,7 +147,6 @@ public class Game {
                         gameState = GameState.POSTGAME;
                         break;
                     }
-                    System.out.println(toTake);
 
                     //No more pieces to take this turn
                     if (toTake <= 0) {

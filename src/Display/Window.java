@@ -53,6 +53,7 @@ public class Window extends JFrame{
     private void resizing(){
 
         addComponentListener(new ComponentAdapter() {
+            @Override
             public void componentResized(ComponentEvent e) {
 
                 System.out.println("Size Changing");
