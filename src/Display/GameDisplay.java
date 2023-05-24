@@ -70,7 +70,7 @@ public class GameDisplay extends Display {
         selectionHighlights = new SelectionHighlights();
         leftPieceCounter = new PieceCounter(players.get(0),players.get(1));
         rightPieceCounter = new PieceCounter(players.get(1),players.get(0));
-        millHighlights = new MillHighlights(players.get(0),players.get(1), game.getBoard().getMills());
+        millHighlights = new MillHighlights(game.getBoard().getMills());
 
         buttonDisplay.createButtonDisplay(game, game.getBoard().getPositions(), buttonLocations, gap, slotSize);
 

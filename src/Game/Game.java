@@ -64,7 +64,7 @@ public class Game {
             //Place a piece
             case PLACING:
                 //First phase of the game, players place their pieces
-                int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost();
+                int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced();
                 Piece piece = inTurnPlayer.getPieces().get(lastPieceIndex);
 
                 // if (board.isAPossibleMove(gameState, pos.getPiece(), inTurnPlayer)){ //TODO: later refine code to use this

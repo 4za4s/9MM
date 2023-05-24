@@ -16,34 +16,14 @@ public class MillHighlights extends JLayeredPane{
    
 
     private Player player1;
-    private Color player1Color; 
-
-    private Color player2Color; 
 
     private int millHighlightsWidth;
 
     private Mills mills;
 
 
-    public MillHighlights(Player player1, Player player2, Mills mills){
-        this.player1 = player1;
+    public MillHighlights(Mills mills){
         this.mills = mills;
-        
-        player1Color = new Color(
-            player1.getColour().getRed(), 
-            player1.getColour().getGreen(),
-            player1.getColour().getBlue(),
-            player1.getColour().getAlpha()*2/5
-        );
-
-        player2Color = new Color(
-            player2.getColour().getRed(), 
-            player2.getColour().getGreen(),
-            player2.getColour().getBlue(),
-            player2.getColour().getAlpha()*2/5
-        );
-
-
     }
 
 
@@ -74,12 +54,14 @@ public class MillHighlights extends JLayeredPane{
             millEndXpos = millArray.get(i)[2].getX();
             millEndYpos = millArray.get(i)[2].getY();
 
-            if (millArray.get(i)[1].getPiece().getOwner() == player1){
-                g2.setColor(player1Color);
-            } else {
-                g2.setColor(player2Color);
-            }
-
+            Player player = millArray.get(i)[0].getPiece().getOwner();
+            Color colour = new Color(
+                player.getColour().getRed(), 
+                player.getColour().getGreen(),
+                player.getColour().getBlue(),
+                player.getColour().getAlpha()*2/5
+            );
+            g2.setColor(colour);
 
             g2.setStroke(new BasicStroke(millHighlightsWidth)); 
 
