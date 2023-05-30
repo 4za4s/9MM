@@ -1,9 +1,10 @@
 package Game;
 
 import java.awt.Color;
-import java.sql.Time;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+import javax.swing.Timer;
 
 import Board.Board;
 import Board.Piece;
@@ -36,16 +37,12 @@ public class Game {
     public Game() {
         this.board = new Board();
 
-        this.players.add(new AIPlayer(Color.red, "Player Red", new RandomMove()));
+        this.players.add(new AIPlayer(Color.red, "Player Red", new RandomMove(), this));
         this.players.add(new Human(Color.blue, "Player Blue"));
         inTurnPlayer = players.get(turnIndex);
         notInTurnPlayer = players.get(turnIndex + 1);
         // Place pieces
         gameState = GameState.PLACING;
-    }
-
-    public void startGame(){
-        AIAction();
     }
 
     /**
@@ -66,12 +63,6 @@ public class Game {
         return gameState;
     }
 
-    public void AIAction() { 
-        while (inTurnPlayer.isAI() && gameState != GameState.POSTGAME) {
-            playAction(inTurnPlayer.getMove(board));
-        }
-    }
-
     /**
      * Handles the game logic when a player clicks a position
      * 
@@ -79,10 +70,9 @@ public class Game {
      */
     public void buttonPressed(Position pos) {
         playAction(pos);
-        AIAction();
     }
 
-    public void playAction(Position pos){
+    public void playAction(Position pos) {
         switch (gameState) {
 
             // Place a piece
@@ -203,6 +193,8 @@ public class Game {
 
         // Always update the display after an action
         gameDisplay.updateDisplay();
+
+        inTurnPlayer.getMove(board);
     }
 
     /**

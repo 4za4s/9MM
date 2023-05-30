@@ -99,7 +99,7 @@ public class GameDisplay extends Display {
 
  
     @Override
-    public int updateDisplay(){
+    public void updateDisplay(){
 
         Board board = game.getBoard();
         for (Position pos : board.getPositions()) {
@@ -119,7 +119,6 @@ public class GameDisplay extends Display {
                                           game.getInTurnPlayer().getColour()); 
                         
         window.repaint();
-        return 0;
     }
 
     /**

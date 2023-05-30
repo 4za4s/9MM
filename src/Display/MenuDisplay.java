@@ -35,8 +35,8 @@ public class MenuDisplay extends Display {
     }
 
     @Override
-    public int updateDisplay() {
-        return 0;
+    public void updateDisplay() {
+        //Nothing to update here
     }
 
     @Override
