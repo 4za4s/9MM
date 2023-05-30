@@ -1,6 +1,8 @@
 package Board;
 import java.awt.Color;
 
+import Player.Player;
+
 /** 
  * A player's tokens. When player looses too many of these he loses
  */

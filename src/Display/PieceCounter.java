@@ -5,7 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JLayeredPane;
-import Board.Player;
+
+import Player.Player;
 
 /**
  * Display for how many pieces are left

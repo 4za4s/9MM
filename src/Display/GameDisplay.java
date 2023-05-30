@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 
 import Board.Board;
-import Board.Player;
 import Board.Position;
 import Game.Game;
+import Player.Player;
 
 /**
  * Manages the display for a game

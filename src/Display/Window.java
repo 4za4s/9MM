@@ -79,7 +79,6 @@ public class Window extends JFrame{
         size = window.getContentPane().getSize();
         currentDisplay.resizeDisplay(size);
         add(gameDisplay);
-        game.start();
         repaint();
     }
 

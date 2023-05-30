@@ -3,8 +3,8 @@ package Display;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import Board.Player;
 import Game.GameState;
+import Player.Player;
 
 /**
  * Text to give player guidance during game

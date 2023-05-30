@@ -2,6 +2,8 @@ package Board;
 
 import java.util.ArrayList;
 
+import Player.Player;
+
 
 
 /**

@@ -3,6 +3,7 @@ package Board;
 import java.util.ArrayList;
 
 import Game.GameState;
+import Player.Player;
 
 /**
  * The board where all of the pices go on. Keeps track of pieces and their

@@ -6,9 +6,12 @@ import java.util.concurrent.TimeUnit;
 
 import Board.Board;
 import Board.Piece;
-import Board.Player;
 import Board.Position;
 import Display.GameDisplay;
+import Player.AIPlayer;
+import Player.Human;
+import Player.Player;
+import Player.AI.RandomeMove;
 
 
 /**
@@ -33,20 +36,13 @@ public class Game {
     public Game() {
         this.board = new Board();
 
-        this.players.add(new Player(Color.blue, "Player Blue",false));
-        this.players.add(new Player(Color.red, "Player Red",true));
+        this.players.add(new Human(Color.blue, "Player Blue"));
+        this.players.add(new AIPlayer(Color.red, "Player Red", new RandomeMove()));
         inTurnPlayer = players.get(turnIndex);
         notInTurnPlayer = players.get(turnIndex + 1);
 
         //Place pieces
         gameState = GameState.PLACING;
-    }
-
-    /**
-     * Starting action for game
-     */
-    public void start(){
-        AIAction();
     }
 
     /**
@@ -71,6 +67,11 @@ public class Game {
      */
     public void buttonPressed(Position pos) {
         
+        Position temp =  inTurnPlayer.getMove(board);
+        if (temp != null) {
+            pos = temp;
+        }
+
         switch (gameState) { 
 
             //Place a piece
@@ -263,46 +264,9 @@ public class Game {
     public void changeTurn() {
         turnIndex = (++turnCounter) % players.size();
 
-        
-
         System.out.println("Turn = " + turnCounter);
         notInTurnPlayer = inTurnPlayer;
         inTurnPlayer = players.get(turnIndex);
-
-
-        AIAction();
-
-        
-    }
-
-    private void AIAction(){
-        
-        //TODO: if turnCounter == 1000 then the game is a draw
-
-        //Get a random position for now
-        while (inTurnPlayer.isAI() == true && turnCounter < 1000){
-
-            // //TODO: kind of annoying maybe remove it
-            // try {
-            //     TimeUnit.MILLISECONDS.sleep(250);
-            // } catch (InterruptedException e) {
-            //     // TODO Auto-generated catch block
-            //     e.printStackTrace();
-            // }
-
-
-            ArrayList<Position> positions = board.getPositions();
-
-            int size = positions.size();
-            double random = Math.random();
-
-            int randomPos = (int) (random * size); //Asuming top value will never happen
-            System.out.println("Random position = " + randomPos);
-
-            gameDisplay.updateDisplay();
-            buttonPressed(positions.get(randomPos));
-
-        }
 
     }
 }

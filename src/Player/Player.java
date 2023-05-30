@@ -1,27 +1,29 @@
-package Board;
+package Player;
 
 import java.awt.Color;
 import java.util.ArrayList;
 
+import Board.Board;
+import Board.Piece;
+import Board.Position;
+
 /**
  * One of the players of the 9MM game
  */
-public class Player {
+public abstract class Player {
     private Color colour; // colour of player's pieces
     private String playerName; //name of player
     private ArrayList<Piece> pieces = new ArrayList<Piece>(); //list of pieces player owns
     private int piecesPlaced = 0; //how many pieces a player has plaed so far
     private int piecesLost = 0; //how many pieces playe has lost
     public final int maxPieces = 9; //how many pieces a player can place
-    private boolean isAI;
 
     /**
      * Class constructor
      */
-    public Player(Color colour, String playerName, boolean isAI){
+    public Player(Color colour, String playerName){
         this.colour = colour;
         this.playerName = playerName;
-        this.isAI = isAI;
 
         for (int i = 0; i < maxPieces; i++) {
             pieces.add(new Piece(this));
@@ -82,7 +84,5 @@ public class Player {
         return pieces;
     }
 
-    public boolean isAI(){
-        return isAI;
-    }
+    public abstract Position getMove(Board board);
 }

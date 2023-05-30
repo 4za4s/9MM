@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import javax.swing.JLayeredPane;
 
 import Board.Mills;
-import Board.Player;
 import Board.Position;
+import Player.Player;
 
 /**
  * Highlights mills on the board
