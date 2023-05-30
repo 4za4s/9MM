@@ -13,13 +13,15 @@ public class Player {
     private int piecesPlaced = 0; //how many pieces a player has plaed so far
     private int piecesLost = 0; //how many pieces playe has lost
     public final int maxPieces = 9; //how many pieces a player can place
+    private boolean isAI;
 
     /**
      * Class constructor
      */
-    public Player(Color colour, String playerName){
+    public Player(Color colour, String playerName, boolean isAI){
         this.colour = colour;
         this.playerName = playerName;
+        this.isAI = isAI;
 
         for (int i = 0; i < maxPieces; i++) {
             pieces.add(new Piece(this));
@@ -78,5 +80,9 @@ public class Player {
      */
     public ArrayList<Piece> getPieces() {
         return pieces;
+    }
+
+    public boolean isAI(){
+        return isAI;
     }
 }

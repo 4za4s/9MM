@@ -2,6 +2,7 @@ package Game;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import Board.Board;
 import Board.Piece;
@@ -32,13 +33,20 @@ public class Game {
     public Game() {
         this.board = new Board();
 
-        this.players.add(new Player(Color.blue, "Player Blue"));
-        this.players.add(new Player(Color.red, "Player Red"));
+        this.players.add(new Player(Color.blue, "Player Blue",false));
+        this.players.add(new Player(Color.red, "Player Red",true));
         inTurnPlayer = players.get(turnIndex);
         notInTurnPlayer = players.get(turnIndex + 1);
 
         //Place pieces
         gameState = GameState.PLACING;
+    }
+
+    /**
+     * Starting action for game
+     */
+    public void start(){
+        AIAction();
     }
 
     /**
@@ -183,16 +191,7 @@ public class Game {
         gameDisplay.updateDisplay();
     }
 
-    /**
-     * Changes the player who is in turn
-     */
-    public void changeTurn() {
-        turnIndex = (++turnCounter) % players.size();
-        System.out.println("Turn = " + turnCounter);
-        notInTurnPlayer = inTurnPlayer;
-        inTurnPlayer = players.get(turnIndex);
-        
-    }
+
 
     /**
      * Checks if it is possible for a ;layer to make any moves. Important because no moves = lose
@@ -256,5 +255,54 @@ public class Game {
      */
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+        /**
+     * Changes the player who is in turn
+     */
+    public void changeTurn() {
+        turnIndex = (++turnCounter) % players.size();
+
+        
+
+        System.out.println("Turn = " + turnCounter);
+        notInTurnPlayer = inTurnPlayer;
+        inTurnPlayer = players.get(turnIndex);
+
+
+        AIAction();
+
+        
+    }
+
+    private void AIAction(){
+        
+        //TODO: if turnCounter == 1000 then the game is a draw
+
+        //Get a random position for now
+        while (inTurnPlayer.isAI() == true && turnCounter < 1000){
+
+            // //TODO: kind of annoying maybe remove it
+            // try {
+            //     TimeUnit.MILLISECONDS.sleep(250);
+            // } catch (InterruptedException e) {
+            //     // TODO Auto-generated catch block
+            //     e.printStackTrace();
+            // }
+
+
+            ArrayList<Position> positions = board.getPositions();
+
+            int size = positions.size();
+            double random = Math.random();
+
+            int randomPos = (int) (random * size); //Asuming top value will never happen
+            System.out.println("Random position = " + randomPos);
+
+            gameDisplay.updateDisplay();
+            buttonPressed(positions.get(randomPos));
+
+        }
+
     }
 }
