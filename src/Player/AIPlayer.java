@@ -18,11 +18,6 @@ public class AIPlayer extends Player {
 
     @Override
     public Position getMove(Board board) {
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return moveGenerator.getMove(board);
     }
 }

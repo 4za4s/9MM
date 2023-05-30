@@ -36,13 +36,16 @@ public class Game {
     public Game() {
         this.board = new Board();
 
-        this.players.add(new AIPlayer(Color.blue, "Player Blue", new RandomMove()));
         this.players.add(new AIPlayer(Color.red, "Player Red", new RandomMove()));
+        this.players.add(new Human(Color.blue, "Player Blue"));
         inTurnPlayer = players.get(turnIndex);
         notInTurnPlayer = players.get(turnIndex + 1);
-
         // Place pieces
         gameState = GameState.PLACING;
+    }
+
+    public void startGame(){
+        AIAction();
     }
 
     /**
@@ -63,6 +66,12 @@ public class Game {
         return gameState;
     }
 
+    public void AIAction() { 
+        while (inTurnPlayer.isAI() && gameState != GameState.POSTGAME) {
+            playAction(inTurnPlayer.getMove(board));
+        }
+    }
+
     /**
      * Handles the game logic when a player clicks a position
      * 
@@ -70,11 +79,7 @@ public class Game {
      */
     public void buttonPressed(Position pos) {
         playAction(pos);
-        while (inTurnPlayer.isAI()) {
-            pos = inTurnPlayer.getMove(board);
-            playAction(pos);
-        }
-
+        AIAction();
     }
 
     public void playAction(Position pos){
