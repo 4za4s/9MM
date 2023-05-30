@@ -64,7 +64,7 @@ public class PieceCounter extends JLayeredPane {
 
         //Background
         g2.setColor(backgroundColor);
-        g2.fillRect(0,0,backgroundWidth, backgroundWidth + pieceHeight * player.maxPieces() + pieceGap * (player.maxPieces() + 1)); 
+        g2.fillRect(0,0,backgroundWidth, backgroundWidth + pieceHeight * player.maxPieces + pieceGap * (player.maxPieces + 1)); 
 
         //Draw player indicator
         g2.setColor(playerColor);
@@ -72,7 +72,7 @@ public class PieceCounter extends JLayeredPane {
 
 
         //Display pieces
-        for (int i = player.maxPieces(); i > 0; i--){
+        for (int i = player.maxPieces; i > 0; i--){
             g2.setColor(getSlotColor(i));
             g2.fillRect(
                 backgroundWidth * 1/10,

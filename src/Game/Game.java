@@ -11,24 +11,29 @@ import Board.Piece;
 import Board.Position;
 import Display.GameDisplay;
 import Player.AIPlayer;
-import Player.Human;
+import Player.HumanPlayer;
 import Player.Player;
-import Player.AI.RandomMove;
+import Player.AI.RandomValidMove;
 
 /**
  * Handles all the game logic and actions
  */
 public class Game {
+    private Game game = this;
     private GameDisplay gameDisplay; // display for the game
     private Board board; // board the game is moving pieces around on
     private ArrayList<Player> players = new ArrayList<Player>(); // players of the game
     private Player inTurnPlayer; // player whos turn it is to make an action
     private Player notInTurnPlayer; // player who is not in turn to make an action
-    private int turnIndex = 0; // index in list of player whose turn it is
+    private int turnIndex = 0; // index in list of player whose turn it isgameUpdatesToWait
     private int turnCounter = 0; // counter for nubmer of turns passes
     private GameState gameState; // what state the game is in
     private Piece selectedPiece; // piece that has been selected to be moved
     private int toTake = 0; // how many pieces are left to take. In 1 turn a player can take up to 2 pieces
+    private final int maxGameUpdatesToWait = 5; //max time to wait between game updates
+    private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
+    private Timer timer; //keeps track of time for game updates
+    
 
     /**
      * Creates a new game, can be extended later to include different player types
@@ -37,12 +42,32 @@ public class Game {
     public Game() {
         this.board = new Board();
 
-        this.players.add(new AIPlayer(Color.red, "Player Red", new RandomMove(), this));
-        this.players.add(new Human(Color.blue, "Player Blue"));
+        // this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
+        this.players.add(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove(), this));
+
+        this.players.add(new AIPlayer(Color.red, "Player Red", new RandomValidMove(), this));
+
         inTurnPlayer = players.get(turnIndex);
         notInTurnPlayer = players.get(turnIndex + 1);
         // Place pieces
         gameState = GameState.PLACING;
+    }
+
+
+    /**
+     * Please don't remove. I keep on finding I need this later and then have to reimpliment it
+     */
+    public void startGame(){
+        updateDisplay();
+
+        //Ensure timely game updates
+        ActionListener action = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                   game.updateGame();
+            }
+        };
+        timer = new Timer(50, action); //replace with 50
+        timer.start();
     }
 
     /**
@@ -64,8 +89,7 @@ public class Game {
     }
 
     /**
-     * Handles the game logic when a player clicks a position
-     * 
+     * Handles  
      * @param pos the position that was clicked
      */
     public void buttonPressed(Position pos) {
@@ -90,7 +114,7 @@ public class Game {
                     }
 
                     // If all pieces have been placed - and it is the last player to do so
-                    if (inTurnPlayer.getNumOfPiecesPlaced() == inTurnPlayer.maxPieces()
+                    if (inTurnPlayer.getNumOfPiecesPlaced() == inTurnPlayer.maxPieces
                             && inTurnPlayer == players.get(players.size() - 1)) {
                         gameState = GameState.SELECTING;
                         changeTurn();
@@ -166,7 +190,7 @@ public class Game {
                         // Work out correct new gamestate
                         changeTurn();
 
-                        if (inTurnPlayer.getNumOfPiecesPlaced() < inTurnPlayer.maxPieces()) {
+                        if (inTurnPlayer.getNumOfPiecesPlaced() < inTurnPlayer.maxPieces) {
                             gameState = GameState.PLACING;
 
                         } else {
@@ -176,7 +200,7 @@ public class Game {
                         // Win conditions
                         checkForPossibleMoves(inTurnPlayer);
 
-                        if (inTurnPlayer.getNoOfPiecesLost() == inTurnPlayer.maxPieces() - 2) {
+                        if (inTurnPlayer.getNoOfPiecesLost() == inTurnPlayer.maxPieces - 2) {
                             gameState = GameState.POSTGAME;
                             gameDisplay.playerWins(notInTurnPlayer);
                         }
@@ -192,9 +216,13 @@ public class Game {
         }
 
         // Always update the display after an action
-        gameDisplay.updateDisplay();
+        if (gameState == GameState.POSTGAME){
+            game.endGame();
+            
 
-        inTurnPlayer.getMove(board);
+        }
+        updateDisplay();
+        inTurnPlayer.getMove(board, gameState, inTurnPlayer, notInTurnPlayer);
     }
 
     /**
@@ -256,7 +284,7 @@ public class Game {
      */
     public void setGameDisplay(GameDisplay gameDisplay) {
         this.gameDisplay = gameDisplay;
-        gameDisplay.updateDisplay();
+        updateDisplay();
     }
 
     /**
@@ -278,5 +306,40 @@ public class Game {
         notInTurnPlayer = inTurnPlayer;
         inTurnPlayer = players.get(turnIndex);
 
+        updateDisplay();
+
     }
+
+    /**
+     * What to update 
+     */
+    private void updateDisplay(){
+
+        //Update selectability
+        if (inTurnPlayer.isAI()){
+            gameDisplay.updateSelectability(false);
+        } else {
+            gameDisplay.updateSelectability(true);
+        }
+
+        //Update rest of display TODO: put above into update display?
+        gameDisplay.updateDisplay();
+    }
+
+    private void updateGame(){
+        if (inTurnPlayer.isAI() && --gameUpdatesToWait < 0){
+            gameUpdatesToWait = maxGameUpdatesToWait;
+
+            playAction(inTurnPlayer.getMove(board, gameState, inTurnPlayer, notInTurnPlayer));
+        }
+    }
+
+    /**
+     * All that needs to happen when game ends
+     */
+    public void endGame(){
+        timer.stop();
+    }
+
+    
 }

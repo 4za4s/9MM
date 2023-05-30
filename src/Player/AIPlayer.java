@@ -7,40 +7,28 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import Board.Board;
+import Board.Piece;
 import Board.Position;
 import Game.Game;
+import Game.GameState;
 import Player.AI.AIMove;
 
 public class AIPlayer extends Player {
     private AIMove moveGenerator;
-    private Timer timer;
+    
 
     public AIPlayer(Color colour, String playerName, AIMove moveGenerator, Game game) {
         super(colour, playerName);
         this.moveGenerator = moveGenerator;
         this.isAI = true;
+        
 
-        ActionListener action = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (game.getInTurnPlayer() == AIPlayer.this) {
-                    game.playAction(getMove(game.getBoard()));
-                }
-            }
-        };
-        this.timer = new Timer(1000, action);
-        timer.start();
-    }
-
-    public void startTimer() {
-        timer.start();
-    }
-
-    public void stopTimer() {
-        timer.stop();
     }
 
     @Override
-    public Position getMove(Board board) {
-        return moveGenerator.getMove(board);
+    public Position getMove(Board board, GameState gameState, Player inTurnPlayer, Player notInTurnPlayer) {
+        return moveGenerator.getMove( board, gameState, inTurnPlayer, notInTurnPlayer);
     }
+
+
 }

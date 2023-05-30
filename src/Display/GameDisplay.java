@@ -76,7 +76,7 @@ public class GameDisplay extends Display {
 
         exit.setBackground(Color.white);
 
-        exit.addActionListener(e -> window.displayMenu());
+        exit.addActionListener(e -> exitGame());
         window.add(exit); 
 ;
         turnText = new TurnText();
@@ -117,7 +117,8 @@ public class GameDisplay extends Display {
         displayPossibleMoveHighlights(board.getPossibleMoves(game.getGameState(), 
                                           game.getSelectedPiece(), game.getInTurnPlayer(),game.getNotInTurnPlayer()), 
                                           game.getInTurnPlayer().getColour()); 
-                        
+            
+        
         window.repaint();
     }
 
@@ -169,8 +170,19 @@ public class GameDisplay extends Display {
         pieceCounterWidth = minDim / 17;
         pieceCounterHeight = (int) (pieceCounterWidth * 3.8);
 
-        
 
+    }
+
+
+    /**
+     * WHether or not pieces can be selected
+     */
+    public void updateSelectability(boolean selectable){
+
+        Board board = game.getBoard();
+        for (Position pos : board.getPositions()) {
+            pos.setEnabled(selectable);
+        }
 
     }
 
@@ -192,6 +204,10 @@ public class GameDisplay extends Display {
         window.getContentPane().setBackground(baseWinnerColor);
     }
 
+    public void exitGame(){
+        game.endGame();
+        window.displayMenu();
+    }
 
     @Override
     public void resizeDisplay(Dimension size) {

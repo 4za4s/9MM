@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import Board.Board;
 import Board.Piece;
 import Board.Position;
+import Game.GameState;
 
 /**
  * One of the players of the 9MM game
@@ -16,7 +17,7 @@ public abstract class Player {
     private ArrayList<Piece> pieces = new ArrayList<Piece>(); // list of pieces player owns
     private int piecesPlaced = 0; // how many pieces a player has plaed so far
     private int piecesLost = 0; // how many pieces playe has lost
-    private final int maxPieces = 9; // how many pieces a player can place
+    public final int maxPieces = 9; // how many pieces a player can place
     protected boolean isAI; // whether the player is an AI or not
 
     /**
@@ -30,11 +31,6 @@ public abstract class Player {
             pieces.add(new Piece(this));
         }
     }
-
-    public int maxPieces() {
-        return maxPieces;
-    }
-
     public boolean isAI() {
         return isAI;
     }
@@ -98,5 +94,7 @@ public abstract class Player {
         return pieces;
     }
 
-    public abstract Position getMove(Board board);
+    //TODO: this function has too many arguments
+    public abstract Position getMove(Board board, GameState gameState, Player inTurnPlayer, Player notInTurnPlayer);
+
 }

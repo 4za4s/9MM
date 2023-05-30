@@ -147,6 +147,13 @@ public class Board {
 
             case SELECTING:
                 ArrayList<Position> possibleMoves = new ArrayList<Position>();
+                
+                for (Piece playerPiece : inTurnPlayer.getPieces()){
+                    if (playerPiece.getPosition() != null){
+                        possibleMoves.add(playerPiece.getPosition());
+                    }
+                   
+                }
                 return possibleMoves;
 
             case MOVING:
