@@ -1,7 +1,7 @@
 package Player;
 
 import java.awt.Color;
-import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import Board.Board;
 import Board.Position;
@@ -13,10 +13,16 @@ public class AIPlayer extends Player {
     public AIPlayer(Color colour, String playerName, AIMove moveGenerator) {
         super(colour, playerName);
         this.moveGenerator = moveGenerator;
+        this.isAI = true;
     }
 
     @Override
     public Position getMove(Board board) {
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return moveGenerator.getMove(board);
     }
 }

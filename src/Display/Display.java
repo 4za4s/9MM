@@ -19,7 +19,7 @@ public abstract class Display extends JLayeredPane {
     /**
      * Update the contents of the display
      */
-    public abstract void updateDisplay();
+    public abstract int updateDisplay();
 
     /**
      * Resize the display and its contents

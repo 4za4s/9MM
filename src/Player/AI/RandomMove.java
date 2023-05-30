@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import Board.Board;
 import Board.Position;
 
-public class RandomeMove implements AIMove {
+public class RandomMove implements AIMove {
 
     @Override
     public Position getMove(Board board) {

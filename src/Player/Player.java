@@ -12,16 +12,17 @@ import Board.Position;
  */
 public abstract class Player {
     private Color colour; // colour of player's pieces
-    private String playerName; //name of player
-    private ArrayList<Piece> pieces = new ArrayList<Piece>(); //list of pieces player owns
-    private int piecesPlaced = 0; //how many pieces a player has plaed so far
-    private int piecesLost = 0; //how many pieces playe has lost
-    public final int maxPieces = 9; //how many pieces a player can place
+    private String playerName; // name of player
+    private ArrayList<Piece> pieces = new ArrayList<Piece>(); // list of pieces player owns
+    private int piecesPlaced = 0; // how many pieces a player has plaed so far
+    private int piecesLost = 0; // how many pieces playe has lost
+    private final int maxPieces = 9; // how many pieces a player can place
+    protected boolean isAI; // whether the player is an AI or not
 
     /**
      * Class constructor
      */
-    public Player(Color colour, String playerName){
+    public Player(Color colour, String playerName) {
         this.colour = colour;
         this.playerName = playerName;
 
@@ -30,8 +31,17 @@ public abstract class Player {
         }
     }
 
+    public int maxPieces() {
+        return maxPieces;
+    }
+
+    public boolean isAI() {
+        return isAI;
+    }
+
     /**
      * Gets the colour of the player
+     * 
      * @return Java color object
      */
     public Color getColour() {
@@ -40,6 +50,7 @@ public abstract class Player {
 
     /**
      * Gets the name of the player
+     * 
      * @return String name
      */
     public String getName() {
@@ -48,6 +59,7 @@ public abstract class Player {
 
     /**
      * Gets the number of pieces the player has placed on the board
+     * 
      * @return int number of pieces placed
      */
     public int getNumOfPiecesPlaced() {
@@ -63,6 +75,7 @@ public abstract class Player {
 
     /**
      * Gets the number of pieces the player has lost
+     * 
      * @return int number of pieces lost
      */
     public int getNoOfPiecesLost() {
@@ -78,6 +91,7 @@ public abstract class Player {
 
     /**
      * Gets the pieces of the player
+     * 
      * @return ArrayList of pieces
      */
     public ArrayList<Piece> getPieces() {

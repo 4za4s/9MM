@@ -8,6 +8,7 @@ import Board.Position;
 public class Human extends Player {
     public Human(Color colour, String playerName) {
         super(colour, playerName);
+        this.isAI = false;
     }
 
     @Override
