@@ -7,7 +7,6 @@ import Board.Position;
 import Game.Game;
 import Game.GameState;
 import Player.Player;
-import Board.Piece;
 
 public class RandomValidMove implements AIMove {
 
@@ -18,20 +17,12 @@ public class RandomValidMove implements AIMove {
         Player inTurnPlayer = game.getInTurnPlayer();
         Player notInTurnPlayer = game.getNotInTurnPlayer();
 
-        switch (gameState) {
-            case PLACING:
-                return randomPlace(board.getPossibleMoves(gameState, null, inTurnPlayer, notInTurnPlayer));
+        switch (gameState) {                
             case SELECTING:
                 ArrayList<Position> positions = board.getPossibleMoves(gameState, null, inTurnPlayer, notInTurnPlayer);
                 return randomSelect(positions, board, inTurnPlayer, notInTurnPlayer);
-            case MOVING:
-                return randomMove(board.getPossibleMoves(gameState, game.getSelectedPiece(), inTurnPlayer, notInTurnPlayer));
-            case FLYING:
-                return randomFly(board.getPossibleMoves(gameState, game.getSelectedPiece(), inTurnPlayer, notInTurnPlayer));
-            case TAKING:
-                return randomTake(board.getPossibleMoves(gameState, game.getSelectedPiece(), inTurnPlayer, notInTurnPlayer));
             default:
-                return null;
+                return randomPosition(board.getPossibleMoves(gameState, game.getSelectedPiece(), inTurnPlayer, notInTurnPlayer));
         }
         // // Ensure at least 1 valid move in piece selected
         // ArrayList<Position> positions;
@@ -83,8 +74,8 @@ public class RandomValidMove implements AIMove {
     }
 
 
-    public Position randomPlace(ArrayList<Position> positions) {
-        double random = Math.random();
+    public Position randomPosition(ArrayList<Position> positions) {
+        double random = Math.random()- 0.0001;
         return positions.get((int) (random * positions.size()));
     }
 
@@ -96,20 +87,4 @@ public class RandomValidMove implements AIMove {
         } while (board.getPossibleMoves(GameState.MOVING, pos.getPiece(), inTurnPlayer, notInTurnPlayer).size() == 0);
         return pos;
     }
-
-    private Position randomMove(ArrayList<Position> positions) {
-        double random = Math.random();
-        return positions.get((int) (random * positions.size()));
-    }
-
-    private Position randomFly(ArrayList<Position> positions) {
-        double random = Math.random();
-        return positions.get((int) (random * positions.size()));
-    }
-
-    private Position randomTake(ArrayList<Position> positions) {
-        double random = Math.random();
-        return positions.get((int) (random * positions.size()));
-    }
-
 }

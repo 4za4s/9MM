@@ -204,6 +204,32 @@ public class GameDisplay extends Display {
         window.getContentPane().setBackground(baseWinnerColor);
     }
 
+    /**
+     * What to display when a player wins
+     * @param player1 The two players in the game
+     * @param player2 
+     */
+    public void stalemate(ArrayList<Player> players){
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+        //Colour which is a lighter version of the player's icon
+        for (Player player : players){
+            red += player.getColour().getRed()/players.size();
+            green += player.getColour().getGreen()/players.size();
+            blue += player.getColour().getBlue()/players.size();
+        }
+
+        Color colour = new Color(
+            255  - (255 - red) / 5, 
+            255 -  (255 - green) / 5,
+            255 -  (255 - blue) / 5
+            );
+
+
+        window.getContentPane().setBackground(colour);
+    }
+
     public void exitGame(){
         game.endGame();
         window.displayMenu();
