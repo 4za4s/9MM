@@ -66,7 +66,7 @@ public class Game {
                    game.updateGame();
             }
         };
-        timer = new Timer(50, action); //replace with 50
+        timer = new Timer(1000, action); //replace with 50
         timer.start();
     }
 
@@ -222,7 +222,6 @@ public class Game {
 
         }
         updateDisplay();
-        inTurnPlayer.getMove(board, gameState, inTurnPlayer, notInTurnPlayer);
     }
 
     /**
@@ -330,7 +329,7 @@ public class Game {
         if (inTurnPlayer.isAI() && --gameUpdatesToWait < 0){
             gameUpdatesToWait = maxGameUpdatesToWait;
 
-            playAction(inTurnPlayer.getMove(board, gameState, inTurnPlayer, notInTurnPlayer));
+            playAction(inTurnPlayer.getMove(this));
         }
     }
 

@@ -1,17 +1,12 @@
 package Player.AI;
 
-import java.util.ArrayList;
-
-import Board.Board;
-import Board.Piece;
 import Board.Position;
-import Game.GameState;
-import Player.Player;
+import Game.Game;
 
 public class NeuralNet implements AIMove {
     
     @Override
-    public Position getMove(Board board, GameState gameState, Player inTurnPlayer, Player notInTurnPlayer) {
+    public Position getMove(Game game) {
         // ArrayList<Position> positions = board.getPositions();
 
         // int size = positions.size();

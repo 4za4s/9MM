@@ -5,6 +5,7 @@ import java.awt.Color;
 import Board.Board;
 import Board.Piece;
 import Board.Position;
+import Game.Game;
 import Game.GameState;
 
 public class HumanPlayer extends Player {
@@ -15,7 +16,7 @@ public class HumanPlayer extends Player {
 
 
     @Override
-    public Position getMove(Board board, GameState gameState, Player inTurnPlayer, Player notInTurnPlayer) {
+    public Position getMove(Game game) {
         return null;
     }
 
