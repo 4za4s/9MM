@@ -16,7 +16,7 @@ import Game.Game;
 public class Window extends JFrame{
     private Display currentDisplay; //what is currently being display - eg a game
     private Window window = this; //this
-    private final int minSize = 700; //minimum size the board can display as 
+    private final int minSize = 200; //minimum size the board can display as 
     private final int maxSize = 2000; //minimum size the board can display as 
     private Dimension size; //how big this window is
     private final Color backgroundColor = new Color(244,224,190); //Background colour of this window
