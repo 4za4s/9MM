@@ -13,6 +13,8 @@ public class MenuDisplay extends Display {
     private JButton start; //start game button
     private JLabel title; //game title
 
+  
+
     /**
      * Class constructor
      */
