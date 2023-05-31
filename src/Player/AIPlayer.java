@@ -1,13 +1,8 @@
 package Player;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
 
 import Board.Board;
-import Board.Piece;
 import Board.Position;
 import Game.Game;
 import Game.GameState;
@@ -26,8 +21,8 @@ public class AIPlayer extends Player {
     }
 
     @Override
-    public Position getMove(Board board, GameState gameState, Player inTurnPlayer, Player notInTurnPlayer) {
-        return moveGenerator.getMove( board, gameState, inTurnPlayer, notInTurnPlayer);
+    public Position getMove(Game game) {
+        return moveGenerator.getMove(game);
     }
 
 

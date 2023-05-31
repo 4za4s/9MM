@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import Board.Board;
 import Board.Piece;
 import Board.Position;
+import Game.Game;
 import Game.GameState;
 
 /**
@@ -95,6 +96,6 @@ public abstract class Player {
     }
 
     //TODO: this function has too many arguments
-    public abstract Position getMove(Board board, GameState gameState, Player inTurnPlayer, Player notInTurnPlayer);
+    public abstract Position getMove(Game game);
 
 }
