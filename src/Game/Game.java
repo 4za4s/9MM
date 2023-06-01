@@ -66,7 +66,7 @@ public class Game {
                    game.updateGame();
             }
         };
-        timer = new Timer(5, action); //replace with 50
+        timer = new Timer(5, action); 
         timer.start();
     }
 
