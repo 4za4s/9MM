@@ -10,10 +10,12 @@ import Board.Board;
 import Board.Piece;
 import Board.Position;
 import Display.GameDisplay;
+import Jama.Matrix;
 import Player.AIPlayer;
 import Player.HumanPlayer;
 import Player.Player;
 import Player.AI.RandomValidMove;
+import Player.AI.NeuralNetwork.NeuralNet;
 
 /**
  * Handles all the game logic and actions
@@ -45,7 +47,7 @@ public class Game {
         // this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
         this.players.add(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove(), this));
 
-        this.players.add(new AIPlayer(Color.red, "Player Red", new RandomValidMove(), this));
+        this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet(3,5), this));
 
         inTurnPlayer = players.get(turnIndex);
         notInTurnPlayer = players.get(turnIndex + 1);
