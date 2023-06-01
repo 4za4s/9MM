@@ -3,11 +3,9 @@ package Player;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import Board.Board;
 import Board.Piece;
 import Board.Position;
 import Game.Game;
-import Game.GameState;
 
 /**
  * One of the players of the 9MM game

@@ -9,5 +9,6 @@ public enum GameState {
     MOVING, //Move a piece to a neighbour
     FLYING, //Move anywhere :)
     TAKING, //Take opponents piece
-    POSTGAME //End menu
+    PLAYERWON, //Player has won
+    STALEMATE //1000 moves have passed without a winner
 }
