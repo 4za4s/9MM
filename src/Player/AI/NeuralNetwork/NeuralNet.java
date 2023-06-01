@@ -35,6 +35,11 @@ public class NeuralNet implements AIMove{
 
     public float fitness;
 
+    private int lastIndexReturned = 0; 
+    private double lastTopValue =  5.0; //random value that will enver naturally happen
+
+    Game game;
+
 
     public NeuralNet(int hiddenLayerCount, int hiddenNeuronCount){
 
@@ -95,11 +100,11 @@ public class NeuralNet implements AIMove{
         outputLayerSorted = listToSorrtedArrayList(outputLayerUnsorted);
 
         
-        System.out.println("Output matrix");
-        outputLayerMatrix.print(3,2);
+        // System.out.println("Output matrix");
+        // outputLayerMatrix.print(3,2);
 
-        System.out.println("Top value");
-        System.out.println("Value = " + outputLayerSorted.get(0)[0] + " position = " +  outputLayerSorted.get(0)[1]);
+        // System.out.println("Top value");
+        // System.out.println("Value = " + outputLayerSorted.get(0)[0] + " position = " +  outputLayerSorted.get(0)[1]);
 
 
     }
@@ -155,6 +160,7 @@ public class NeuralNet implements AIMove{
 
     @Override
     public Position getMove(Game game) {
+        this.game = game;
         
         ArrayList<Double> inputs = new ArrayList<Double>();
         //Order is gamestate, selected piece, positions 
@@ -220,7 +226,37 @@ public class NeuralNet implements AIMove{
 
         RunNetWork(inputs);
 
-        return game.getBoard().getPositions().get((int) outputLayerSorted.get(3)[1]);
+        return getNextPosition();
+    }
+
+    /**
+     * Make sure ai will not continuously try to return the same invalid position
+     * @return
+     */
+    private Position getNextPosition(){
+
+        double topValue = outputLayerSorted.get(0)[0];
+
+        //if ai is chosing same invalid spot choose ai's next best positon
+        if (topValue == lastTopValue){
+            System.out.println("Running back up case");
+            System.out.println("lastIndexReturned = " + lastIndexReturned);
+            System.out.println("position = " + (int) outputLayerSorted.get(lastIndexReturned)[1]);
+
+            lastIndexReturned = (++lastIndexReturned) % outputLayerSorted.size();
+            return game.getBoard().getPositions().get((int) outputLayerSorted.get(lastIndexReturned)[1]);
+
+
+        } else { //Return ai's best value
+            lastIndexReturned = 0;
+            lastTopValue = topValue;
+            return game.getBoard().getPositions().get((int) outputLayerSorted.get(0)[0]);
+        }
+
+        
+
+        
+
     }
 
     
