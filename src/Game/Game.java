@@ -10,7 +10,6 @@ import Board.Board;
 import Board.Piece;
 import Board.Position;
 import Display.GameDisplay;
-import Jama.Matrix;
 import Player.AIPlayer;
 import Player.HumanPlayer;
 import Player.Player;
@@ -35,7 +34,6 @@ public class Game {
     private final int maxGameUpdatesToWait = 5; //max time to wait between game updates
     private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
     private Timer timer; //keeps track of time for game updates
-    
 
     /**
      * Creates a new game, can be extended later to include different player types
@@ -44,10 +42,12 @@ public class Game {
     public Game() {
         this.board = new Board();
 
+        NeuralNet nn = new NeuralNet();
+        nn.save("test");
         // this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
         this.players.add(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove(), this));
 
-        this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet(3,5), this));
+        this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test"), this));
 
         inTurnPlayer = players.get(turnIndex);
         notInTurnPlayer = players.get(turnIndex + 1);
