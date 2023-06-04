@@ -27,10 +27,12 @@ public class TurnText extends JLabel {
     public void setText(Player player, GameState gameState) {
         if (gameState == GameState.STALEMATE) {
             super.setText(getGameStateText(gameState));
+        } else {
+            String textUpper = player.getName();
+            String textLower = getGameStateText(gameState);
+            super.setText(textUpper + textLower);
         }
-        String textUpper = player.getName();
-        String textLower = getGameStateText(gameState);
-        super.setText(textUpper + textLower);
+
     }
 
     /**
