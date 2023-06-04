@@ -239,25 +239,16 @@ public class NeuralNet implements AIMove{
         double topValue = outputLayerSorted.get(0)[0];
 
         //if ai is chosing same invalid spot choose ai's next best positon
-        System.out.println("tv = " + topValue);
-        System.out.println("nltv = " + nextLastTopValue);
         if (topValue == lastTopValue || topValue == nextLastTopValue){
-            System.out.println("Running back up case");
-            System.out.println("lastIndexReturned = " + lastIndexReturned);
-            System.out.println("position = " + (int) outputLayerSorted.get(lastIndexReturned)[1]);
 
-            //10% chance to do a random move
+            //90% chance to do a random move
             double random = Math.random();
-            System.out.println("random = " + random);
-
-            if (random < 0.1){
-                System.out.println("game.getBoard().getPositions().size()" + game.getBoard().getPositions().size());
+            if (random < 0.9){
                 int randomMove = (int)  (Math.random()*game.getBoard().getPositions().size());
-                System.out.println("random move = " + randomMove);
                 return game.getBoard().getPositions().get(randomMove);
 
             } else {
-                //90% chance to do next best move
+                //10% chance to do next best move
                 lastIndexReturned = (++lastIndexReturned) % outputLayerSorted.size();
                 return game.getBoard().getPositions().get((int) outputLayerSorted.get(lastIndexReturned)[1]);
 
