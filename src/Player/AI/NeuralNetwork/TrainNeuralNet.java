@@ -2,10 +2,17 @@
 
 // import java.util.ArrayList;
 
+// import Game.Game;
+
 // public class TrainNeuralNet {
-//     int popsize = 100;
-//     ArrayList<NeuralNet> population = new ArrayList<NeuralNet>();
+//     private int popsize = 100;
+//     private ArrayList<NeuralNet> population;
+
+//     private int bestNetWorkSelection = 20;
+//     private int WorstNetWorkSelection = 20;
+//     private int numberToCrossover= 40;
     
+//     private int currentPopsize = 0;
 
 //     public TrainNeuralNet(){
 //         for (int i = 0; i < popsize; i++){
@@ -15,13 +22,13 @@
 
 //     private void Start()
 //     {
-//         player1 = 
+//         Game game = new Game();
 //         CreatePopulation();
 //     }
 
 //     private void CreatePopulation()
 //     {
-//         population = new NeuralNetwork[initialPopulation];
+//         population = new ArrayList<NeuralNet>(popsize);
 //         FillPopulationWithRandomValues(population, 0);
 //         population[50] = new NeuralNetwork(File.ReadAllText("./nn534.txt"));
 //         ResetToCurrentGenome();
@@ -41,16 +48,13 @@
 //         }
 //     }
 
-//     public void Death (float fitness, NeuralNetwork network)
+//     public void GameEnd(float fitness[], NeuralNet network[])
 //     {
-
 //         if (currentGenome < population.Length -1)
 //         {
-
 //             population[currentGenome].fitness = fitness;
 //             currentGenome++;
 //             ResetToCurrentGenome();
-
 //         }
 //         else
 //         {

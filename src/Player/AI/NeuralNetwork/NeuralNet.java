@@ -1,12 +1,15 @@
 package Player.AI.NeuralNetwork;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+
+import javax.swing.text.Position.Bias;
 
 import Board.Position;
 import Game.Game;
@@ -23,18 +26,21 @@ public class NeuralNet implements AIMove {
     private int numOutputs = 24; // (positions)
 
     // 1 column input + rows
-    public Matrix inputLayer = new Matrix(1, numInputs); // TDO: make these package accessabl
+    private Matrix inputLayer = new Matrix(1, numInputs); // TDO: make these package accessabl
 
-    public ArrayList<Matrix> hiddenLayers = new ArrayList<Matrix>();
+    private ArrayList<Matrix> hiddenLayers = new ArrayList<Matrix>();
 
     // Will output values for all positions. Later go with the best of these
-    public Matrix outputLayer = new Matrix(1, numOutputs);
+    private Matrix outputLayer = new Matrix(1, numOutputs);
 
-    public ArrayList<Matrix> weights = new ArrayList<Matrix>();
+    private ArrayList<Matrix> weights = new ArrayList<Matrix>();
 
-    public ArrayList<double[]> biases = new ArrayList<double[]>();
+    private ArrayList<double[]> biases = new ArrayList<double[]>();
 
-    public float fitness = 0;
+    private float fitness = 0;
+
+    private int hiddenLayerCount;
+    private int hiddenNeuronCount;
 
     public NeuralNet(int hiddenLayerCount, int hiddenNeuronCount) {
         createNetwork(hiddenLayerCount, hiddenNeuronCount);
@@ -47,24 +53,59 @@ public class NeuralNet implements AIMove {
     public NeuralNet(String Filename) {
         String url = "src/Assets/SavedNeuralNets/" + Filename + ".txt";
         try {
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(url));
-            NeuralNet nn = (NeuralNet) input.readObject();
-            this.numInputs = nn.numInputs;
-            this.numOutputs = nn.numOutputs;
-            this.inputLayer = nn.inputLayer;
-            this.hiddenLayers = nn.hiddenLayers;
-            this.outputLayer = nn.outputLayer;
-            this.weights = nn.weights;
-            this.biases = nn.biases;
-            this.fitness = nn.fitness;
+            BufferedReader input = new BufferedReader(new FileReader(url));
+            String line = input.readLine();
+            if (line.startsWith("Size:")) {
+                line = input.readLine();
+                String[] splitLine = line.split(", ");
+                hiddenLayerCount = Integer.parseInt(splitLine[0]);
+                hiddenNeuronCount = Integer.parseInt(splitLine[1]);
+            }
+
+            createNetwork(hiddenLayerCount, hiddenNeuronCount);
+
+            line = input.readLine();
+            if (line.startsWith("Weights:")) {
+                for (int i = 0; i < hiddenLayerCount + 1; i++) {
+                    line = input.readLine();
+                    double[][] weight = parse2dArray(line);
+                    Matrix matrix = new Matrix(weight);
+                    weights.set(i, matrix);
+                }
+            }
+
+            line = input.readLine();
+            if (line.startsWith("Biases:")){
+                for (int i = 0; i < hiddenLayerCount+1; i++) {
+                    line = input.readLine();
+                    double[] bias = parseArray(line);
+                    biases.set(i, bias);
+                }
+            }
             input.close();
+
         } catch (Exception e) {
-            System.out.println("Failed to load Neural Network");
-            createNetwork(3, 5);
+            System.err.println("Error loading custom Neural Network");
+            System.err.println(e);
         }
     }
 
     private void createNetwork(int hiddenLayerCount, int hiddenNeuronCount) {
+        this.hiddenLayerCount = hiddenLayerCount;
+        this.hiddenNeuronCount = hiddenNeuronCount;
+
+        if (hiddenLayerCount == 0) {
+            Matrix inputToH1Weights = Matrix.random(numInputs, numOutputs); // so when multiplied gives size = to
+            weights.add(inputToH1Weights); // next layer
+
+            double[] H1Biases = new double[numOutputs];
+            for (int j = 0; j < numOutputs; j++) {
+                H1Biases[j] = (double) (Math.random() - 0.5) * 2;
+            }
+
+            biases.add(H1Biases);
+            return;
+        }
 
         Matrix hiddenLayer = new Matrix(hiddenNeuronCount, 1);
         hiddenLayers.add(hiddenLayer);
@@ -80,7 +121,7 @@ public class NeuralNet implements AIMove {
         biases.add(H1Biases);
 
         // Add hidden layers + their connecting weights
-        for (int i = 0; i < hiddenLayerCount; i++) {
+        for (int i = 0; i < hiddenLayerCount-1; i++) {
 
             // Hidden layers
             hiddenLayer = new Matrix(hiddenNeuronCount, 1);
@@ -105,7 +146,7 @@ public class NeuralNet implements AIMove {
 
         // Output Bias
         double[] OutputBiases = new double[numOutputs];
-        for (int j = 0; j < hiddenNeuronCount; j++) {
+        for (int j = 0; j < numOutputs; j++) {
             OutputBiases[j] = (double) (Math.random() - 0.5) * 2;
         }
 
@@ -221,7 +262,6 @@ public class NeuralNet implements AIMove {
                 break;
             default:
                 System.out.println("PLACEHOLDER ERROR");
-                // TODO; give error
         }
 
         // Add positions to input
@@ -250,7 +290,6 @@ public class NeuralNet implements AIMove {
      * @return
      */
     private Position getBestlegalPosition(ArrayList<double[]> outputs, Game game) {
-        System.out.println(outputs);
         for (double out[] : outputs) {
             System.out.println("" + out[0] + " " + out[1]);
         }
@@ -272,17 +311,23 @@ public class NeuralNet implements AIMove {
     public void save(String Filename) {
         String url = "src/Assets/SavedNeuralNets/" + Filename + ".txt";
         StringBuilder saveString = new StringBuilder();
-        for (Matrix weight : weights) {
-            saveString.append(weight.getArray()[0]);
+        saveString.append("Size:\n");
+        saveString.append(hiddenLayerCount + ", " + hiddenNeuronCount + "\n");
+
+        saveString.append("Weights:\n");
+        for (Matrix weightMatrix : weights) {
+            for (double[] weight : weightMatrix.getArray()){
+                saveString.append(Arrays.toString(weight));
+                saveString.append(",");
+            }
             saveString.append("\n");
         }
 
+        saveString.append("Biases:\n");
         for (double[] bias : biases) {
-            saveString.append(bias);
+            saveString.append(Arrays.toString(bias));
             saveString.append("\n");
         }
-
-        System.out.println(saveString.toString());
 
         try {
             BufferedWriter output = new BufferedWriter(new FileWriter(url));
@@ -296,5 +341,25 @@ public class NeuralNet implements AIMove {
 
     public void save() {
         save("CustomNeuralNetwork");
+    }
+
+    public double[] parseArray(String string){
+        string = string.replace("[", "");
+        string = string.replace("]", "");
+        String[] stringArray = string.split(", ");
+        double[] doubleArray = new double[stringArray.length];
+        for (int i = 0; i < stringArray.length; i++){
+            doubleArray[i] = Double.parseDouble(stringArray[i]);
+        }
+        return doubleArray;
+    }
+
+    public double[][] parse2dArray(String string){
+        String[] stringArray = string.split("],");
+        double[][] doubleArray = new double[stringArray.length][];
+        for (int i = 0; i < stringArray.length; i++){
+            doubleArray[i] = parseArray(stringArray[i]);
+        }
+        return doubleArray;
     }
 }

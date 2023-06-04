@@ -181,8 +181,7 @@ public class Game {
                     board.movePiece(selectedPiece, null);
                     toTake--;
                     if (opponent.getPieces().size() - opponent.getNoOfPiecesLost() < 3) {
-                        gameDisplay.playerWins(inTurnPlayer);
-                        gameState = GameState.PLAYERWON;
+                        playerWins(inTurnPlayer);
                         break;
                     }
 
@@ -203,8 +202,7 @@ public class Game {
                         checkForPossibleMoves(inTurnPlayer);
 
                         if (inTurnPlayer.getNoOfPiecesLost() == inTurnPlayer.maxPieces - 2) {
-                            gameState = GameState.PLAYERWON;
-                            gameDisplay.playerWins(notInTurnPlayer);
+                            playerWins(notInTurnPlayer);
                         }
 
                     }
@@ -217,14 +215,13 @@ public class Game {
                 break;
         }
 
-        // Always update the display after an action
-        if (gameState == GameState.PLAYERWON){
-            game.endGame();
-        } else if (turnCounter == 100) {
+        if (turnCounter == 100) {
             game.stalemate();
         }
-        
-        updateDisplay();
+
+        if (gameDisplay != null) {
+            updateDisplay();
+        }
     }
 
     /**
@@ -246,8 +243,7 @@ public class Game {
                 return true;
             }
         }
-        gameState = GameState.PLAYERWON;
-        gameDisplay.playerWins(notInTurnPlayer);
+        playerWins(notInTurnPlayer);
         return false;
     }
 
@@ -339,7 +335,11 @@ public class Game {
     /**
      * All that needs to happen when game ends
      */
-    public void endGame(){
+    public void playerWins(Player player){
+        gameState = GameState.PLAYERWON;
+        if (gameDisplay != null){
+            gameDisplay.playerWins(player);
+        }
         timer.stop();
     }
 
