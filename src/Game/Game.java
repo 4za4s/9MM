@@ -217,16 +217,17 @@ public class Game {
                 break;
         }
 
-        // Always update the display after an action
-        if (gameState == GameState.PLAYERWON){
-            game.endGame();
-        } else if (turnCounter == statlemateCounter) {
-            game.stalemate();
-        }
+        //TODO: I think this is not meant to exist
+        // // Always update the display after an action
+        // if (gameState == GameState.PLAYERWON){
+        //     // game.endGame(); //TODO: this came up in a commit, not sure where 
+        // } else if (turnCounter == statlemateCounter) {
+        //     game.stalemate();
+        // }
 
-        if (gameDisplay != null) {
-            updateDisplay();
-        }
+        // if (gameDisplay != null) {
+        //     updateDisplay();
+        // }
     }
 
     /**
