@@ -37,8 +37,8 @@ public class NeuralNet implements AIMove {
 
     private float fitness = 0;
 
-    private int hiddenLayerCount;
-    private int hiddenNeuronCount;
+    private int hiddenLayerCount; //number of hidden layers in the NN
+    private int hiddenNeuronCount; //number of neurons in each hidden layer
 
     public NeuralNet(int hiddenLayerCount, int hiddenNeuronCount) {
         createNetwork(hiddenLayerCount, hiddenNeuronCount);
@@ -48,6 +48,10 @@ public class NeuralNet implements AIMove {
         createNetwork(3, 5);
     }
 
+    /**
+     * Initialises neral network with a file to use as weights and biases
+     * @param Filename
+     */
     public NeuralNet(String Filename) {
         String url = "src/Assets/SavedNeuralNets/" + Filename + ".txt";
         try {
@@ -88,6 +92,11 @@ public class NeuralNet implements AIMove {
         }
     }
 
+    /**
+     * Creates a neural network
+     * @param hiddenLayerCount number of hidden layers in the NN
+     * @param hiddenNeuronCount number of neurons in each hidden layer
+     */
     private void createNetwork(int hiddenLayerCount, int hiddenNeuronCount) {
         this.hiddenLayerCount = hiddenLayerCount;
         this.hiddenNeuronCount = hiddenNeuronCount;
@@ -179,6 +188,9 @@ public class NeuralNet implements AIMove {
 
     }
 
+    /**
+     * Adds a bias to the matrix a 1x? matrix. Each row gets its own constant to add 
+     */
     private Matrix addBias(Matrix m, double[] bias) {
         for (int i = 0; i < m.getRowDimension(); i++) {
             for (int j = 0; j < m.getColumnDimension(); j++) {
@@ -207,12 +219,13 @@ public class NeuralNet implements AIMove {
         return arrayList;
     }
 
-    /**
-     * Adds a bias of b to matrix m
-     */
-    public Matrix biasMatrix(Matrix b, Matrix m) {
-        return m.plus(b);
-    }
+    //Useless function
+    // /**
+    //  * Adds a bias of b to matrix m
+    //  */
+    // public Matrix biasMatrix(Matrix b, Matrix m) {
+    //     return m.plus(b);
+    // }
 
     /**
      * Sigmoids all values of a matrix
@@ -228,6 +241,9 @@ public class NeuralNet implements AIMove {
         return m;
     }
 
+    /**
+     * Get the sigmoid of a value
+     */
     private double sigmoid(double input) {
         return 1 / (1 + Math.pow(Math.E, (-1 * input))); // https://stackoverflow.com/questions/33612029/sigmoid-function-of-a-2d-array
 
@@ -290,7 +306,7 @@ public class NeuralNet implements AIMove {
      */
     private Position getBestlegalPosition(ArrayList<double[]> outputs, Game game) {
         for (double out[] : outputs) {
-            System.out.println("" + out[0] + " " + out[1]);
+            System.out.println("position ranking: " + out[0] + "position loc: " + out[1]);
         }
 
         for (double out[] : outputs) {
@@ -307,6 +323,10 @@ public class NeuralNet implements AIMove {
         return new RandomValidMove().getMove(game);
     }
 
+    /**
+     * Saves the neural network to a file
+     * @param Filename name of file to save to (not including path) 
+     */
     public void save(String Filename) {
         String url = "src/Assets/SavedNeuralNets/" + Filename + ".txt";
         StringBuilder saveString = new StringBuilder();
@@ -342,6 +362,11 @@ public class NeuralNet implements AIMove {
         save("CustomNeuralNetwork");
     }
 
+    /**
+     * Get an 1d array of doubles from a string
+     * @param string
+     * @return
+     */
     public double[] parseArray(String string){
         string = string.replace("[", "");
         string = string.replace("]", "");
@@ -353,6 +378,11 @@ public class NeuralNet implements AIMove {
         return doubleArray;
     }
 
+    /**
+     * Get a 2d array of doubles from a string
+     * @param string
+     * @return 2d array
+     */
     public double[][] parse2dArray(String string){
         String[] stringArray = string.split("],");
         double[][] doubleArray = new double[stringArray.length][];
