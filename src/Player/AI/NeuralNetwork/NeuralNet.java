@@ -1,6 +1,11 @@
 package Player.AI.NeuralNetwork;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -8,269 +13,352 @@ import Board.Position;
 import Game.Game;
 import Jama.Matrix;
 import Player.AI.AIMove;
-
+import Player.AI.RandomValidMove;
 
 //Inspiration taken from https://www.youtube.com/watch?v=VYQZ-kjP1ec&t=0s
 
 //https://github.com/AJTech2002/Self-Driving-Car-Series/blob/master/Self%20Driving%20Car%20-%20Part%202%20Completed/Assets/NNet.cs
-public class NeuralNet implements AIMove{
+public class NeuralNet implements AIMove {
 
-    private int numInputs = 27;  //  (gamestate + selected piece row then column + positions)
-    private int numOutputs = 24;
-    
-  
-    //1 column input + rows 
-    public Matrix inputLayer = new Matrix(1,numInputs); //TDO: make these package accessabl
+    private int numInputs = 30; // (gamestates + positions)
+    private int numOutputs = 24; // (positions)
 
-    public ArrayList<Matrix> hiddenLayers = new ArrayList<Matrix>();
+    // 1 column input + rows
+    private Matrix inputLayer = new Matrix(1, numInputs); // TDO: make these package accessabl
+
+    private ArrayList<Matrix> hiddenLayers = new ArrayList<Matrix>();
 
     // Will output values for all positions. Later go with the best of these
-    public Matrix outputLayerMatrix = new Matrix(1,numOutputs); 
-    public ArrayList<double[]> outputLayerSorted; 
+    private Matrix outputLayer = new Matrix(1, numOutputs);
 
+    private ArrayList<Matrix> weights = new ArrayList<Matrix>();
 
-    public ArrayList<Matrix> weights = new ArrayList<Matrix>();
+    private ArrayList<double[]> biases = new ArrayList<double[]>();
 
-    public ArrayList<Double> biases = new ArrayList<Double>();
+    private float fitness = 0;
 
-    public float fitness;
+    private int hiddenLayerCount;
+    private int hiddenNeuronCount;
 
-    private int lastIndexReturned = 0; 
-    private double lastTopValue =  5.0; //random value that will enver naturally happen
-    private double nextLastTopValue = 5.0; 
+    public NeuralNet(int hiddenLayerCount, int hiddenNeuronCount) {
+        createNetwork(hiddenLayerCount, hiddenNeuronCount);
+    }
 
-    Game game;
+    public NeuralNet() {
+        createNetwork(3, 5);
+    }
 
+    public NeuralNet(String Filename) {
+        String url = "src/Assets/SavedNeuralNets/" + Filename + ".txt";
+        try {
+            BufferedReader input = new BufferedReader(new FileReader(url));
+            String line = input.readLine();
+            if (line.startsWith("Size:")) {
+                line = input.readLine();
+                String[] splitLine = line.split(", ");
+                hiddenLayerCount = Integer.parseInt(splitLine[0]);
+                hiddenNeuronCount = Integer.parseInt(splitLine[1]);
+            }
 
-    public NeuralNet(int hiddenLayerCount, int hiddenNeuronCount){
+            createNetwork(hiddenLayerCount, hiddenNeuronCount);
 
-        //Add hidden layers + their connecting weightw
-        for (int i = 0; i < hiddenLayerCount + 1; i++ ){ //+1 to account for exiting layer
+            line = input.readLine();
+            if (line.startsWith("Weights:")) {
+                for (int i = 0; i < hiddenLayerCount + 1; i++) {
+                    line = input.readLine();
+                    double[][] weight = parse2dArray(line);
+                    Matrix matrix = new Matrix(weight);
+                    weights.set(i, matrix);
+                }
+            }
 
+            line = input.readLine();
+            if (line.startsWith("Biases:")){
+                for (int i = 0; i < hiddenLayerCount+1; i++) {
+                    line = input.readLine();
+                    double[] bias = parseArray(line);
+                    biases.set(i, bias);
+                }
+            }
+            input.close();
 
-            //Hidden layers
-            Matrix hiddenLayer = new Matrix( hiddenNeuronCount, 1);
+        } catch (Exception e) {
+            System.err.println("Error loading custom Neural Network");
+            System.err.println(e);
+        }
+    }
+
+    private void createNetwork(int hiddenLayerCount, int hiddenNeuronCount) {
+        this.hiddenLayerCount = hiddenLayerCount;
+        this.hiddenNeuronCount = hiddenNeuronCount;
+
+        if (hiddenLayerCount == 0) {
+            Matrix inputToH1Weights = Matrix.random(numInputs, numOutputs); // so when multiplied gives size = to
+            weights.add(inputToH1Weights); // next layer
+
+            double[] H1Biases = new double[numOutputs];
+            for (int j = 0; j < numOutputs; j++) {
+                H1Biases[j] = (double) (Math.random() - 0.5) * 2;
+            }
+
+            biases.add(H1Biases);
+            return;
+        }
+
+        Matrix hiddenLayer = new Matrix(hiddenNeuronCount, 1);
+        hiddenLayers.add(hiddenLayer);
+
+        Matrix inputToH1Weights = Matrix.random(numInputs, hiddenNeuronCount); // so when multiplied gives size = to
+        weights.add(inputToH1Weights); // next layer
+
+        double[] H1Biases = new double[hiddenNeuronCount];
+        for (int j = 0; j < hiddenNeuronCount; j++) {
+            H1Biases[j] = (double) (Math.random() - 0.5) * 2;
+        }
+
+        biases.add(H1Biases);
+
+        // Add hidden layers + their connecting weights
+        for (int i = 0; i < hiddenLayerCount-1; i++) {
+
+            // Hidden layers
+            hiddenLayer = new Matrix(hiddenNeuronCount, 1);
             hiddenLayers.add(hiddenLayer);
 
-
-            //Weights
-            if (i == 0){
-                Matrix inputToH1 = Matrix.random(numInputs, hiddenNeuronCount); //so when multiplied gives size = to next layer
-                weights.add(inputToH1);
-            } 
-            
-
             // Hidden -> hidden
-            Matrix hiddenToHidden = Matrix.random(hiddenNeuronCount,hiddenNeuronCount);
-            weights.add(hiddenToHidden); 
+            Matrix HtoHWeights = Matrix.random(hiddenNeuronCount, hiddenNeuronCount);
+            weights.add(HtoHWeights);
 
-            biases.add((Math.random()-0.5)*2); //get random value in range (-1, 1)
+            // Hidden layer i biases
+            double[] HiBiases = new double[hiddenNeuronCount];
+            for (int j = 0; j < hiddenNeuronCount; j++) {
+                HiBiases[j] = (double) (Math.random() - 0.5) * 2;
+            }
+
+            biases.add(HiBiases);
         }
 
-        //Replace last weight with  hidden -> output
-        Matrix HLastToOutput = Matrix.random(hiddenNeuronCount, numOutputs); //so when multiplied gives size = to next layer
-        weights.add(HLastToOutput);
+        // Hidden -> Output
+        Matrix HtoOutputWeights = Matrix.random(hiddenNeuronCount, numOutputs);
+        weights.add(HtoOutputWeights);
+
+        // Output Bias
+        double[] OutputBiases = new double[numOutputs];
+        for (int j = 0; j < numOutputs; j++) {
+            OutputBiases[j] = (double) (Math.random() - 0.5) * 2;
+        }
+
+        biases.add(OutputBiases);
     }
 
-    public void RunNetWork(ArrayList<Double> inputs){
+    public ArrayList<double[]> RunNetWork(Double inputs[]) {
 
-        //Create inputLayer matrix
-        for (int i = 0; i <  inputs.size(); i++){
-            inputLayer.set(0, i,inputs.get(i));
+        // Create inputLayer matrix
+        for (int i = 0; i < inputs.length; i++) {
+            inputLayer.set(0, i, inputs[i]);
         }
 
-        inputLayer = sigmoidMatrix(inputLayer);
+        // Set first hidden layer
+        hiddenLayers.set(0, sigmoidMatrix(addBias(inputLayer.times((weights.get(0))), biases.get(0))));
 
-
-        //Set first hidden layer
-        hiddenLayers.set(0, sigmoidMatrix(biasMatrix(biases.get(0),inputLayer.times((weights.get(0)))))); //TODO: add bias
-
-
-        //Run through rest of hidden layers
-        for (int i = 1; i < hiddenLayers.size(); i++){
-            hiddenLayers.set(i, sigmoidMatrix(biasMatrix(biases.get(i), (hiddenLayers.get(i-1).times(weights.get(i))))));
-
-
+        // Run through rest of hidden layers
+        for (int i = 1; i < hiddenLayers.size(); i++) {
+            hiddenLayers.set(i, sigmoidMatrix(addBias(hiddenLayers.get(i - 1).times((weights.get(i))), biases.get(i))));
         }
 
-        outputLayerMatrix = sigmoidMatrix(biasMatrix(biases.get(biases.size()-1), hiddenLayers.get(hiddenLayers.size()-1).times(weights.get(weights.size()-1))));
+        int index = hiddenLayers.size();
 
-        //Convert output matrix to a sorted list showing positions
-        double [] outputLayerUnsorted = outputLayerMatrix.getArray()[0];
+        outputLayer = sigmoidMatrix(addBias(hiddenLayers.get(index - 1).times((weights.get(index))), biases.get(index)));
 
-        outputLayerSorted = listToSorrtedArrayList(outputLayerUnsorted);
+        // Convert output matrix to a sorted list showing positions
+        double[] outputLayerUnsorted = outputLayer.getArray()[0];
 
-        
-        // System.out.println("Output matrix");
-        // outputLayerMatrix.print(3,2);
+        ArrayList<double[]> outputLayerSorted = listToSorrtedArrayList(outputLayerUnsorted);
 
-        // System.out.println("Top value");
-        // System.out.println("Value = " + outputLayerSorted.get(0)[0] + " position = " +  outputLayerSorted.get(0)[1]);
-
+        return outputLayerSorted;
 
     }
 
-    public ArrayList<double[]> listToSorrtedArrayList(double[] listToSort){
+    private Matrix addBias(Matrix m, double[] bias) {
+        for (int i = 0; i < m.getRowDimension(); i++) {
+            for (int j = 0; j < m.getColumnDimension(); j++) {
+                m.set(i, j, m.get(i, j) + bias[j]);
+            }
+        }
+        return m;
+    }
+
+    public ArrayList<double[]> listToSorrtedArrayList(double[] listToSort) {
 
         ArrayList<double[]> arrayList = new ArrayList<double[]>();
 
-        for (int i =0; i < listToSort.length; i++){
-            arrayList.add(new double[]{listToSort[i],i});
+        for (int i = 0; i < listToSort.length; i++) {
+            arrayList.add(new double[] { listToSort[i], i });
         }
 
-        Collections.sort(arrayList, Comparator.comparingDouble(arr -> arr[1]));
+        Collections.sort(arrayList, new Comparator<double[]>() {
+            @Override
+            public int compare(double[] o1, double[] o2) {
+                return Double.compare(o2[0], o1[0]);
+            }
+        });
 
-        
+
         return arrayList;
     }
-
-
 
     /**
      * Adds a bias of b to matrix m
      */
-
-    public Matrix biasMatrix(Double b, Matrix m){
-
-        Matrix biasMatrix = new Matrix(m.getRowDimension(), m.getColumnDimension(), 1.0);
-
-        return m.plus(biasMatrix);
-
-
+    public Matrix biasMatrix(Matrix b, Matrix m) {
+        return m.plus(b);
     }
+
     /**
      * Sigmoids all values of a matrix
      */
-    public Matrix sigmoidMatrix(Matrix m){
+    public Matrix sigmoidMatrix(Matrix m) {
         double[][] ar = m.getArray();
 
-
-        for (int i = 0; i < ar.length; i++){
-            for (int j = 0; j< ar[i].length; j++){
+        for (int i = 0; i < ar.length; i++) {
+            for (int j = 0; j < ar[i].length; j++) {
                 ar[i][j] = sigmoid(ar[i][j]);
             }
         }
         return m;
     }
 
-
-    private double sigmoid(double input){
-        return 1 / (1 + Math.pow(Math.E, (-1 *  input))); //https://stackoverflow.com/questions/33612029/sigmoid-function-of-a-2d-array
+    private double sigmoid(double input) {
+        return 1 / (1 + Math.pow(Math.E, (-1 * input))); // https://stackoverflow.com/questions/33612029/sigmoid-function-of-a-2d-array
 
     }
 
     @Override
     public Position getMove(Game game) {
-        this.game = game;
-        
-        ArrayList<Double> inputs = new ArrayList<Double>();
-        //Order is gamestate, selected piece, positions 
-        //TODO: hopefully positions won't massively outweight the gamestate and piece
+        Double inputs[] = new Double[numInputs];
+        for (int i = 0; i < inputs.length; i++) {
+            inputs[i] = 0.0;
+        }
 
-        //Add gaemstate to input
-        Double toadd;
-        switch (game.getGameState()){
+        // Order is gamestate, selected piece, positions
 
+        // Add gamestate to input
+        switch (game.getGameState()) {
             case PLACING:
-                toadd = 0.0;
+                inputs[0] = 1.0;
                 break;
-
-            case SELECTING: 
-                toadd = 0.2;
+            case SELECTING:
+                inputs[1] = 1.0;
                 break;
             case MOVING:
-                toadd = 0.4;
+                inputs[2] = 1.0;
                 break;
             case FLYING:
-                toadd = 0.6;
+                inputs[3] = 1.0;
                 break;
             case TAKING:
-                toadd = 0.8;
+                inputs[4] = 1.0;
                 break;
             default:
-                toadd = 0.8;
-            
                 System.out.println("PLACEHOLDER ERROR");
-                //TODO; give error
-
         }
-        inputs.add(toadd);
 
-        //Add selected piece to input
-        if (game.getSelectedPiece() == null){ //If no piecce selected give 0,0
-            inputs.add(0.0); 
-            inputs.add(0.0);
-
-        } else { //Otherwise give (0,1) range
-            inputs.add(sigmoid((double) game.getSelectedPiece().getPosition().getRow() + 5));
-            inputs.add(sigmoid((double) game.getSelectedPiece().getPosition().getColumn() + 5));
-
-        }
-       
-
-
-        //Add positions to input
+        // Add positions to input
+        int index = 5;
         ArrayList<Position> positions = game.getBoard().getPositions();
-        for (Position pos : positions){
-            if (pos.getPiece() == null){
-                inputs.add(0.0);
+        for (Position pos : positions) {
+            if (pos.getPiece() == null) {
+                inputs[index] = 0.0;
 
-            } else if (pos.getPiece().getOwner() == game.getInTurnPlayer()){
-                inputs.add(0.5);
+            } else if (pos.getPiece().getOwner() == game.getInTurnPlayer()) {
+                inputs[index] = 1.0;
             } else {
-                inputs.add(1.0);
+                inputs[index] = -1.0;
             }
-
-
+            index++;
         }
 
+        ArrayList<double[]> output = RunNetWork(inputs);
 
-        RunNetWork(inputs);
-
-        return getNextPosition();
+        return getBestlegalPosition(output, game);
     }
 
     /**
      * Make sure ai will not continuously try to return the same invalid position
+     * 
      * @return
      */
-    private Position getNextPosition(){
-
-        double topValue = outputLayerSorted.get(0)[0];
-
-        //if ai is chosing same invalid spot choose ai's next best positon
-        if (topValue == lastTopValue || topValue == nextLastTopValue){
-
-            //90% chance to do a random move
-            double random = Math.random();
-            if (random < 0.9){
-                int randomMove = (int)  (Math.random()*game.getBoard().getPositions().size());
-                return game.getBoard().getPositions().get(randomMove);
-
-            } else {
-                //10% chance to do next best move
-                lastIndexReturned = (++lastIndexReturned) % outputLayerSorted.size();
-                return game.getBoard().getPositions().get((int) outputLayerSorted.get(lastIndexReturned)[1]);
-
-
-            }
-
-
-
-
-        } else { //Return ai's best value
-            lastIndexReturned = 0;
-            nextLastTopValue = lastTopValue;
-            lastTopValue = topValue;
-            return game.getBoard().getPositions().get((int) outputLayerSorted.get(0)[0]);
+    private Position getBestlegalPosition(ArrayList<double[]> outputs, Game game) {
+        for (double out[] : outputs) {
+            System.out.println("" + out[0] + " " + out[1]);
         }
 
-        
+        for (double out[] : outputs) {
+            ArrayList<Position> possibleMoves = game.getBoard().getPossibleMoves(game.getGameState(),
+                    game.getSelectedPiece(), game.getInTurnPlayer(), game.getNotInTurnPlayer());
+            Position selectedPos = game.getBoard().getPositions().get((int) out[1]);
+            if (possibleMoves.contains(selectedPos)) {
+                return selectedPos;
+            }
+        }
 
-        
-
+        // If the neural network somehow fails to select a move return a random valid
+        // move
+        return new RandomValidMove().getMove(game);
     }
 
-    
-}
+    public void save(String Filename) {
+        String url = "src/Assets/SavedNeuralNets/" + Filename + ".txt";
+        StringBuilder saveString = new StringBuilder();
+        saveString.append("Size:\n");
+        saveString.append(hiddenLayerCount + ", " + hiddenNeuronCount + "\n");
 
+        saveString.append("Weights:\n");
+        for (Matrix weightMatrix : weights) {
+            for (double[] weight : weightMatrix.getArray()){
+                saveString.append(Arrays.toString(weight));
+                saveString.append(",");
+            }
+            saveString.append("\n");
+        }
+
+        saveString.append("Biases:\n");
+        for (double[] bias : biases) {
+            saveString.append(Arrays.toString(bias));
+            saveString.append("\n");
+        }
+
+        try {
+            BufferedWriter output = new BufferedWriter(new FileWriter(url));
+            output.write(saveString.toString());
+            output.close();
+        } catch (Exception e) {
+            System.err.println("Error saving custom Neural Network");
+            System.err.println(e);
+        }
+    }
+
+    public void save() {
+        save("CustomNeuralNetwork");
+    }
+
+    public double[] parseArray(String string){
+        string = string.replace("[", "");
+        string = string.replace("]", "");
+        String[] stringArray = string.split(", ");
+        double[] doubleArray = new double[stringArray.length];
+        for (int i = 0; i < stringArray.length; i++){
+            doubleArray[i] = Double.parseDouble(stringArray[i]);
+        }
+        return doubleArray;
+    }
+
+    public double[][] parse2dArray(String string){
+        String[] stringArray = string.split("],");
+        double[][] doubleArray = new double[stringArray.length][];
+        for (int i = 0; i < stringArray.length; i++){
+            doubleArray[i] = parseArray(stringArray[i]);
+        }
+        return doubleArray;
+    }
+}

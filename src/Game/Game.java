@@ -44,10 +44,12 @@ public class Game {
     public Game() {
         this.board = new Board();
 
+        NeuralNet nn = new NeuralNet();
+        nn.save("test");
         // this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
         this.players.add(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove(), this));
 
-        this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet(3,5), this));
+        this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test"), this));
 
         inTurnPlayer = players.get(turnIndex);
         notInTurnPlayer = players.get(turnIndex + 1);
@@ -181,8 +183,7 @@ public class Game {
                     board.movePiece(selectedPiece, null);
                     toTake--;
                     if (opponent.getPieces().size() - opponent.getNoOfPiecesLost() < 3) {
-                        gameDisplay.playerWins(inTurnPlayer);
-                        gameState = GameState.PLAYERWON;
+                        playerWins(inTurnPlayer);
                         break;
                     }
 
@@ -203,8 +204,7 @@ public class Game {
                         checkForPossibleMoves(inTurnPlayer);
 
                         if (inTurnPlayer.getNoOfPiecesLost() == inTurnPlayer.maxPieces - 2) {
-                            gameState = GameState.PLAYERWON;
-                            gameDisplay.playerWins(notInTurnPlayer);
+                            playerWins(notInTurnPlayer);
                         }
 
                     }
@@ -223,7 +223,10 @@ public class Game {
         } else if (turnCounter == statlemateCounter) {
             game.stalemate();
         }
-        updateDisplay();
+
+        if (gameDisplay != null) {
+            updateDisplay();
+        }
     }
 
     /**
@@ -245,8 +248,7 @@ public class Game {
                 return true;
             }
         }
-        gameState = GameState.PLAYERWON;
-        gameDisplay.playerWins(notInTurnPlayer);
+        playerWins(notInTurnPlayer);
         return false;
     }
 
@@ -338,7 +340,11 @@ public class Game {
     /**
      * All that needs to happen when game ends
      */
-    public void endGame(){
+    public void playerWins(Player player){
+        gameState = GameState.PLAYERWON;
+        if (gameDisplay != null){
+            gameDisplay.playerWins(player);
+        }
         timer.stop();
     }
 
