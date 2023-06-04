@@ -220,9 +220,10 @@ public class Game {
         // Always update the display after an action
         if (gameState == GameState.PLAYERWON){
             game.endGame();
-        } else if (turnCounter == 50) {
+        } else if (turnCounter == 100) {
             game.stalemate();
         }
+        
         updateDisplay();
     }
 

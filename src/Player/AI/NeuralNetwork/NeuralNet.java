@@ -1,10 +1,9 @@
 package Player.AI.NeuralNetwork;
 
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,7 +17,7 @@ import Player.AI.RandomValidMove;
 //Inspiration taken from https://www.youtube.com/watch?v=VYQZ-kjP1ec&t=0s
 
 //https://github.com/AJTech2002/Self-Driving-Car-Series/blob/master/Self%20Driving%20Car%20-%20Part%202%20Completed/Assets/NNet.cs
-public class NeuralNet implements AIMove, Serializable {
+public class NeuralNet implements AIMove {
 
     private int numInputs = 30; // (gamestates + positions)
     private int numOutputs = 24; // (positions)
@@ -29,13 +28,13 @@ public class NeuralNet implements AIMove, Serializable {
     public ArrayList<Matrix> hiddenLayers = new ArrayList<Matrix>();
 
     // Will output values for all positions. Later go with the best of these
-    public Matrix outputLayerMatrix = new Matrix(1, numOutputs);
+    public Matrix outputLayer = new Matrix(1, numOutputs);
 
     public ArrayList<Matrix> weights = new ArrayList<Matrix>();
 
-    public ArrayList<Double> biases = new ArrayList<Double>();
+    public ArrayList<double[]> biases = new ArrayList<double[]>();
 
-    public float fitness;
+    public float fitness = 0;
 
     public NeuralNet(int hiddenLayerCount, int hiddenNeuronCount) {
         createNetwork(hiddenLayerCount, hiddenNeuronCount);
@@ -54,7 +53,7 @@ public class NeuralNet implements AIMove, Serializable {
             this.numOutputs = nn.numOutputs;
             this.inputLayer = nn.inputLayer;
             this.hiddenLayers = nn.hiddenLayers;
-            this.outputLayerMatrix = nn.outputLayerMatrix;
+            this.outputLayer = nn.outputLayer;
             this.weights = nn.weights;
             this.biases = nn.biases;
             this.fitness = nn.fitness;
@@ -66,31 +65,51 @@ public class NeuralNet implements AIMove, Serializable {
     }
 
     private void createNetwork(int hiddenLayerCount, int hiddenNeuronCount) {
-        // Add hidden layers + their connecting weightw
-        for (int i = 0; i < hiddenLayerCount + 1; i++) { // +1 to account for exiting layer
 
-            // Hidden layers
-            Matrix hiddenLayer = new Matrix(hiddenNeuronCount, 1);
-            hiddenLayers.add(hiddenLayer);
+        Matrix hiddenLayer = new Matrix(hiddenNeuronCount, 1);
+        hiddenLayers.add(hiddenLayer);
 
-            // Weights
-            if (i == 0) {
-                Matrix inputToH1 = Matrix.random(numInputs, hiddenNeuronCount); // so when multiplied gives size = to
-                                                                                // next layer
-                weights.add(inputToH1);
-            }
+        Matrix inputToH1Weights = Matrix.random(numInputs, hiddenNeuronCount); // so when multiplied gives size = to
+        weights.add(inputToH1Weights); // next layer
 
-            // Hidden -> hidden
-            Matrix hiddenToHidden = Matrix.random(hiddenNeuronCount, hiddenNeuronCount);
-            weights.add(hiddenToHidden);
-
-            biases.add((Math.random() - 0.5) * 2); // get random value in range (-1, 1)
+        double[] H1Biases = new double[hiddenNeuronCount];
+        for (int j = 0; j < hiddenNeuronCount; j++) {
+            H1Biases[j] = (double) (Math.random() - 0.5) * 2;
         }
 
-        // Replace last weight with hidden -> output
-        Matrix HLastToOutput = Matrix.random(hiddenNeuronCount, numOutputs); // so when multiplied gives size = to next
-                                                                             // layer
-        weights.add(HLastToOutput);
+        biases.add(H1Biases);
+
+        // Add hidden layers + their connecting weights
+        for (int i = 0; i < hiddenLayerCount; i++) {
+
+            // Hidden layers
+            hiddenLayer = new Matrix(hiddenNeuronCount, 1);
+            hiddenLayers.add(hiddenLayer);
+
+            // Hidden -> hidden
+            Matrix HtoHWeights = Matrix.random(hiddenNeuronCount, hiddenNeuronCount);
+            weights.add(HtoHWeights);
+
+            // Hidden layer i biases
+            double[] HiBiases = new double[hiddenNeuronCount];
+            for (int j = 0; j < hiddenNeuronCount; j++) {
+                HiBiases[j] = (double) (Math.random() - 0.5) * 2;
+            }
+
+            biases.add(HiBiases);
+        }
+
+        // Hidden -> Output
+        Matrix HtoOutputWeights = Matrix.random(hiddenNeuronCount, numOutputs);
+        weights.add(HtoOutputWeights);
+
+        // Output Bias
+        double[] OutputBiases = new double[numOutputs];
+        for (int j = 0; j < hiddenNeuronCount; j++) {
+            OutputBiases[j] = (double) (Math.random() - 0.5) * 2;
+        }
+
+        biases.add(OutputBiases);
     }
 
     public ArrayList<double[]> RunNetWork(Double inputs[]) {
@@ -100,36 +119,34 @@ public class NeuralNet implements AIMove, Serializable {
             inputLayer.set(0, i, inputs[i]);
         }
 
-        inputLayer = sigmoidMatrix(inputLayer);
-
         // Set first hidden layer
-        hiddenLayers.set(0, sigmoidMatrix(biasMatrix(biases.get(0), inputLayer.times((weights.get(0)))))); // TODO: add
-                                                                                                           // bias
+        hiddenLayers.set(0, sigmoidMatrix(addBias(inputLayer.times((weights.get(0))), biases.get(0))));
 
         // Run through rest of hidden layers
         for (int i = 1; i < hiddenLayers.size(); i++) {
-            hiddenLayers.set(i,
-                    sigmoidMatrix(biasMatrix(biases.get(i), (hiddenLayers.get(i - 1).times(weights.get(i))))));
-
+            hiddenLayers.set(i, sigmoidMatrix(addBias(hiddenLayers.get(i - 1).times((weights.get(i))), biases.get(i))));
         }
 
-        outputLayerMatrix = sigmoidMatrix(biasMatrix(biases.get(biases.size() - 1),
-                hiddenLayers.get(hiddenLayers.size() - 1).times(weights.get(weights.size() - 1))));
+        int index = hiddenLayers.size();
+
+        outputLayer = sigmoidMatrix(addBias(hiddenLayers.get(index - 1).times((weights.get(index))), biases.get(index)));
 
         // Convert output matrix to a sorted list showing positions
-        double[] outputLayerUnsorted = outputLayerMatrix.getArray()[0];
+        double[] outputLayerUnsorted = outputLayer.getArray()[0];
 
         ArrayList<double[]> outputLayerSorted = listToSorrtedArrayList(outputLayerUnsorted);
 
-        // System.out.println("Output matrix");
-        // outputLayerMatrix.print(3,2);
-
-        // System.out.println("Top value");
-        // System.out.println("Value = " + outputLayerSorted.get(0)[0] + " position = "
-        // + outputLayerSorted.get(0)[1]);
-
         return outputLayerSorted;
 
+    }
+
+    private Matrix addBias(Matrix m, double[] bias) {
+        for (int i = 0; i < m.getRowDimension(); i++) {
+            for (int j = 0; j < m.getColumnDimension(); j++) {
+                m.set(i, j, m.get(i, j) + bias[j]);
+            }
+        }
+        return m;
     }
 
     public ArrayList<double[]> listToSorrtedArrayList(double[] listToSort) {
@@ -140,7 +157,12 @@ public class NeuralNet implements AIMove, Serializable {
             arrayList.add(new double[] { listToSort[i], i });
         }
 
-        Collections.sort(arrayList, Comparator.comparingDouble(arr -> arr[0]));
+        Collections.sort(arrayList, new Comparator<double[]>() {
+            @Override
+            public int compare(double[] o1, double[] o2) {
+                return Double.compare(o2[0], o1[0]);
+            }
+        });
 
         return arrayList;
     }
@@ -148,13 +170,8 @@ public class NeuralNet implements AIMove, Serializable {
     /**
      * Adds a bias of b to matrix m
      */
-
-    public Matrix biasMatrix(Double b, Matrix m) {
-
-        Matrix biasMatrix = new Matrix(m.getRowDimension(), m.getColumnDimension(), 1.0);
-
-        return m.plus(biasMatrix);
-
+    public Matrix biasMatrix(Matrix b, Matrix m) {
+        return m.plus(b);
     }
 
     /**
@@ -233,24 +250,43 @@ public class NeuralNet implements AIMove, Serializable {
      * @return
      */
     private Position getBestlegalPosition(ArrayList<double[]> outputs, Game game) {
-        for (double out[]: outputs){
+        System.out.println(outputs);
+        for (double out[] : outputs) {
             System.out.println("" + out[0] + " " + out[1]);
-            ArrayList<Position> possibleMoves = game.getBoard().getPossibleMoves(game.getGameState(), game.getSelectedPiece(), game.getInTurnPlayer(), game.getNotInTurnPlayer());
+        }
+
+        for (double out[] : outputs) {
+            ArrayList<Position> possibleMoves = game.getBoard().getPossibleMoves(game.getGameState(),
+                    game.getSelectedPiece(), game.getInTurnPlayer(), game.getNotInTurnPlayer());
             Position selectedPos = game.getBoard().getPositions().get((int) out[1]);
-            if (possibleMoves.contains(selectedPos)){
+            if (possibleMoves.contains(selectedPos)) {
                 return selectedPos;
             }
         }
 
-        // If the neural network somehow fails to select a move return a random valid move
+        // If the neural network somehow fails to select a move return a random valid
+        // move
         return new RandomValidMove().getMove(game);
     }
 
-    public void save(String Filename){
-        String url = "src/Assets/SavedNeuralNets/"+Filename + ".txt";
+    public void save(String Filename) {
+        String url = "src/Assets/SavedNeuralNets/" + Filename + ".txt";
+        StringBuilder saveString = new StringBuilder();
+        for (Matrix weight : weights) {
+            saveString.append(weight.getArray()[0]);
+            saveString.append("\n");
+        }
+
+        for (double[] bias : biases) {
+            saveString.append(bias);
+            saveString.append("\n");
+        }
+
+        System.out.println(saveString.toString());
+
         try {
-            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(url));
-            output.writeObject(this);
+            BufferedWriter output = new BufferedWriter(new FileWriter(url));
+            output.write(saveString.toString());
             output.close();
         } catch (Exception e) {
             System.err.println("Error saving custom Neural Network");
@@ -258,15 +294,7 @@ public class NeuralNet implements AIMove, Serializable {
         }
     }
 
-    public void save(){
-        String url = "src/Assets/SavedNeuralNets/default.txt";
-        try {
-            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(url));
-            output.writeObject(this);
-            output.close();
-        } catch (Exception e) {
-            System.err.println("Error saving Neural Network");
-            System.err.println(e);
-        }
+    public void save() {
+        save("CustomNeuralNetwork");
     }
 }

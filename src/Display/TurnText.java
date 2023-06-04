@@ -61,7 +61,7 @@ public class TurnText extends JLabel {
             case PLAYERWON:
                 return " Wins!";
             case STALEMATE:
-                return "Game has ended in a stalemate after 1000 moves";
+                return "Game has ended in a stalemate after 100 moves";
 
             default:
                 return "";

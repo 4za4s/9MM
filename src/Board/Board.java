@@ -150,7 +150,9 @@ public class Board {
                 
                 for (Piece playerPiece : inTurnPlayer.getPieces()){
                     if (playerPiece.getPosition() != null){
-                        if (getPossibleMoves(GameState.MOVING, playerPiece, inTurnPlayer, notInTurnPlayer).size() > 0){
+                        if (inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() < 4){
+                            possibleMoves.add(playerPiece.getPosition());
+                        } else if (getPossibleMoves(GameState.MOVING, playerPiece, inTurnPlayer, notInTurnPlayer).size() > 0){
                             possibleMoves.add(playerPiece.getPosition());
                         }
                     }

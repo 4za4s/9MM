@@ -2,10 +2,8 @@ package Player;
 
 import java.awt.Color;
 
-import Board.Board;
 import Board.Position;
 import Game.Game;
-import Game.GameState;
 import Player.AI.AIMove;
 
 public class AIPlayer extends Player {
