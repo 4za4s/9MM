@@ -5,6 +5,7 @@ import javax.swing.SwingConstants;
 
 import Game.GameState;
 import Player.Player;
+import Game.Game;
 
 /**
  * Text to give player guidance during game
@@ -63,7 +64,7 @@ public class TurnText extends JLabel {
             case PLAYERWON:
                 return " Wins!";
             case STALEMATE:
-                return "Game has ended in a stalemate after 1000 moves";
+                return "Game has ended in a stalemate after " +  Game.statlemateCounter + " moves";
 
             default:
                 return "";

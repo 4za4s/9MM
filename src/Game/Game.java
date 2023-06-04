@@ -10,7 +10,6 @@ import Board.Board;
 import Board.Piece;
 import Board.Position;
 import Display.GameDisplay;
-import Jama.Matrix;
 import Player.AIPlayer;
 import Player.HumanPlayer;
 import Player.Player;
@@ -35,6 +34,7 @@ public class Game {
     private final int maxGameUpdatesToWait = 5; //max time to wait between game updates
     private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
     private Timer timer; //keeps track of time for game updates
+    public static final int statlemateCounter = 50; //number of moves that can happen before a stalemate
     
 
     /**
@@ -220,7 +220,7 @@ public class Game {
         // Always update the display after an action
         if (gameState == GameState.PLAYERWON){
             game.endGame();
-        } else if (turnCounter == 50) {
+        } else if (turnCounter == statlemateCounter) {
             game.stalemate();
         }
         updateDisplay();
