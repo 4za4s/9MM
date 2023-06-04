@@ -9,8 +9,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
-import javax.swing.text.Position.Bias;
-
 import Board.Position;
 import Game.Game;
 import Jama.Matrix;
@@ -204,6 +202,7 @@ public class NeuralNet implements AIMove {
                 return Double.compare(o2[0], o1[0]);
             }
         });
+
 
         return arrayList;
     }
