@@ -10,7 +10,6 @@ import Board.Board;
 import Board.Piece;
 import Board.Position;
 import Display.GameDisplay;
-import Jama.Matrix;
 import Player.AIPlayer;
 import Player.HumanPlayer;
 import Player.Player;
@@ -35,6 +34,7 @@ public class Game {
     private final int maxGameUpdatesToWait = 5; //max time to wait between game updates
     private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
     private Timer timer; //keeps track of time for game updates
+    public static final int statlemateCounter = 50; //number of moves that can happen before a stalemate
     
 
     /**
@@ -44,10 +44,12 @@ public class Game {
     public Game() {
         this.board = new Board();
 
+        NeuralNet nn = new NeuralNet();
+        nn.save("test");
         // this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
         this.players.add(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove(), this));
 
-        this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet(3,5), this));
+        this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test"), this));
 
         inTurnPlayer = players.get(turnIndex);
         notInTurnPlayer = players.get(turnIndex + 1);
@@ -181,8 +183,7 @@ public class Game {
                     board.movePiece(selectedPiece, null);
                     toTake--;
                     if (opponent.getPieces().size() - opponent.getNoOfPiecesLost() < 3) {
-                        gameDisplay.playerWins(inTurnPlayer);
-                        gameState = GameState.PLAYERWON;
+                        playerWins(inTurnPlayer);
                         break;
                     }
 
@@ -203,8 +204,7 @@ public class Game {
                         checkForPossibleMoves(inTurnPlayer);
 
                         if (inTurnPlayer.getNoOfPiecesLost() == inTurnPlayer.maxPieces - 2) {
-                            gameState = GameState.PLAYERWON;
-                            gameDisplay.playerWins(notInTurnPlayer);
+                            playerWins(notInTurnPlayer);
                         }
 
                     }
@@ -217,13 +217,17 @@ public class Game {
                 break;
         }
 
-        // Always update the display after an action
-        if (gameState == GameState.PLAYERWON){
-            game.endGame();
-        } else if (turnCounter == 50) {
-            game.stalemate();
-        }
-        updateDisplay();
+        //TODO: I think this is not meant to exist
+        // // Always update the display after an action
+        // if (gameState == GameState.PLAYERWON){
+        //     // game.endGame(); //TODO: this came up in a commit, not sure where 
+        // } else if (turnCounter == statlemateCounter) {
+        //     game.stalemate();
+        // }
+
+        // if (gameDisplay != null) {
+        //     updateDisplay();
+        // }
     }
 
     /**
@@ -245,8 +249,7 @@ public class Game {
                 return true;
             }
         }
-        gameState = GameState.PLAYERWON;
-        gameDisplay.playerWins(notInTurnPlayer);
+        playerWins(notInTurnPlayer);
         return false;
     }
 
@@ -338,7 +341,11 @@ public class Game {
     /**
      * All that needs to happen when game ends
      */
-    public void endGame(){
+    public void playerWins(Player player){
+        gameState = GameState.PLAYERWON;
+        if (gameDisplay != null){
+            gameDisplay.playerWins(player);
+        }
         timer.stop();
     }
 
