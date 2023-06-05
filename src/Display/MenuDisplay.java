@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
@@ -44,6 +45,14 @@ public class MenuDisplay extends Display {
         start.addActionListener(e -> window.displayGame());
         neuralNetworkStart.addActionListener(e -> trainButtonPressed());
 
+        String[] playerChoices = { "AI Player", "Human Player" }; //TODO: Zayn
+ 
+        final JComboBox<String> playerType = new JComboBox<String>(playerChoices); //TODO: Zayn
+
+        playerType.setSize(100, 100); //TODO: Zayn
+        
+
+        add(playerType);
         add(start); 
         add(title);
         add(player1Title);
@@ -98,6 +107,9 @@ public class MenuDisplay extends Display {
         (int) (size.height/(1.55)-player2TitleHeight/(2.55)), 
         player2TitleWidth, player2TitleHeight);
         player2Title.setFont(new Font("Serif", Font.BOLD, minDim/20));
+
+
+        
         
     }
 
