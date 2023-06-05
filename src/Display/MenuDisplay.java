@@ -8,6 +8,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import Player.AI.NeuralNetwork.NeuralNet;
+import Player.AI.NeuralNetwork.TrainNeuralNet;
+
 
 public class MenuDisplay extends Display {
 
@@ -39,7 +42,7 @@ public class MenuDisplay extends Display {
         player2Title = new JLabel("Player 2: ", SwingConstants.CENTER);
         
         start.addActionListener(e -> window.displayGame());
-        // neuralNetworkStart.addActionListener(e -> start);
+        neuralNetworkStart.addActionListener(e -> trainButtonPressed());
 
         add(start); 
         add(title);
@@ -98,8 +101,14 @@ public class MenuDisplay extends Display {
         
     }
 
-//    private void demoButtonPressed() {
-//        System.out.println("HELLO");
-//    }
+/**
+ * Start training a new neural network
+ */
+   private void trainButtonPressed() {
+    TrainNeuralNet trainNeuralNet = new TrainNeuralNet();
+     
+        trainNeuralNet.start();
+       System.out.println("Training a new neural network...");
+   }
 
 }
