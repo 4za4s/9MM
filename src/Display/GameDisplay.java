@@ -111,6 +111,13 @@ public class GameDisplay extends Display {
             }
         }
 
+        //Update selectability
+        if (game.getInTurnPlayer().isAI()){
+            updateSelectability(false);
+        } else {
+            updateSelectability(true);
+        }
+
         removeHighlights();
         turnText.setText(game.getInTurnPlayer(), game.getGameState());
 

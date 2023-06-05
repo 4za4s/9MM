@@ -124,7 +124,13 @@ public class Game {
                     if (inTurnPlayer.getNumOfPiecesPlaced() == inTurnPlayer.maxPieces
                             && inTurnPlayer == players.get(players.size() - 1)) {
                         gameState = GameState.SELECTING;
+
+                        //Check for opposition will have no moves on his upcoming turn
+                        checkForPossibleMoves();
+
                         changeTurn();
+
+                        
                         break;
                     }
 
@@ -160,9 +166,12 @@ public class Game {
                         break;
                     }
                     gameState = GameState.SELECTING;
+
+                     checkForPossibleMoves();
                     
                     changeTurn();
-                    checkForPossibleMoves();
+
+                   
                     
                     break;
                     // If user selects a different piece belonging to him, change selection to that
@@ -195,6 +204,17 @@ public class Game {
                     // No more pieces to take this turn
                     if (toTake <= 0) {
 
+
+                        // Win conditions (is turn of the potential winnier)
+                        checkForPossibleMoves();
+                       
+
+                        if (notInTurnPlayer.getNoOfPiecesLost() == notInTurnPlayer.maxPieces - 2) {
+                            playerWins(inTurnPlayer);
+                        }
+
+
+
                         // Work out correct new gamestate
                         changeTurn();
 
@@ -205,12 +225,7 @@ public class Game {
                             gameState = GameState.SELECTING;
                         }
 
-                        // Win conditions
-                        checkForPossibleMoves();
 
-                        if (inTurnPlayer.getNoOfPiecesLost() == inTurnPlayer.maxPieces - 2) {
-                            playerWins(notInTurnPlayer);
-                        }
 
                     }
                 }
@@ -221,10 +236,8 @@ public class Game {
             default:
                 break;
         }
-        // Always update the display after an action
-        if (gameState == GameState.PLAYERWON){
-            game.playerWins(inTurnPlayer); //TODO: this came up in a commit, not sure where 
-        } else if (turnCounter == statlemateCounter) {
+        // Check for stalemantes
+       if (turnCounter >= statlemateCounter) {
             game.stalemate();
         }
 
@@ -246,14 +259,14 @@ public class Game {
         }
 
         // Find a possible move
-        for (Piece p : inTurnPlayer.getPieces()) {
+        for (Piece p : notInTurnPlayer.getPieces()) {
             if (p.getPosition() != null &&
-                    board.getPossibleMoves(GameState.MOVING, p, inTurnPlayer, notInTurnPlayer).size() != 0) {
+                    board.getPossibleMoves(GameState.MOVING, p, notInTurnPlayer, inTurnPlayer).size() != 0) {
                 return true;
             }
         }
         //Game ends on no possible moves
-        playerWins(notInTurnPlayer);
+        playerWins(inTurnPlayer);
         
         return false;
     }
@@ -309,11 +322,18 @@ public class Game {
      * Changes the player who is in turn
      */
     public void changeTurn() {
-        turnIndex = (++turnCounter) % players.size();
 
-        System.out.println("Turn = " + turnCounter);
+        //Don't change turn if game is over
+        if (gameState == GameState.PLAYERWON || gameState == GameState.STALEMATE){ 
+            return;
+        }
+
+
+        turnIndex = (++turnCounter) % players.size();
         notInTurnPlayer = inTurnPlayer;
         inTurnPlayer = players.get(turnIndex);
+
+        System.out.println("Turn = " + turnCounter + " " + inTurnPlayer.getName() );
 
         updateDisplay();
 
@@ -324,14 +344,7 @@ public class Game {
      */
     private void updateDisplay(){
 
-        //Update selectability
-        if (inTurnPlayer.isAI()){
-            gameDisplay.updateSelectability(false);
-        } else {
-            gameDisplay.updateSelectability(true);
-        }
-
-        //Update rest of display TODO: put above into update display?
+        //Update rest of display
         gameDisplay.updateDisplay();
     }
 
@@ -343,10 +356,13 @@ public class Game {
         }
     }
 
+   
     /**
      * All that needs to happen when game ends
      */
     public void playerWins(Player player){
+        System.out.println("Winner is " + player.getName());
+
         gameState = GameState.PLAYERWON;
         if (gameDisplay != null){
             gameDisplay.playerWins(player);
