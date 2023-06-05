@@ -13,12 +13,7 @@ public class PlayerSelectionDisplay extends MenuDisplay{
 public PlayerSelectionDisplay(int width, int height, Window window) {
         super(width, height, window);
         
-        start = new JButton("Start");
-    }
-
-public static void main(String[] args) {
-
-    JFrame playerSelectionFrame = new JFrame("Player Selection");
+        JFrame playerSelectionFrame = new JFrame("Player Selection");
     playerSelectionFrame.setVisible(true);
     playerSelectionFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     playerSelectionFrame.setSize(500, 500);
