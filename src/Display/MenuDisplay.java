@@ -17,6 +17,7 @@ import javax.swing.SwingConstants;
 public class MenuDisplay extends Display {
 
     private JButton start; //start game button
+    private JButton neuralNetworkStart;
     private JLabel title; //game title
     private JLabel player1Title;
     private JLabel player2Title;
@@ -31,6 +32,9 @@ public class MenuDisplay extends Display {
         super(width, height, window);
         start = new JButton("Start");
         start.setBackground(Color.white);
+
+        neuralNetworkStart = new JButton("Start Training");
+        neuralNetworkStart.setBackground(Color.white);
 
         title = new JLabel("Nine Man's Morris",SwingConstants.CENTER);
         title.setBorder(new javax.swing.border.LineBorder(Color.black, 3));
@@ -65,12 +69,13 @@ public class MenuDisplay extends Display {
         playerPanel.setVisible(true); // added code
         
         start.addActionListener(e -> window.displayGame());
-        // demo.addActionListener(e -> demoButtonPressed());
+        // neuralNetworkStart.addActionListener(e -> start);
 
         add(start); 
         add(title);
         add(player1Title);
         add(player2Title);
+        add(neuralNetworkStart);
     }
 
     @Override
@@ -84,6 +89,8 @@ public class MenuDisplay extends Display {
         int minDim = Math.min( size.width, size.height);
         int startButtonWidth = size.width/10;
         int startButtonHeight = size.height/20;
+        int neuralNetworkStartWidth = size.width/10;
+        int neuralNetworkStartHeight = size.height/20;
         int titleWidth = size.width*3/5;
         int titleHeight = size.height/15;
         int player1TitleWidth = size.width*3/5;
@@ -99,6 +106,12 @@ public class MenuDisplay extends Display {
         (int) (startButtonWidth * (1.5)),
         (int) (startButtonHeight * (1.5)));
         start.setFont(new Font("Serif", Font.PLAIN, minDim/40));
+
+        neuralNetworkStart.setBounds(size.width/20-neuralNetworkStartWidth/20,
+       (int) (size.height/(1.10)-neuralNetworkStartHeight/(1.10)),
+        (int) (neuralNetworkStartWidth * (1.5)),
+        (int) (neuralNetworkStartHeight * (1.5)));
+        neuralNetworkStart.setFont(new Font("Serif", Font.PLAIN, minDim/40));
         
         title.setBounds(size.width/2-titleWidth/2, 
         (int) (size.height/(11.5)-titleHeight/(12.5)), 
