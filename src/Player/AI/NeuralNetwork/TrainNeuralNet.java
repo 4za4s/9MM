@@ -1,10 +1,10 @@
-// package Player.AI.NeuralNetwork;
+package Player.AI.NeuralNetwork;
 
-// import java.util.ArrayList;
+import java.util.ArrayList;
 
-// import Game.Game;
+import Game.Game;
 
-// public class TrainNeuralNet {
+public class TrainNeuralNet {
 //     private int popsize = 100;
 //     private ArrayList<NeuralNet> population;
 
@@ -20,11 +20,14 @@
 //         }
 //     }
 
-//     private void Start()
-//     {
+/**
+ * Start training
+ */
+    public void start()
+    {
 //         Game game = new Game();
 //         CreatePopulation();
-//     }
+    }
 
 //     private void CreatePopulation()
 //     {
@@ -242,4 +245,4 @@
 //             }
 //         }
  
-// }
+}

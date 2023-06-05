@@ -13,6 +13,9 @@ import javax.swing.BoxLayout; // added code
 import java.awt.Component; // added code
 import javax.swing.SwingConstants;
 
+import Player.AI.NeuralNetwork.NeuralNet;
+import Player.AI.NeuralNetwork.TrainNeuralNet;
+
 
 public class MenuDisplay extends Display {
 
@@ -69,7 +72,7 @@ public class MenuDisplay extends Display {
         playerPanel.setVisible(true); // added code
         
         start.addActionListener(e -> window.displayGame());
-        // neuralNetworkStart.addActionListener(e -> start);
+        neuralNetworkStart.addActionListener(e -> trainButtonPressed());
 
         add(start); 
         add(title);
@@ -131,8 +134,14 @@ public class MenuDisplay extends Display {
         playerPanel.setBounds(player2TitleWidth, player2TitleHeight, playerPanelWidth, playerPanelHeight);
     }
 
-//    private void demoButtonPressed() {
-//        System.out.println("HELLO");
-//    }
+/**
+ * Start training a new neural network
+ */
+   private void trainButtonPressed() {
+    TrainNeuralNet trainNeuralNet = new TrainNeuralNet();
+     
+        trainNeuralNet.start();
+       System.out.println("Training a new neural network...");
+   }
 
 }
