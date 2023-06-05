@@ -5,8 +5,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.BoxLayout; // added code
-import java.awt.Component; // added code
+import javax.swing.BoxLayout; 
+import java.awt.Component; 
 
 public class PlayerSelectionDisplay extends MenuDisplay{
 
@@ -25,7 +25,7 @@ public static void main(String[] args) {
     playerSelectionFrame.setLocation(430, 100);
 
     JPanel playerSelectionPanel = new JPanel();
-    playerSelectionPanel.setLayout(new BoxLayout(playerSelectionPanel, BoxLayout.Y_AXIS)); // added code
+    playerSelectionPanel.setLayout(new BoxLayout(playerSelectionPanel, BoxLayout.Y_AXIS)); 
 
     playerSelectionFrame.add(playerSelectionPanel);
 
@@ -35,18 +35,17 @@ public static void main(String[] args) {
 
     playerSelectionPanel.add(playerSelectionLabel);
 
-    String[] choices = { "AI Player", "Human Player" };
+    String[] playerChoices = { "AI Player", "Human Player" };
 
-    final JComboBox<String> playerType = new JComboBox<String>(choices);
+    final JComboBox<String> playerType = new JComboBox<String>(playerChoices);
 
-    playerType.setMaximumSize(playerType.getPreferredSize()); // added code
-    playerType.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
-    //cb.setVisible(true); // Not needed
+    playerType.setMaximumSize(playerType.getPreferredSize()); 
+    playerType.setAlignmentX(Component.CENTER_ALIGNMENT);
     playerSelectionPanel.add(playerType);
 
     playerSelectionPanel.add(start);
 
-    playerSelectionFrame.setVisible(true); // added code
+    playerSelectionFrame.setVisible(true); 
 
     }
 }
