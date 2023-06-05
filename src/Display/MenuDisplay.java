@@ -109,8 +109,8 @@ public class MenuDisplay extends Display {
 
         neuralNetworkStart.setBounds(size.width/20-neuralNetworkStartWidth/20,
        (int) (size.height/(1.10)-neuralNetworkStartHeight/(1.10)),
-        (int) (neuralNetworkStartWidth * (1.5)),
-        (int) (neuralNetworkStartHeight * (1.5)));
+        (int) (neuralNetworkStartWidth * (2.5)),
+        (int) (neuralNetworkStartHeight * (2.5)));
         neuralNetworkStart.setFont(new Font("Serif", Font.PLAIN, minDim/40));
         
         title.setBounds(size.width/2-titleWidth/2, 
