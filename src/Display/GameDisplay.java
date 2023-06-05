@@ -77,22 +77,22 @@ public class GameDisplay extends Display {
         exit.setBackground(Color.white);
 
         exit.addActionListener(e -> exitGame());
-        window.add(exit); 
+        add(exit); 
 ;
         turnText = new TurnText();
         turnText.setBorder(new javax.swing.border.LineBorder(Color.black, 3));
         turnText.setOpaque(true);
         turnText.setBackground(Color.white);
-        window.add(turnText);
+        add(turnText);
     
 
         //Add layers to the frame
-        window.add(buttonDisplay);
-        window.add(background);
-        window.add(selectionHighlights);
-        window.add(leftPieceCounter);
-        window.add(rightPieceCounter);
-        window.add(millHighlights);
+        add(buttonDisplay);
+        add(background);
+        add(selectionHighlights);
+        add(leftPieceCounter);
+        add(rightPieceCounter);
+        add(millHighlights);
     
         window.repaint();
     }
@@ -237,6 +237,8 @@ public class GameDisplay extends Display {
 
     @Override
     public void resizeDisplay(Dimension size) {
+
+        setSize(size);
 
         setBoardElementsSize(size);
 

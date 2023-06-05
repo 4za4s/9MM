@@ -71,7 +71,13 @@ public class Window extends JFrame{
      * Display a game on the window
      */
     public void displayGame(){
-        getContentPane().removeAll();
+        // getContentPane().removeAll();
+
+        if (currentDisplay != null){
+            remove(currentDisplay);
+
+        }
+        
         Game game = new Game();
         GameDisplay gameDisplay = new GameDisplay(getHeight(), getWidth(), game, this);
         game.setGameDisplay(gameDisplay);
@@ -87,6 +93,8 @@ public class Window extends JFrame{
      * Display the main menu on the window
      */
     public void displayMenu(){
+
+        // remove(currentDisplay);
         getContentPane().removeAll();
         getContentPane().setBackground(backgroundColor);
         MenuDisplay menuDisplay = new MenuDisplay(getHeight(), getWidth(), this);

@@ -34,7 +34,7 @@ public class Game {
     private final int maxGameUpdatesToWait = 5; //max time to wait between game updates
     private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
     private Timer timer; //keeps track of time for game updates
-    public static final int statlemateCounter = 50; //number of moves that can happen before a stalemate
+    public static final int statlemateCounter = 500; //number of moves that can happen before a stalemate
     
 
     /**
@@ -47,9 +47,12 @@ public class Game {
         NeuralNet nn = new NeuralNet();
         nn.save("test");
         // this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
-        this.players.add(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove(), this));
-
-        this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test"), this));
+        // this.players.add(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove(), this));
+        this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
+        this.players.add(new HumanPlayer(Color.green, "Player Green"));
+        // this.players.add(new HumanPlayer(Color.red, "Player Red"));
+        // this.players.add(new AIPlayer(Color.red, "Player Red", new RandomValidMove(), this));
+        // this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test"), this));
 
         inTurnPlayer = players.get(turnIndex);
         notInTurnPlayer = players.get(turnIndex + 1);
@@ -157,8 +160,10 @@ public class Game {
                         break;
                     }
                     gameState = GameState.SELECTING;
+                    
                     changeTurn();
-                    checkForPossibleMoves(inTurnPlayer);
+                    checkForPossibleMoves();
+                    
                     break;
                     // If user selects a different piece belonging to him, change selection to that
                     // piece
@@ -201,7 +206,7 @@ public class Game {
                         }
 
                         // Win conditions
-                        checkForPossibleMoves(inTurnPlayer);
+                        checkForPossibleMoves();
 
                         if (inTurnPlayer.getNoOfPiecesLost() == inTurnPlayer.maxPieces - 2) {
                             playerWins(notInTurnPlayer);
@@ -216,18 +221,16 @@ public class Game {
             default:
                 break;
         }
+        // Always update the display after an action
+        if (gameState == GameState.PLAYERWON){
+            game.playerWins(inTurnPlayer); //TODO: this came up in a commit, not sure where 
+        } else if (turnCounter == statlemateCounter) {
+            game.stalemate();
+        }
 
-        //TODO: I think this is not meant to exist
-        // // Always update the display after an action
-        // if (gameState == GameState.PLAYERWON){
-        //     // game.endGame(); //TODO: this came up in a commit, not sure where 
-        // } else if (turnCounter == statlemateCounter) {
-        //     game.stalemate();
-        // }
-
-        // if (gameDisplay != null) {
-        //     updateDisplay();
-        // }
+        if (gameDisplay != null) {
+            updateDisplay();
+        }
     }
 
     /**
@@ -237,7 +240,7 @@ public class Game {
      * @param player player to check
      * @return if any moves are possible
      */
-    public boolean checkForPossibleMoves(Player player) {
+    public boolean checkForPossibleMoves() {
         if (gameState == GameState.PLACING) {
             return true;
         }
@@ -249,7 +252,9 @@ public class Game {
                 return true;
             }
         }
+        //Game ends on no possible moves
         playerWins(notInTurnPlayer);
+        
         return false;
     }
 
