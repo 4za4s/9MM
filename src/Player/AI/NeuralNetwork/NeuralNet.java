@@ -172,35 +172,70 @@ public class NeuralNet implements AIMove {
         Matrix a = inputLayer.times(weights.get(0));
         System.out.println("times:");
         for (double[] d : a.getArray()) {
-                for(double d2 : d){
-                    System.out.println(d2);
-                }
-                System.out.println(d);
+            for(double d2 : d){
+                System.out.println(d2);
             }
+            System.out.println(d);
+        }
 
         a = addBias(a, biases.get(0));
         System.out.println("bias:");
         for (double[] d : a.getArray()) {
-                for(double d2 : d){
-                    System.out.println(d2);
-                }
-                System.out.println(d);
+            for(double d2 : d){
+                System.out.println(d2);
             }
+            System.out.println(d);
+        }
 
         a = sigmoidMatrix(a);
         System.out.println("sigmoid:");
         for (double[] d : a.getArray()) {
+            for(double d2 : d){
+                System.out.println(d2);
+            }
+            System.out.println(d);
+        }
+
+        hiddenLayers.set(0, a);
+
+        System.out.println("Hidden0: " );
+        for (double[] d : hiddenLayers.get(0).getArray()) {
+            for(double d2 : d){
+                System.out.println(d2);
+            }
+            System.out.println(d);
+        }
+
+        // Run through rest of hidden layers
+        for (int i = 1; i < hiddenLayers.size(); i++) {
+            System.out.println("Hidden" + i + ": " );
+            a = hiddenLayers.get(i - 1).times(weights.get(i));
+            System.out.println("times:");
+            for (double[] d : a.getArray()) {
                 for(double d2 : d){
                     System.out.println(d2);
                 }
                 System.out.println(d);
             }
-        hiddenLayers.set(0, a);
 
-        // Run through rest of hidden layers
-        for (int i = 1; i < hiddenLayers.size(); i++) {
-            // System.out.println("Hidden" + i + ": " );
-            hiddenLayers.set(i, sigmoidMatrix(addBias(hiddenLayers.get(i - 1).times(weights.get(i)), biases.get(i))));
+            a = addBias(a, biases.get(i));
+            System.out.println("bias:");
+            for (double[] d : a.getArray()) {
+                for(double d2 : d){
+                    System.out.println(d2);
+                }
+                System.out.println(d);
+            }
+
+            a = sigmoidMatrix(a);
+            System.out.println("sigmoid:");
+            for (double[] d : a.getArray()) {
+                for(double d2 : d){
+                    System.out.println(d2);
+                }
+                System.out.println(d);
+            }
+            hiddenLayers.set(i, a);
             for (double[] d : hiddenLayers.get(i).getArray()) {
                 for(double d2 : d){
                     System.out.println(d2);

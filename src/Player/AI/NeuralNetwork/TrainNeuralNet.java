@@ -165,7 +165,7 @@ public class TrainNeuralNet {
             for (int k = 0; k < weights1.get(j).getRowDimension(); k++) {
                 for (int l = 0; l < weights1.get(j).getColumnDimension(); l++) {
                     if (Math.random() < 0.01) {
-                        newWeight.set(k, l, Math.random());
+                        newWeight.set(k, l, (Math.random() - 0.5) * 2);
                     } else if (Math.random() < 0.5) {
                         newWeight.set(k, l, weights1.get(j).get(k, l));
                     } else {
@@ -184,7 +184,7 @@ public class TrainNeuralNet {
             double[] newBias = new double[biases1.get(j).length];
             for (int l = 0; l < biases1.get(j).length; l++) {
                 if (Math.random() < 0.01) {
-                    newBias[j] = Math.random();
+                    newBias[j] = (Math.random() - 0.5) * 2;
                 } else if (Math.random() < 0.5) {
                     newBias[j] = biases1.get(j)[l];
                 } else {
@@ -209,7 +209,7 @@ public class TrainNeuralNet {
             for (int k = 0; k < weights.get(j).getRowDimension(); k++) {
                 for (int l = 0; l < weights.get(j).getColumnDimension(); l++) {
                     if (Math.random() < mutateRate) {
-                        newWeight.set(k, l, Math.random());
+                        newWeight.set(k, l, (Math.random() - 0.5) * 2);
                     } else {
                         newWeight.set(k, l, weights.get(j).get(k, l));
                     }
@@ -225,7 +225,7 @@ public class TrainNeuralNet {
             double[] newBias = new double[biases.get(j).length];
             for (int l = 0; l < biases.get(j).length; l++) {
                 if (Math.random() < mutateRate) {
-                    newBias[j] = Math.random();
+                    newBias[j] = (Math.random() - 0.5) * 2;
                 } else {
                     newBias[j] = biases.get(j)[l];
                 }
