@@ -208,7 +208,7 @@ public class GameDisplay extends Display {
         );
 
 
-        window.getContentPane().setBackground(baseWinnerColor);
+        setBackground(baseWinnerColor);
     }
 
     /**
@@ -234,7 +234,8 @@ public class GameDisplay extends Display {
             );
 
 
-        window.getContentPane().setBackground(colour);
+        
+        setBackground(colour);
     }
 
     public void exitGame(){
