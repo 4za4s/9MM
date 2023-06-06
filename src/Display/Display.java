@@ -12,6 +12,7 @@ public abstract class Display extends JLayeredPane {
     Window window;
 
     public Display(int width, int height, Window window){
+        setOpaque(true);
         this.window = window;
         setPreferredSize(new Dimension(height, width));
     }
