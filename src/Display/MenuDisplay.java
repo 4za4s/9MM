@@ -56,10 +56,19 @@ public class MenuDisplay extends Display {
 
         String[] player1Choices = { "AI Player", "Human Player" }; 
         player1Type = new JComboBox<String>(player1Choices); 
+        if(player1Choices[0] == "AI Player") {
+            player1 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
+        } else {
+            player1 = new HumanPlayer(Color.green, "Player Green");
+        }
         
-
         String[] player2Choices = { "AI Player", "Human Player" }; 
         player2Type = new JComboBox<String>(player2Choices); 
+        if(player2Choices[0] == "AI Player") {
+            player2 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
+        } else {
+            player2 = new HumanPlayer(Color.green, "Player Green");
+        }
 
         add(player1Type);
         add(player2Type);
