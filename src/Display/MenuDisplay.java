@@ -51,12 +51,11 @@ public class MenuDisplay extends Display {
 
         player2Title = new JLabel("Player 2: ", SwingConstants.CENTER);
 
-        start.addActionListener(e -> startButtonPressed());
-        neuralNetworkStart.addActionListener(e -> trainButtonPressed());
-
         String[] player1Choices = { "AI Player", "Human Player" }; 
         player1Type = new JComboBox<String>(player1Choices); 
-        if(player1Choices[0] == "AI Player") {
+        String player1Selection = String.valueOf(player1Type.getSelectedItem());
+
+        if(player1Selection == "AI Player") {
             player1 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
         } else {
             player1 = new HumanPlayer(Color.green, "Player Green");
@@ -64,11 +63,16 @@ public class MenuDisplay extends Display {
         
         String[] player2Choices = { "AI Player", "Human Player" }; 
         player2Type = new JComboBox<String>(player2Choices); 
-        if(player2Choices[0] == "AI Player") {
+        String player2Selection = String.valueOf(player2Type.getSelectedItem());
+        
+        if(player2Selection == "Human Player") {
             player2 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
         } else {
             player2 = new HumanPlayer(Color.green, "Player Green");
         }
+
+        start.addActionListener(e -> startButtonPressed());
+        neuralNetworkStart.addActionListener(e -> trainButtonPressed());
 
         add(player1Type);
         add(player2Type);
