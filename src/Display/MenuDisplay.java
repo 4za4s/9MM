@@ -110,17 +110,17 @@ public class MenuDisplay extends Display {
         player1Title.setFont(new Font("Serif", Font.BOLD, minDim / 20));
 
         player2Title.setBounds(size.width/60-player2TitleWidth/4, 
-        (int) (size.height/(1.55)-player2TitleHeight/(2.55)), 
-        player2TitleWidth, player2TitleHeight);
+            (int) (size.height/(1.55)-player2TitleHeight/(2.55)), 
+            player2TitleWidth, player2TitleHeight);
         player2Title.setFont(new Font("Serif", Font.BOLD, minDim/20));
 
         player1Type.setBounds(size.width/2-player1TypeWidth/2, 
-        (int) (size.height/(3.43)-player1TypeHeight/(4.45)), 
-        player1TypeWidth, player1TypeHeight);
+            (int) (size.height/(3.43)-player1TypeHeight/(4.45)), 
+            player1TypeWidth, player1TypeHeight);
 
         player2Type.setBounds(size.width/2-player2TypeWidth/2, 
-        (int) (size.height/(1.53)-player2TypeHeight/(2.45)), 
-        player2TypeWidth, player2TypeHeight);
+            (int) (size.height/(1.53)-player2TypeHeight/(2.45)), 
+            player2TypeWidth, player2TypeHeight);
         
     }
 
