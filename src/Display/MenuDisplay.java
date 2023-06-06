@@ -1,7 +1,8 @@
 package Display;
 
 import java.awt.Color;
-import java.awt.ComponentOrientation;
+
+
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -10,8 +11,13 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import Player.AIPlayer;
+import Player.HumanPlayer;
+import Player.Player;
+import Player.AI.HeuristicMove;
 import Player.AI.NeuralNetwork.NeuralNet;
 import Player.AI.NeuralNetwork.TrainNeuralNet;
+import Game.Game;
 
 public class MenuDisplay extends Display {
 
@@ -22,6 +28,8 @@ public class MenuDisplay extends Display {
     private JLabel player2Title;
     private JComboBox<String> player1Type;
     private JComboBox<String> player2Type;
+    private Player player1 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
+    private Player player2 = new HumanPlayer(Color.green, "Player Green");
 
     /**
      * Class constructor
@@ -43,7 +51,7 @@ public class MenuDisplay extends Display {
 
         player2Title = new JLabel("Player 2: ", SwingConstants.CENTER);
 
-        start.addActionListener(e -> window.displayGame());
+        start.addActionListener(e -> startButtonPressed());
         neuralNetworkStart.addActionListener(e -> trainButtonPressed());
 
         String[] player1Choices = { "AI Player", "Human Player" }; 
@@ -117,10 +125,12 @@ public class MenuDisplay extends Display {
         player1Type.setBounds(size.width/2-player1TypeWidth/2, 
             (int) (size.height/(3.43)-player1TypeHeight/(4.45)), 
             player1TypeWidth, player1TypeHeight);
+        player1Type.setFont(new Font("Serif", Font.PLAIN, minDim/32));
 
         player2Type.setBounds(size.width/2-player2TypeWidth/2, 
             (int) (size.height/(1.53)-player2TypeHeight/(2.45)), 
             player2TypeWidth, player2TypeHeight);
+        player2Type.setFont(new Font("Serif", Font.PLAIN, minDim/32));
         
     }
 
@@ -132,6 +142,12 @@ public class MenuDisplay extends Display {
 
         trainNeuralNet.start();
         System.out.println("Training a new neural network...");
+    }
+
+    private void startButtonPressed() {
+        Game startGame = new Game(player1, player2);
+        window.displayGame(startGame);
+        System.out.println("GAME HAS STARTED!");
     }
 
 }
