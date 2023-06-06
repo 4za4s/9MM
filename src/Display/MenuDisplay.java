@@ -16,12 +16,13 @@ import Player.AI.NeuralNetwork.TrainNeuralNet;
 
 public class MenuDisplay extends Display {
 
-    public JButton start; //start game button
+    private JButton start; //start game button
     private JButton neuralNetworkStart;
     private JLabel title; //game title
     private JLabel player1Title;
     private JLabel player2Title;
-  
+    private JComboBox<String> player1Type;
+    private JComboBox<String> player2Type;
 
     /**
      * Class constructor
@@ -47,12 +48,11 @@ public class MenuDisplay extends Display {
         neuralNetworkStart.addActionListener(e -> trainButtonPressed());
 
         String[] player1Choices = { "AI Player", "Human Player" }; 
-        final JComboBox<String> player1Type = new JComboBox<String>(player1Choices); 
-        player1Type.setBounds(230, 245, 100*2, 100/3);
+        player1Type = new JComboBox<String>(player1Choices); 
+        
 
         String[] player2Choices = { "AI Player", "Human Player" }; 
-        final JComboBox<String> player2Type = new JComboBox<String>(player2Choices); 
-        player2Type.setBounds(230, 547, 100*2, 100/3);
+        player2Type = new JComboBox<String>(player2Choices); 
 
         add(player1Type);
         add(player2Type);
@@ -82,6 +82,10 @@ public class MenuDisplay extends Display {
         int player1TitleHeight = size.height/20;
         int player2TitleWidth = size.width*3/5;
         int player2TitleHeight = size.height/20;
+        int player1TypeWidth = size.width*2/5;
+        int player1TypeHeight = size.height/20;
+        int player2TypeWidth = size.width*2/5;
+        int player2TypeHeight = size.height/20;
 
 
         //Set positions/sizes
@@ -111,7 +115,14 @@ public class MenuDisplay extends Display {
         (int) (size.height/(1.55)-player2TitleHeight/(2.55)), 
         player2TitleWidth, player2TitleHeight);
         player2Title.setFont(new Font("Serif", Font.BOLD, minDim/20));
-        
+
+        player1Type.setBounds(size.width/2-player1TypeWidth/2, 
+        (int) (size.height/(3.43)-player1TypeHeight/(4.45)), 
+        player1TypeWidth, player1TypeHeight);
+
+        player2Type.setBounds(size.width/2-player2TypeWidth/2, 
+        (int) (size.height/(1.53)-player2TypeHeight/(2.45)), 
+        player2TypeWidth, player2TypeHeight);
         
     }
 
