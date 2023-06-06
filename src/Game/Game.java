@@ -13,6 +13,7 @@ import Display.GameDisplay;
 import Player.AIPlayer;
 import Player.HumanPlayer;
 import Player.Player;
+import Player.AI.HeuristicPlayer;
 import Player.AI.RandomValidMove;
 import Player.AI.NeuralNetwork.NeuralNet;
 
@@ -34,7 +35,7 @@ public class Game {
     private final int maxGameUpdatesToWait = 5; //max time to wait between game updates
     private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
     private Timer timer; //keeps track of time for game updates
-    public static final int statlemateCounter = 500; //number of moves that can happen before a stalemate
+    public static final int statlemateCounter = 2000; //number of moves that can happen before a stalemate
     
 
     /**
@@ -46,13 +47,15 @@ public class Game {
 
         NeuralNet nn = new NeuralNet();
         nn.save("test");
-        // this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
-        // this.players.add(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove(), this));
-        this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
-        this.players.add(new HumanPlayer(Color.green, "Player Green"));
-        // this.players.add(new HumanPlayer(Color.red, "Player Red"));
-        // this.players.add(new AIPlayer(Color.red, "Player Red", new RandomValidMove(), this));
-        // this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test"), this));
+        // players.add(new HumanPlayer(Color.blue, "Player Blue"));
+        // players.add(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove(), this));
+        // players.add(new HumanPlayer(Color.blue, "Player Blue"));
+        players.add(new HeuristicPlayer(Color.blue, "Player Blue"));
+        // players.add(new HumanPlayer(Color.green, "Player Green"));
+        players.add(new HeuristicPlayer(Color.green, "Player Green"));
+        // players.add(new HumanPlayer(Color.red, "Player Red"));
+        // players.add(new AIPlayer(Color.red, "Player Red", new RandomValidMove(), this));
+        // players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test"), this));
 
         inTurnPlayer = players.get(turnIndex);
         notInTurnPlayer = players.get(turnIndex + 1);
