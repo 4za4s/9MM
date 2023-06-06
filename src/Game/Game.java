@@ -35,7 +35,7 @@ public class Game {
     private final int maxGameUpdatesToWait = 5; //max time to wait between game updates
     private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
     private Timer timer; //keeps track of time for game updates
-    public static final int statlemateCounter = 2000; //number of moves that can happen before a stalemate
+    public static final int statlemateCounter = 150; //number of moves that can happen before a stalemate
     
 
     /**
