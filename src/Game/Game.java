@@ -51,7 +51,7 @@ public class Game {
         // this.players.add(new HumanPlayer(Color.red, "Player Red"));
         // this.players.add(new AIPlayer(Color.red, "Player Red", new RandomValidMove()));
         // this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test")));
-        this(new AIPlayer(Color.blue, "Player Blue", new HeuristicMove()), new AIPlayer(Color.green, "Player Green", new RandomValidMove()));
+        this(new HumanPlayer(new Color(200, 0, 100, 255), "Elisha"), new AIPlayer(Color.green, "Player Green", new HeuristicMove()));
     }
 
     public Game(Player player1, Player player2) {
@@ -380,7 +380,7 @@ public class Game {
         }
 
         if (training != null){
-            training.gameOver(false);
+            training.gameOver(false, player, turnCounter);
         }
     }
 
@@ -393,14 +393,14 @@ public class Game {
         }
 
         if (training != null){
-            training.gameOver(false);
+            training.gameOver(false, null, turnCounter);
         }
     }
 
     public void exitGame(){
         timer.stop();
         if (training != null){
-            training.gameOver(true);
+            training.gameOver(true, null, turnCounter);
         }
     }
     

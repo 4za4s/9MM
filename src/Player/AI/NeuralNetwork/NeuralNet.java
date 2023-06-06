@@ -45,7 +45,7 @@ public class NeuralNet implements AIMove {
     }
 
     public NeuralNet() {
-        createNetwork(3, 5);
+        createNetwork(6, 20);
     }
 
     /**
@@ -88,7 +88,7 @@ public class NeuralNet implements AIMove {
 
         } catch (Exception e) {
             System.err.println("Error loading custom Neural Network");
-            createNetwork(3,5);
+            createNetwork(6,20);
         }
     }
 
@@ -161,24 +161,65 @@ public class NeuralNet implements AIMove {
     }
 
     public ArrayList<double[]> RunNetWork(Double inputs[]) {
-
         // Create inputLayer matrix
+        System.out.println("inputs:");
         for (int i = 0; i < inputs.length; i++) {
             inputLayer.set(0, i, inputs[i]);
+            System.out.println(inputs[i]);
         }
 
         // Set first hidden layer
-        hiddenLayers.set(0, sigmoidMatrix(addBias(inputLayer.times((weights.get(0))), biases.get(0))));
+        Matrix a = inputLayer.times(weights.get(0));
+        System.out.println("times:");
+        for (double[] d : a.getArray()) {
+                for(double d2 : d){
+                    System.out.println(d2);
+                }
+                System.out.println(d);
+            }
+
+        a = addBias(a, biases.get(0));
+        System.out.println("bias:");
+        for (double[] d : a.getArray()) {
+                for(double d2 : d){
+                    System.out.println(d2);
+                }
+                System.out.println(d);
+            }
+
+        a = sigmoidMatrix(a);
+        System.out.println("sigmoid:");
+        for (double[] d : a.getArray()) {
+                for(double d2 : d){
+                    System.out.println(d2);
+                }
+                System.out.println(d);
+            }
+        hiddenLayers.set(0, sigmoidMatrix(addBias(inputLayer.times(weights.get(0)), biases.get(0))));
 
         // Run through rest of hidden layers
         for (int i = 1; i < hiddenLayers.size(); i++) {
-            hiddenLayers.set(i, sigmoidMatrix(addBias(hiddenLayers.get(i - 1).times((weights.get(i))), biases.get(i))));
+            // System.out.println("Hidden" + i + ": " );
+            hiddenLayers.set(i, sigmoidMatrix(addBias(hiddenLayers.get(i - 1).times(weights.get(i)), biases.get(i))));
+            for (double[] d : hiddenLayers.get(i).getArray()) {
+                for(double d2 : d){
+                    System.out.println(d2);
+                }
+                System.out.println(d);
+            }
         }
 
         int index = hiddenLayers.size();
 
         outputLayer = sigmoidMatrix(addBias(hiddenLayers.get(index - 1).times((weights.get(index))), biases.get(index)));
 
+        System.out.println("output:");
+        for (double[] d : outputLayer.getArray()) {
+            for(double d2 : d){
+                System.out.println(d2);
+            }
+            System.out.println(d);
+        }
         // Convert output matrix to a sorted list showing positions
         double[] outputLayerUnsorted = outputLayer.getArray()[0];
 
@@ -227,7 +268,7 @@ public class NeuralNet implements AIMove {
 
         for (int i = 0; i < ar.length; i++) {
             for (int j = 0; j < ar[i].length; j++) {
-                ar[i][j] = sigmoid(ar[i][j]);
+                m.set(i, j, sigmoid(ar[i][j]));
             }
         }
         return m;
