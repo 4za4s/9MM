@@ -1,7 +1,5 @@
 package Player.AI;
 
-import java.awt.Color;
-
 import Board.Piece;
 import Board.Position;
 import Game.Game;
@@ -12,22 +10,14 @@ import Player.Player;
 /**
  * Checks for specific situation on the board, uses this info to make moves. Plays 2 move ahead
  */
-public class HeuristicPlayer extends Player {
-
+public class HeuristicMove implements AIMove {
     Game game;
-
-    public HeuristicPlayer(Color colour, String playerName) {
-        super(colour, playerName);
-        this.isAI = true;
-    }
-
     /**
      * Checks for a few specific scenarios, otherwise does a random move
      */
     @Override
     public Position getMove(Game game) {
         this.game = game;
-
         Position pos;
 
         if (game.getGameState() == GameState.PLACING ||

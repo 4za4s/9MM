@@ -133,7 +133,7 @@ public class TrainNeuralNet {
                     if (Math.random() < 0.01) {
                         newBias[j] = Math.random();
                     } else if (Math.random() < 0.5) {
-                        newBias[j] = biases1.get(l)[j]
+                        newBias[j] = biases1.get(l)[j];
                     } else {
                         newBias[j] = Math.random();
                     }
