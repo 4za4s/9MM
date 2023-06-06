@@ -117,10 +117,12 @@ public class MenuDisplay extends Display {
         player1Type.setBounds(size.width/2-player1TypeWidth/2, 
             (int) (size.height/(3.43)-player1TypeHeight/(4.45)), 
             player1TypeWidth, player1TypeHeight);
+        player1Type.setFont(new Font("Serif", Font.PLAIN, minDim/32));
 
         player2Type.setBounds(size.width/2-player2TypeWidth/2, 
             (int) (size.height/(1.53)-player2TypeHeight/(2.45)), 
             player2TypeWidth, player2TypeHeight);
+        player2Type.setFont(new Font("Serif", Font.PLAIN, minDim/32));
         
     }
 
