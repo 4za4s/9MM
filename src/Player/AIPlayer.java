@@ -10,18 +10,14 @@ public class AIPlayer extends Player {
     private AIMove moveGenerator;
     
 
-    public AIPlayer(Color colour, String playerName, AIMove moveGenerator, Game game) {
+    public AIPlayer(Color colour, String playerName, AIMove moveGenerator) {
         super(colour, playerName);
         this.moveGenerator = moveGenerator;
         this.isAI = true;
-        
-
     }
 
     @Override
     public Position getMove(Game game) {
         return moveGenerator.getMove(game);
     }
-
-
 }

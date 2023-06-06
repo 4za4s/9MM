@@ -15,26 +15,26 @@ import Player.HumanPlayer;
 import Player.Player;
 import Player.AI.RandomValidMove;
 import Player.AI.NeuralNetwork.NeuralNet;
+import Player.AI.NeuralNetwork.TrainNeuralNet;
 
 /**
  * Handles all the game logic and actions
  */
 public class Game {
-    private Game game = this;
     private GameDisplay gameDisplay; // display for the game
     private Board board; // board the game is moving pieces around on
     private ArrayList<Player> players = new ArrayList<Player>(); // players of the game
     private Player inTurnPlayer; // player whos turn it is to make an action
     private Player notInTurnPlayer; // player who is not in turn to make an action
-    private int turnIndex = 0; // index in list of player whose turn it isgameUpdatesToWait
     private int turnCounter = 0; // counter for nubmer of turns passes
     private GameState gameState; // what state the game is in
     private Piece selectedPiece; // piece that has been selected to be moved
     private int toTake = 0; // how many pieces are left to take. In 1 turn a player can take up to 2 pieces
-    private final int maxGameUpdatesToWait = 5; //max time to wait between game updates
+    private final int maxGameUpdatesToWait = 1; //max time to wait between game updates
     private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
     private Timer timer; //keeps track of time for game updates
-    public static final int statlemateCounter = 500; //number of moves that can happen before a stalemate
+    public static final int statlemateCounter = 100; //number of moves that can happen before a stalemate
+    public TrainNeuralNet training = null;
     
 
     /**
@@ -42,24 +42,37 @@ public class Game {
      * (AI, human, etc.)
      */
     public Game() {
+
+        // this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
+        // this.players.add(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove()));
+        // this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
+        // this.players.add(new HumanPlayer(Color.green, "Player Green"));
+        // this.players.add(new HumanPlayer(Color.red, "Player Red"));
+        // this.players.add(new AIPlayer(Color.red, "Player Red", new RandomValidMove()));
+        // this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test")));
+        this(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove()), new AIPlayer(Color.green, "Player Green", new RandomValidMove()));
+    }
+
+    public Game(Player player1, Player player2) {
+        //create game board
         this.board = new Board();
 
-        NeuralNet nn = new NeuralNet();
-        nn.save("test");
-        // this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
-        // this.players.add(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove(), this));
-        this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
-        this.players.add(new HumanPlayer(Color.green, "Player Green"));
-        // this.players.add(new HumanPlayer(Color.red, "Player Red"));
-        // this.players.add(new AIPlayer(Color.red, "Player Red", new RandomValidMove(), this));
-        // this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test"), this));
+        //add players to the game
+        this.players.add(player1);
+        this.players.add(player2);
 
-        inTurnPlayer = players.get(turnIndex);
-        notInTurnPlayer = players.get(turnIndex + 1);
+        //set the first player to be in turn
+        inTurnPlayer = players.get(0);
+        notInTurnPlayer = players.get(1);
+
         // Place pieces
         gameState = GameState.PLACING;
     }
 
+    public Game(Player player1, Player player2, TrainNeuralNet trainNeuralNet) {
+        this(player1, player2);
+        this.training = trainNeuralNet;
+    }
 
     /**
      * Please don't remove. I keep on finding I need this later and then have to reimpliment it
@@ -70,10 +83,10 @@ public class Game {
         //Ensure timely game updates
         ActionListener action = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                   game.updateGame();
+                    updateGame();
             }
         };
-        timer = new Timer(5, action); 
+        timer = new Timer(1, action); 
         timer.start();
     }
 
@@ -238,12 +251,10 @@ public class Game {
         }
         // Check for stalemantes
        if (turnCounter >= statlemateCounter) {
-            game.stalemate();
+            stalemate();
         }
 
-        if (gameDisplay != null) {
-            updateDisplay();
-        }
+        updateDisplay();
     }
 
     /**
@@ -328,10 +339,8 @@ public class Game {
             return;
         }
 
-
-        turnIndex = (++turnCounter) % players.size();
         notInTurnPlayer = inTurnPlayer;
-        inTurnPlayer = players.get(turnIndex);
+        inTurnPlayer = players.get((++turnCounter) % players.size());
 
         System.out.println("Turn = " + turnCounter + " " + inTurnPlayer.getName() );
 
@@ -343,9 +352,10 @@ public class Game {
      * What to update 
      */
     private void updateDisplay(){
-
         //Update rest of display
-        gameDisplay.updateDisplay();
+        if (gameDisplay != null){
+            gameDisplay.updateDisplay();
+        }
     }
 
     private void updateGame(){
@@ -362,18 +372,35 @@ public class Game {
      */
     public void playerWins(Player player){
         System.out.println("Winner is " + player.getName());
-
+        timer.stop();
         gameState = GameState.PLAYERWON;
         if (gameDisplay != null){
             gameDisplay.playerWins(player);
         }
-        timer.stop();
+
+        if (training != null){
+            training.gameOver(false);
+        }
     }
 
     public void stalemate(){
+        System.out.println("Statemate");
         timer.stop();
         gameState = GameState.STALEMATE;
-        gameDisplay.stalemate(game.getPlayers());
+        if (gameDisplay != null){
+            gameDisplay.stalemate(getPlayers());
+        }
+
+        if (training != null){
+            training.gameOver(false);
+        }
+    }
+
+    public void exitGame(){
+        timer.stop();
+        if (training != null){
+            training.gameOver(true);
+        }
     }
     
 }
