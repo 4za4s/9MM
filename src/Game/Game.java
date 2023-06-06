@@ -52,9 +52,9 @@ public class Game {
         // players.add(new HumanPlayer(Color.blue, "Player Blue"));
         players.add(new HeuristicPlayer(Color.blue, "Player Blue"));
         // players.add(new HumanPlayer(Color.green, "Player Green"));
-        players.add(new HeuristicPlayer(Color.green, "Player Green"));
+        // players.add(new HeuristicPlayer(Color.green, "Player Green"));
         // players.add(new HumanPlayer(Color.red, "Player Red"));
-        // players.add(new AIPlayer(Color.red, "Player Red", new RandomValidMove(), this));
+        players.add(new AIPlayer(Color.red, "Player Red", new RandomValidMove(), this));
         // players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test"), this));
 
         inTurnPlayer = players.get(turnIndex);
