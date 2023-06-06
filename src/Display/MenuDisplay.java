@@ -1,6 +1,7 @@
 package Display;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -43,14 +44,17 @@ public class MenuDisplay extends Display {
         start.addActionListener(e -> window.displayGame());
         neuralNetworkStart.addActionListener(e -> trainButtonPressed());
 
-        String[] playerChoices = { "AI Player", "Human Player" }; // TODO: Zayn
+        String[] player1Choices = { "AI Player", "Human Player" }; 
+        final JComboBox<String> player1Type = new JComboBox<String>(player1Choices); 
+        player1Type.setBounds(230, 245, 100*2, 100/3);
 
-        final JComboBox<String> playerType = new JComboBox<String>(playerChoices); // TODO: Zayn
+        String[] player2Choices = { "AI Player", "Human Player" }; 
+        final JComboBox<String> player2Type = new JComboBox<String>(player2Choices); 
+        player2Type.setBounds(230, 547, 100*2, 100/3);
 
-        playerType.setSize(100, 100); // TODO: Zayn
-
-        add(playerType);
-        add(start);
+        add(player1Type);
+        add(player2Type);
+        add(start); 
         add(title);
         add(player1Title);
         add(player2Title);

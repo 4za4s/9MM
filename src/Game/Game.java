@@ -13,6 +13,7 @@ import Display.GameDisplay;
 import Player.AIPlayer;
 import Player.HumanPlayer;
 import Player.Player;
+import Player.AI.HeuristicPlayer;
 import Player.AI.RandomValidMove;
 import Player.AI.NeuralNetwork.NeuralNet;
 import Player.AI.NeuralNetwork.TrainNeuralNet;
@@ -33,8 +34,7 @@ public class Game {
     private final int maxGameUpdatesToWait = 1; //max time to wait between game updates
     private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
     private Timer timer; //keeps track of time for game updates
-    public static final int statlemateCounter = 100; //number of moves that can happen before a stalemate
-    public TrainNeuralNet training = null;
+    public static final int statlemateCounter = 150; //number of moves that can happen before a stalemate
     
 
     /**
