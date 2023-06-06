@@ -11,46 +11,46 @@ import javax.swing.JFrame;
 import Game.Game;
 
 /**
- * The computer window that the game runs in (all new games will share this window)
+ * The computer window that the game runs in (all new games will share this
+ * window)
  */
-public class Window extends JFrame{
-    private Display currentDisplay; //what is currently being display - eg a game
-    private Window window = this; //this
-    private final int minSize = 200; //minimum size the board can display as 
-    private final int maxSize = 2000; //minimum size the board can display as 
-    private Dimension size; //how big this window is
-    private final Color backgroundColor = new Color(244,224,190); //Background colour of this window
+public class Window extends JFrame {
+    private Display currentDisplay; // what is currently being display - eg a game
+    private Window window = this; // this
+    private final int minSize = 200; // minimum size the board can display as
+    private final int maxSize = 2000; // minimum size the board can display as
+    private Dimension size; // how big this window is
+    private final Color backgroundColor = new Color(244, 224, 190); // Background colour of this window
 
     /**
      * Class constructor
      */
-    public Window(){
+    public Window() {
         super("Nine Man's Morris");
-        //Frame settings
+        // Frame settings
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Display the window
+        // Display the window
         getContentPane().setBackground(backgroundColor);
         setWindowSize();
         pack();
         setSize(size);
         setVisible(true);
-        setLayout(null); //try setLayout(new GridLayout()); if bored
+        setLayout(null); // try setLayout(new GridLayout()); if bored
         setMinimumSize(new Dimension(minSize, minSize));
         setMaximumSize(new Dimension(maxSize, maxSize));
-        
+
         displayMenu();
 
         resizing();
     }
 
-
     /**
      * Listerner to check for resizing. Enables
-     *  resizing the window to resize its contents
+     * resizing the window to resize its contents
      */
-    private void resizing(){
+    private void resizing() {
 
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -70,15 +70,15 @@ public class Window extends JFrame{
     /**
      * Display a game on the window
      */
-    public void displayGame(){
-        // getContentPane().removeAll();
+    public void displayGame() {
+        displayGame(new Game());
+    }
 
-        if (currentDisplay != null){
+    public void displayGame(Game game) {
+        if (currentDisplay != null) {
             remove(currentDisplay);
-
         }
-        
-        Game game = new Game();
+
         GameDisplay gameDisplay = new GameDisplay(getHeight(), getWidth(), game, this);
         game.setGameDisplay(gameDisplay);
         currentDisplay = gameDisplay;
@@ -92,9 +92,10 @@ public class Window extends JFrame{
     /**
      * Display the main menu on the window
      */
-    public void displayMenu(){
-
-        // remove(currentDisplay);
+    public void displayMenu() {
+        if (currentDisplay != null) {
+            remove(currentDisplay);
+        }
         getContentPane().removeAll();
         getContentPane().setBackground(backgroundColor);
         MenuDisplay menuDisplay = new MenuDisplay(getHeight(), getWidth(), this);
@@ -107,14 +108,15 @@ public class Window extends JFrame{
     }
 
     /**
-     * Set window size of game relative to display. Height and Width calculated relative 
+     * Set window size of game relative to display. Height and Width calculated
+     * relative
      * to the screen so the game is roughly the same size on most screens
      */
-    private void setWindowSize(){
+    private void setWindowSize() {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        int frameHeight = Math.max(minSize,(int)size.getHeight()*5/6);
-        int frameWidth = Math.max(minSize,frameHeight*13/14);
-        this.setLocation((int) size.getWidth()/2 - frameWidth/2, (int) size.getHeight()/2-frameHeight/2);
+        int frameHeight = Math.max(minSize, (int) size.getHeight() * 5 / 6);
+        int frameWidth = Math.max(minSize, frameHeight * 13 / 14);
+        this.setLocation((int) size.getWidth() / 2 - frameWidth / 2, (int) size.getHeight() / 2 - frameHeight / 2);
 
         this.size = new Dimension(frameWidth, frameHeight);
     }

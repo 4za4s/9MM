@@ -31,9 +31,9 @@ public class NeuralNet implements AIMove {
     // Will output values for all positions. Later go with the best of these
     private Matrix outputLayer = new Matrix(1, numOutputs);
 
-    private ArrayList<Matrix> weights = new ArrayList<Matrix>();
+    public ArrayList<Matrix> weights = new ArrayList<Matrix>();
 
-    private ArrayList<double[]> biases = new ArrayList<double[]>();
+    public ArrayList<double[]> biases = new ArrayList<double[]>();
 
     private float fitness = 0;
 
@@ -88,7 +88,7 @@ public class NeuralNet implements AIMove {
 
         } catch (Exception e) {
             System.err.println("Error loading custom Neural Network");
-            System.err.println(e);
+            createNetwork(3,5);
         }
     }
 
@@ -219,14 +219,6 @@ public class NeuralNet implements AIMove {
         return arrayList;
     }
 
-    //Useless function
-    // /**
-    //  * Adds a bias of b to matrix m
-    //  */
-    // public Matrix biasMatrix(Matrix b, Matrix m) {
-    //     return m.plus(b);
-    // }
-
     /**
      * Sigmoids all values of a matrix
      */
@@ -247,6 +239,14 @@ public class NeuralNet implements AIMove {
     private double sigmoid(double input) {
         return 1 / (1 + Math.pow(Math.E, (-1 * input))); // https://stackoverflow.com/questions/33612029/sigmoid-function-of-a-2d-array
 
+    }
+
+    public float getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(float fitness) {
+        this.fitness = fitness;
     }
 
     @Override

@@ -238,7 +238,7 @@ public class GameDisplay extends Display {
     }
 
     public void exitGame(){
-        game.stalemate();
+        game.exitGame();
         window.displayMenu();
     }
 
