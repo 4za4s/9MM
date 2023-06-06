@@ -195,7 +195,7 @@ public class NeuralNet implements AIMove {
                 }
                 System.out.println(d);
             }
-        hiddenLayers.set(0, sigmoidMatrix(addBias(inputLayer.times(weights.get(0)), biases.get(0))));
+        hiddenLayers.set(0, a);
 
         // Run through rest of hidden layers
         for (int i = 1; i < hiddenLayers.size(); i++) {
