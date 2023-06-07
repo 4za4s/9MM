@@ -21,6 +21,8 @@ public class TrainNeuralNet {
     private int WorstNetWorkSelection = 0;
     private int numberToCrossover = 20;
     private int numberToMutate = 10;
+    
+    private int numGamesToPlay = 20;
 
     private AIPlayer AIplayer1;
     private AIPlayer AIplayer2;
@@ -56,7 +58,7 @@ public class TrainNeuralNet {
     public void gameOver(Boolean stop, Player winner, int turn) {
         if (stop) {
             int i = 1;
-            sortPop();
+            population = sortPop(population);
             for (NeuralNet pop : population) {
                 pop.save("NeuralNet" + i);
                 i++;
@@ -67,7 +69,7 @@ public class TrainNeuralNet {
         updateFitness(winner, turn);
 
         player2Net++;
-        if (player2Net >= 20) {
+        if (player2Net >= numGamesToPlay) {
             player1Net++;
             player2Net = 0;
         }
@@ -85,7 +87,7 @@ public class TrainNeuralNet {
             AIplayer1 = new AIPlayer(Color.green, "Player Green", new HeuristicMove());;
         }
 
-        if (player2Net >= 10) {
+        if (player2Net >= numGamesToPlay/2) {
             AIplayer2 = new AIPlayer(Color.green, "Player Green", new HeuristicMove());;
         }
         currentGame = new Game(AIplayer1, AIplayer2, this);
@@ -96,18 +98,20 @@ public class TrainNeuralNet {
         window.displayGame(currentGame);
     }
 
-    public void sortPop() {
-        Collections.sort(population, new Comparator<NeuralNet>() {
+    public ArrayList<NeuralNet> sortPop(ArrayList<NeuralNet> pop) {
+        Collections.sort(pop, new Comparator<NeuralNet>() {
             @Override
             public int compare(NeuralNet nn1, NeuralNet nn2) {
                 return nn1.getFitness() > nn2.getFitness() ? -1 : (nn1.getFitness() < nn2.getFitness()) ? 1 : 0;
             }
         });
+
+        return pop;
     }
 
     private void RePopulate() {
         System.out.println("Repopulating");
-        sortPop();
+        population = sortPop(population);
         for (int i = 0; i < popsize; i++) {
             System.out.println(population.get(i).getFitness());
             population.get(i).save("NeuralNet" + (i + 1));
@@ -147,22 +151,20 @@ public class TrainNeuralNet {
         int lost1 = AIplayer1.getNoOfPiecesLost();
         int lost2 = AIplayer2.getNoOfPiecesLost();
 
-        float score1 = ((9 - lost1)*5 / (8 - lost2))*10;
-        float score2 = ((9 - lost2)*5 / (8 - lost1))*10;
+        float score1 = (9 - lost1)*5 + (lost2 - 8)*5;
+        float score2 = (9 - lost2)*5 + (lost1 - 8)*5;
 
         if (winner == AIplayer1) {
-            score1 += 3000/turn;
-            score2 -= 3000/turn;
+            score1 += 100 - turn;
         } else if (winner == AIplayer2) {
-            score2 += 3000/turn;
-            score1 -= 3000/turn;
+            score2 += 100 - turn;
         }
         
         if (player1Net < popsize){
-            population.get(player1Net).setFitness((score1 + population.get(player1Net).getFitness())/2);
+            population.get(player1Net).setFitness(population.get(player1Net).getFitness() + score1);
         }
-        if (player2Net < 13){
-            population.get(player2Net).setFitness((score2 + population.get(player2Net).getFitness())/2);
+        if (player2Net < numGamesToPlay/2){
+            population.get(player2Net).setFitness(population.get(player2Net).getFitness() + score2);
         }
 
         for (int i = 0; i < popsize; i++) {
