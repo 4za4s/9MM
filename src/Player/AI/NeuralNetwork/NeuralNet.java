@@ -45,7 +45,7 @@ public class NeuralNet implements AIMove {
     }
 
     public NeuralNet() {
-        createNetwork(4, 20);
+        createNetwork(4, 43);
     }
 
     /**
@@ -88,7 +88,7 @@ public class NeuralNet implements AIMove {
 
         } catch (Exception e) {
             System.err.println("Error loading custom Neural Network");
-            createNetwork(4,20);
+            createNetwork(4, 43);
         }
     }
 
@@ -107,7 +107,7 @@ public class NeuralNet implements AIMove {
 
             double[] H1Biases = new double[numOutputs];
             for (int j = 0; j < numOutputs; j++) {
-                H1Biases[j] = (double) (Math.random() - 0.5) * 2;
+                H1Biases[j] = 0.0;
             }
 
             biases.add(H1Biases);
@@ -122,7 +122,7 @@ public class NeuralNet implements AIMove {
 
         double[] H1Biases = new double[hiddenNeuronCount];
         for (int j = 0; j < hiddenNeuronCount; j++) {
-            H1Biases[j] = (double) (Math.random() - 0.5) * 2;
+            H1Biases[j] = 0.0;
         }
 
         biases.add(H1Biases);
@@ -141,7 +141,7 @@ public class NeuralNet implements AIMove {
             // Hidden layer i biases
             double[] HiBiases = new double[hiddenNeuronCount];
             for (int j = 0; j < hiddenNeuronCount; j++) {
-                HiBiases[j] = (double) (Math.random() - 0.5) * 2;
+                HiBiases[j] = 0.0;
             }
 
             biases.add(HiBiases);
@@ -154,7 +154,7 @@ public class NeuralNet implements AIMove {
         // Output Bias
         double[] OutputBiases = new double[numOutputs];
         for (int j = 0; j < numOutputs; j++) {
-            OutputBiases[j] = (double) (Math.random() - 0.5) * 2;
+            OutputBiases[j] = 0.0;
         }
 
         biases.add(OutputBiases);
@@ -164,7 +164,7 @@ public class NeuralNet implements AIMove {
         // Create inputLayer matrix
         for (int i = 0; i < inputs.length; i++) {
             inputLayer.set(0, i, inputs[i]);
-            System.out.println(inputs[i]);
+            // System.out.println(inputs[i]);
         }
 
 
@@ -184,6 +184,10 @@ public class NeuralNet implements AIMove {
         double[] outputLayerUnsorted = outputLayer.getArray()[0];
 
         ArrayList<double[]> outputLayerSorted = listToSorrtedArrayList(outputLayerUnsorted);
+
+        // for (int i = 0; i < outputLayerSorted.size(); i++) {
+        //     System.out.println(outputLayerSorted.get(i)[0] + " Pos: " + outputLayerSorted.get(i)[1]);
+        // }
 
         return outputLayerSorted;
 
@@ -306,9 +310,9 @@ public class NeuralNet implements AIMove {
      * @return
      */
     private Position getBestlegalPosition(ArrayList<double[]> outputs, Game game) {
-        for (double out[] : outputs) {
-            System.out.println("position ranking: " + out[0] + "position loc: " + out[1]);
-        }
+        // for (double out[] : outputs) {
+        //     System.out.println("position ranking: " + out[0] + "position loc: " + out[1]);
+        // }
 
         for (double out[] : outputs) {
             ArrayList<Position> possibleMoves = game.getBoard().getPossibleMoves(game.getGameState(),

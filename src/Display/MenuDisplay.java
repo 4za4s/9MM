@@ -28,8 +28,8 @@ public class MenuDisplay extends Display {
     private JLabel player2Title;
     private JComboBox<String> player1Type;
     private JComboBox<String> player2Type;
-    private Player player1 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
-    private Player player2 = new HumanPlayer(Color.green, "Player Green");
+    private Player player2 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
+    private Player player1 = new AIPlayer(Color.green, "Player Green", new NeuralNet("NeuralNet1"));
 
     /**
      * Class constructor

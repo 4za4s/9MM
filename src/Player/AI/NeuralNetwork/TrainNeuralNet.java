@@ -10,22 +10,24 @@ import Game.Game;
 import Jama.Matrix;
 import Player.AIPlayer;
 import Player.Player;
+import Player.AI.HeuristicMove;
+import Player.AI.RandomValidMove;
 
 public class TrainNeuralNet {
     private int popsize = 50;
     private ArrayList<NeuralNet> population = new ArrayList<NeuralNet>(popsize);
 
-    private int bestNetWorkSelection = 10;
-    private int WorstNetWorkSelection = 10;
-    private int numberToCrossover = 10;
+    private int bestNetWorkSelection = 5;
+    private int WorstNetWorkSelection = 0;
+    private int numberToCrossover = 20;
     private int numberToMutate = 10;
 
     private AIPlayer AIplayer1;
     private AIPlayer AIplayer2;
     private int player1Net = 0;
-    private int player2Net = 1;
+    private int player2Net = 0;
 
-    private float mutateRate = 0.05f;
+    private float mutateRate = 0.01f;
 
     private Game currentGame;
     private Window window;
@@ -65,20 +67,27 @@ public class TrainNeuralNet {
         updateFitness(winner, turn);
 
         player2Net++;
-        if (player2Net >= popsize) {
+        if (player2Net >= 20) {
             player1Net++;
             player2Net = 0;
         }
 
-        if (player1Net >= popsize) {
+        if (player1Net >= popsize+10) {
             RePopulate();
             player1Net = 0;
-            player2Net = 1;
+            player2Net = 0;
         }
 
         AIplayer1 = new AIPlayer(Color.blue, "Player Blue", population.get(player1Net));
         AIplayer2 = new AIPlayer(Color.red, "Player Red", population.get(player2Net));
 
+        if (player1Net >= popsize) {
+            AIplayer1 = new AIPlayer(Color.green, "Player Green", new HeuristicMove());;
+        }
+
+        if (player2Net >= 10) {
+            AIplayer2 = new AIPlayer(Color.green, "Player Green", new HeuristicMove());;
+        }
         currentGame = new Game(AIplayer1, AIplayer2, this);
         updateDisplay();
     }
@@ -94,14 +103,15 @@ public class TrainNeuralNet {
                 return nn1.getFitness() > nn2.getFitness() ? -1 : (nn1.getFitness() < nn2.getFitness()) ? 1 : 0;
             }
         });
-
-        for (int i = 0; i < popsize; i++) {
-            System.out.println(population.get(i).getFitness());
-        }
     }
 
     private void RePopulate() {
+        System.out.println("Repopulating");
         sortPop();
+        for (int i = 0; i < popsize; i++) {
+            System.out.println(population.get(i).getFitness());
+            population.get(i).save("NeuralNet" + (i + 1));
+        }
         ArrayList<NeuralNet> newPopulation = new ArrayList<NeuralNet>(popsize);
         for (int i = 0; i < bestNetWorkSelection; i++) {
             newPopulation.add(population.get(i));
@@ -112,8 +122,8 @@ public class TrainNeuralNet {
         }
 
         for (int i = 0; i < numberToCrossover; i++) {
-            NeuralNet Parent1 = population.get((int) (Math.random() * (bestNetWorkSelection + WorstNetWorkSelection)));
-            NeuralNet Parent2 = population.get((int) (Math.random() * (bestNetWorkSelection + WorstNetWorkSelection)));
+            NeuralNet Parent1 = population.get((int) (Math.random() * (popsize/2)));
+            NeuralNet Parent2 = population.get((int) (Math.random() * (popsize/2)));
 
             newPopulation.add(crossOver(Parent1, Parent2));
         }
@@ -137,17 +147,23 @@ public class TrainNeuralNet {
         int lost1 = AIplayer1.getNoOfPiecesLost();
         int lost2 = AIplayer2.getNoOfPiecesLost();
 
-        float score1 = population.get(player1Net).getFitness() + ((9 - lost1)*5 / (8 - lost2))*10;
-        float score2 = population.get(player2Net).getFitness() + ((9 - lost2)*5 / (8 - lost1))*10;
+        float score1 = ((9 - lost1)*5 / (8 - lost2))*10;
+        float score2 = ((9 - lost2)*5 / (8 - lost1))*10;
 
         if (winner == AIplayer1) {
-            score1 += 100;
+            score1 += 3000/turn;
+            score2 -= 3000/turn;
         } else if (winner == AIplayer2) {
-            score2 += 100;
+            score2 += 3000/turn;
+            score1 -= 3000/turn;
         }
         
-        population.get(player1Net).setFitness(score1);
-        population.get(player2Net).setFitness(score2);
+        if (player1Net < popsize){
+            population.get(player1Net).setFitness((score1 + population.get(player1Net).getFitness())/2);
+        }
+        if (player2Net < 13){
+            population.get(player2Net).setFitness((score2 + population.get(player2Net).getFitness())/2);
+        }
 
         for (int i = 0; i < popsize; i++) {
             System.out.println(i+1 + ": " + population.get(i).getFitness());
