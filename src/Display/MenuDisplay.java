@@ -54,7 +54,7 @@ public class MenuDisplay extends Display {
         Player[] player1Choices = {new HumanPlayer(Color.BLUE, "Player Blue"), new AIPlayer(Color.red, "Player Red", new HeuristicMove()), new AIPlayer(Color.green, "Player Green", new NeuralNet("NeuralNet1"))}; 
         player1Type = new JComboBox<Player>(player1Choices); 
         
-        Player[] player2Choices = {new HumanPlayer(Color.yellow, "Player Yellow"), new AIPlayer(Color.orange, "Player Orange", new HeuristicMove()), new AIPlayer(Color.magenta, "Player Magenta", new NeuralNet("NeuralNet1"))}; 
+        Player[] player2Choices = {new HumanPlayer(Color.CYAN, "Player Cyan"), new AIPlayer(Color.orange, "Player Orange", new HeuristicMove()), new AIPlayer(Color.magenta, "Player Magenta", new NeuralNet("NeuralNet1"))}; 
         player2Type = new JComboBox<Player>(player2Choices); 
         
         start.addActionListener(e -> startButtonPressed());
