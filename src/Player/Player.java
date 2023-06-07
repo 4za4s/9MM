@@ -96,4 +96,9 @@ public abstract class Player {
     //TODO: this function has too many arguments
     public abstract Position getMove(Game game);
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
+
 }

@@ -26,8 +26,8 @@ public class MenuDisplay extends Display {
     private JLabel title; // game title
     private JLabel player1Title;
     private JLabel player2Title;
-    private JComboBox<String> player1Type;
-    private JComboBox<String> player2Type;
+    private JComboBox<Player> player1Type;
+    private JComboBox<Player> player2Type;
     private Player player1 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
     private Player player2 = new HumanPlayer(Color.green, "Player Green");
 
@@ -51,26 +51,11 @@ public class MenuDisplay extends Display {
 
         player2Title = new JLabel("Player 2: ", SwingConstants.CENTER);
 
-        String[] player1Choices = { "AI Player", "Human Player" }; 
-        player1Type = new JComboBox<String>(player1Choices); 
-        String player1Selection = String.valueOf(player1Type.getSelectedItem());
-
-        if(player1Selection == "AI Player") {
-            player1 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
-        } else {
-            player1 = new HumanPlayer(Color.green, "Player Green");
-        }
+        Player[] playerChoices = {new HumanPlayer(Color.BLUE, "Player Blue"), new AIPlayer(Color.red, "Player Red", new HeuristicMove()), new AIPlayer(Color.green, "Player Green", new NeuralNet("NeuralNet1"))}; 
+        player1Type = new JComboBox<Player>(playerChoices); 
         
-        String[] player2Choices = { "AI Player", "Human Player" }; 
-        player2Type = new JComboBox<String>(player2Choices); 
-        String player2Selection = String.valueOf(player2Type.getSelectedItem());
+        player2Type = new JComboBox<Player>(playerChoices); 
         
-        if(player2Selection == "Human Player") {
-            player2 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
-        } else {
-            player2 = new HumanPlayer(Color.green, "Player Green");
-        }
-
         start.addActionListener(e -> startButtonPressed());
         neuralNetworkStart.addActionListener(e -> trainButtonPressed());
 
@@ -158,6 +143,9 @@ public class MenuDisplay extends Display {
     }
 
     private void startButtonPressed() {
+        player1 = (Player) player1Type.getSelectedItem();
+        player2 = (Player) player2Type.getSelectedItem();
+
         Game startGame = new Game(player1, player2);
         window.displayGame(startGame);
         System.out.println("GAME HAS STARTED!");
