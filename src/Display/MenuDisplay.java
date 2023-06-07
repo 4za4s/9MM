@@ -51,10 +51,11 @@ public class MenuDisplay extends Display {
 
         player2Title = new JLabel("Player 2: ", SwingConstants.CENTER);
 
-        Player[] playerChoices = {new HumanPlayer(Color.BLUE, "Player Blue"), new AIPlayer(Color.red, "Player Red", new HeuristicMove()), new AIPlayer(Color.green, "Player Green", new NeuralNet("NeuralNet1"))}; 
-        player1Type = new JComboBox<Player>(playerChoices); 
+        Player[] player1Choices = {new HumanPlayer(Color.BLUE, "Player Blue"), new AIPlayer(Color.red, "Player Red", new HeuristicMove()), new AIPlayer(Color.green, "Player Green", new NeuralNet("NeuralNet1"))}; 
+        player1Type = new JComboBox<Player>(player1Choices); 
         
-        player2Type = new JComboBox<Player>(playerChoices); 
+        Player[] player2Choices = {new HumanPlayer(Color.yellow, "Player Yellow"), new AIPlayer(Color.orange, "Player Orange", new HeuristicMove()), new AIPlayer(Color.magenta, "Player Magenta", new NeuralNet("NeuralNet1"))}; 
+        player2Type = new JComboBox<Player>(player2Choices); 
         
         start.addActionListener(e -> startButtonPressed());
         neuralNetworkStart.addActionListener(e -> trainButtonPressed());
@@ -148,7 +149,6 @@ public class MenuDisplay extends Display {
 
         Game startGame = new Game(player1, player2);
         window.displayGame(startGame);
-        System.out.println("GAME HAS STARTED!");
     }
 
 }
