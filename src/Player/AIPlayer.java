@@ -20,4 +20,10 @@ public class AIPlayer extends Player {
     public Position getMove(Game game) {
         return moveGenerator.getMove(game);
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " - " + moveGenerator.getClass().getSimpleName();
+    }
+
 }
