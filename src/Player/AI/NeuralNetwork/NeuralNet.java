@@ -20,7 +20,7 @@ import Player.AI.RandomValidMove;
 //https://github.com/AJTech2002/Self-Driving-Car-Series/blob/master/Self%20Driving%20Car%20-%20Part%202%20Completed/Assets/NNet.cs
 public class NeuralNet implements AIMove {
 
-    private int numInputs = 30; // (gamestates + positions)
+    private int numInputs = 53; // (gamestates 5 + position of our pieces 24 + position of opponents pieces 24)
     private int numOutputs = 24; // (positions)
 
     // 1 column input + rows
@@ -45,7 +45,7 @@ public class NeuralNet implements AIMove {
     }
 
     public NeuralNet() {
-        createNetwork(6, 20);
+        createNetwork(4, 43);
     }
 
     /**
@@ -88,7 +88,7 @@ public class NeuralNet implements AIMove {
 
         } catch (Exception e) {
             System.err.println("Error loading custom Neural Network");
-            createNetwork(6,20);
+            createNetwork(4, 43);
         }
     }
 
@@ -107,7 +107,7 @@ public class NeuralNet implements AIMove {
 
             double[] H1Biases = new double[numOutputs];
             for (int j = 0; j < numOutputs; j++) {
-                H1Biases[j] = (double) (Math.random() - 0.5) * 2;
+                H1Biases[j] = 0.0;
             }
 
             biases.add(H1Biases);
@@ -122,7 +122,7 @@ public class NeuralNet implements AIMove {
 
         double[] H1Biases = new double[hiddenNeuronCount];
         for (int j = 0; j < hiddenNeuronCount; j++) {
-            H1Biases[j] = (double) (Math.random() - 0.5) * 2;
+            H1Biases[j] = 0.0;
         }
 
         biases.add(H1Biases);
@@ -141,7 +141,7 @@ public class NeuralNet implements AIMove {
             // Hidden layer i biases
             double[] HiBiases = new double[hiddenNeuronCount];
             for (int j = 0; j < hiddenNeuronCount; j++) {
-                HiBiases[j] = (double) (Math.random() - 0.5) * 2;
+                HiBiases[j] = 0.0;
             }
 
             biases.add(HiBiases);
@@ -154,7 +154,7 @@ public class NeuralNet implements AIMove {
         // Output Bias
         double[] OutputBiases = new double[numOutputs];
         for (int j = 0; j < numOutputs; j++) {
-            OutputBiases[j] = (double) (Math.random() - 0.5) * 2;
+            OutputBiases[j] = 0.0;
         }
 
         biases.add(OutputBiases);
@@ -162,103 +162,32 @@ public class NeuralNet implements AIMove {
 
     public ArrayList<double[]> RunNetWork(Double inputs[]) {
         // Create inputLayer matrix
-        System.out.println("inputs:");
         for (int i = 0; i < inputs.length; i++) {
             inputLayer.set(0, i, inputs[i]);
-            System.out.println(inputs[i]);
+            // System.out.println(inputs[i]);
         }
 
-        // Set first hidden layer
-        Matrix a = inputLayer.times(weights.get(0));
-        System.out.println("times:");
-        for (double[] d : a.getArray()) {
-            for(double d2 : d){
-                System.out.println(d2);
-            }
-            System.out.println(d);
-        }
 
-        a = addBias(a, biases.get(0));
-        System.out.println("bias:");
-        for (double[] d : a.getArray()) {
-            for(double d2 : d){
-                System.out.println(d2);
-            }
-            System.out.println(d);
-        }
 
-        a = sigmoidMatrix(a);
-        System.out.println("sigmoid:");
-        for (double[] d : a.getArray()) {
-            for(double d2 : d){
-                System.out.println(d2);
-            }
-            System.out.println(d);
-        }
-
-        hiddenLayers.set(0, a);
-
-        System.out.println("Hidden0: " );
-        for (double[] d : hiddenLayers.get(0).getArray()) {
-            for(double d2 : d){
-                System.out.println(d2);
-            }
-            System.out.println(d);
-        }
+        hiddenLayers.set(0, sigmoidMatrix(addBias(inputLayer.times(weights.get(0)), biases.get(0))));
 
         // Run through rest of hidden layers
         for (int i = 1; i < hiddenLayers.size(); i++) {
-            System.out.println("Hidden" + i + ": " );
-            a = hiddenLayers.get(i - 1).times(weights.get(i));
-            System.out.println("times:");
-            for (double[] d : a.getArray()) {
-                for(double d2 : d){
-                    System.out.println(d2);
-                }
-                System.out.println(d);
-            }
-
-            a = addBias(a, biases.get(i));
-            System.out.println("bias:");
-            for (double[] d : a.getArray()) {
-                for(double d2 : d){
-                    System.out.println(d2);
-                }
-                System.out.println(d);
-            }
-
-            a = sigmoidMatrix(a);
-            System.out.println("sigmoid:");
-            for (double[] d : a.getArray()) {
-                for(double d2 : d){
-                    System.out.println(d2);
-                }
-                System.out.println(d);
-            }
-            hiddenLayers.set(i, a);
-            for (double[] d : hiddenLayers.get(i).getArray()) {
-                for(double d2 : d){
-                    System.out.println(d2);
-                }
-                System.out.println(d);
-            }
+            hiddenLayers.set(i, sigmoidMatrix(addBias(hiddenLayers.get(i - 1).times(weights.get(i)), biases.get(i))));
         }
 
         int index = hiddenLayers.size();
 
         outputLayer = sigmoidMatrix(addBias(hiddenLayers.get(index - 1).times((weights.get(index))), biases.get(index)));
 
-        System.out.println("output:");
-        for (double[] d : outputLayer.getArray()) {
-            for(double d2 : d){
-                System.out.println(d2);
-            }
-            System.out.println(d);
-        }
         // Convert output matrix to a sorted list showing positions
         double[] outputLayerUnsorted = outputLayer.getArray()[0];
 
         ArrayList<double[]> outputLayerSorted = listToSorrtedArrayList(outputLayerUnsorted);
+
+        // for (int i = 0; i < outputLayerSorted.size(); i++) {
+        //     System.out.println(outputLayerSorted.get(i)[0] + " Pos: " + outputLayerSorted.get(i)[1]);
+        // }
 
         return outputLayerSorted;
 
@@ -365,7 +294,7 @@ public class NeuralNet implements AIMove {
             } else if (pos.getPiece().getOwner() == game.getInTurnPlayer()) {
                 inputs[index] = 1.0;
             } else {
-                inputs[index] = -1.0;
+                inputs[index+24] = 1.0;
             }
             index++;
         }
@@ -381,9 +310,9 @@ public class NeuralNet implements AIMove {
      * @return
      */
     private Position getBestlegalPosition(ArrayList<double[]> outputs, Game game) {
-        for (double out[] : outputs) {
-            System.out.println("position ranking: " + out[0] + "position loc: " + out[1]);
-        }
+        // for (double out[] : outputs) {
+        //     System.out.println("position ranking: " + out[0] + "position loc: " + out[1]);
+        // }
 
         for (double out[] : outputs) {
             ArrayList<Position> possibleMoves = game.getBoard().getPossibleMoves(game.getGameState(),

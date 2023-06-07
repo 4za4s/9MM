@@ -34,7 +34,7 @@ public class Game {
     private final int maxGameUpdatesToWait = 1; //max time to wait between game updates
     private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
     private Timer timer; //keeps track of time for game updates
-    public static final int statlemateCounter = 150; //number of moves that can happen before a stalemate
+    public static final int statlemateCounter = 80; //number of moves that can happen before a stalemate
     private TrainNeuralNet training; //training object for neural net
     
 
@@ -51,7 +51,7 @@ public class Game {
         // this.players.add(new HumanPlayer(Color.red, "Player Red"));
         // this.players.add(new AIPlayer(Color.red, "Player Red", new RandomValidMove()));
         // this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test")));
-        this(new HumanPlayer(new Color(200, 0, 100, 255), "Elisha"), new AIPlayer(Color.green, "Player Green", new HeuristicMove()));
+        this(new AIPlayer(new Color(200, 0, 100, 255), "Player 1", new NeuralNet("NeuralNet1")), new AIPlayer(Color.green, "Player Green", new HeuristicMove()));
     }
 
     public Game(Player player1, Player player2) {
