@@ -152,7 +152,7 @@ public class Board {
                     if (playerPiece.getPosition() != null){
                         if (inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() < 4){
                             possibleMoves.add(playerPiece.getPosition());
-                        } else if (getPossibleMoves(GameState.MOVING, playerPiece, inTurnPlayer, notInTurnPlayer).size() > 0){
+                        } else if (getPossibleMoves((inTurnPlayer.getNumOfPiecesPlaced() - inTurnPlayer.getNoOfPiecesLost() > 3 ? GameState.MOVING : GameState.FLYING), playerPiece, inTurnPlayer, notInTurnPlayer).size() > 0){
                             possibleMoves.add(playerPiece.getPosition());
                         }
                     }
