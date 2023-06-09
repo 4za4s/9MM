@@ -11,23 +11,24 @@ import Jama.Matrix;
 import Player.AIPlayer;
 import Player.Player;
 import Player.AI.HeuristicMove;
-import Player.AI.RandomValidMove;
 
 public class TrainNeuralNet {
-    private int popsize = 50;
+    private int popsize = 30;
     private ArrayList<NeuralNet> population = new ArrayList<NeuralNet>(popsize);
 
-    private int bestNetWorkSelection = 5;
+    private int bestNetWorkSelection = 10;
     private int WorstNetWorkSelection = 0;
     private int numberToCrossover = 20;
-    private int numberToMutate = 10;
+    
+    private int numGamesToPlay = popsize;
+    private int numGamesAgainstHueristic = 10;
 
     private AIPlayer AIplayer1;
     private AIPlayer AIplayer2;
     private int player1Net = 0;
-    private int player2Net = 0;
+    private int player2Net = 1;
 
-    private float mutateRate = 0.01f;
+    private double mutateRate = 0.05;
 
     private Game currentGame;
     private Window window;
@@ -56,7 +57,7 @@ public class TrainNeuralNet {
     public void gameOver(Boolean stop, Player winner, int turn) {
         if (stop) {
             int i = 1;
-            sortPop();
+            population = sortPop(population);
             for (NeuralNet pop : population) {
                 pop.save("NeuralNet" + i);
                 i++;
@@ -67,26 +68,31 @@ public class TrainNeuralNet {
         updateFitness(winner, turn);
 
         player2Net++;
-        if (player2Net >= 20) {
+        // Cant play against itself
+        if (player1Net == player2Net) {
+            player2Net++;
+        }
+        if (player2Net >= numGamesToPlay + numGamesAgainstHueristic || (player1Net >= popsize && player2Net >= numGamesToPlay + numGamesAgainstHueristic)) {
             player1Net++;
             player2Net = 0;
         }
 
-        if (player1Net >= popsize+10) {
+        if (player1Net >= popsize+numGamesAgainstHueristic) {
             RePopulate();
             player1Net = 0;
-            player2Net = 0;
+            player2Net = 1;
         }
-
-        AIplayer1 = new AIPlayer(Color.blue, "Player Blue", population.get(player1Net));
-        AIplayer2 = new AIPlayer(Color.red, "Player Red", population.get(player2Net));
 
         if (player1Net >= popsize) {
             AIplayer1 = new AIPlayer(Color.green, "Player Green", new HeuristicMove());;
+        } else {
+            AIplayer1 = new AIPlayer(Color.blue, "Player Blue", population.get(player1Net));
         }
 
-        if (player2Net >= 10) {
+        if (player2Net >= numGamesToPlay) {
             AIplayer2 = new AIPlayer(Color.green, "Player Green", new HeuristicMove());;
+        } else {
+            AIplayer2 = new AIPlayer(Color.red, "Player Red", population.get(player2Net));
         }
         currentGame = new Game(AIplayer1, AIplayer2, this);
         updateDisplay();
@@ -96,18 +102,20 @@ public class TrainNeuralNet {
         window.displayGame(currentGame);
     }
 
-    public void sortPop() {
-        Collections.sort(population, new Comparator<NeuralNet>() {
+    public ArrayList<NeuralNet> sortPop(ArrayList<NeuralNet> pop) {
+        Collections.sort(pop, new Comparator<NeuralNet>() {
             @Override
             public int compare(NeuralNet nn1, NeuralNet nn2) {
                 return nn1.getFitness() > nn2.getFitness() ? -1 : (nn1.getFitness() < nn2.getFitness()) ? 1 : 0;
             }
         });
+
+        return pop;
     }
 
     private void RePopulate() {
         System.out.println("Repopulating");
-        sortPop();
+        population = sortPop(population);
         for (int i = 0; i < popsize; i++) {
             System.out.println(population.get(i).getFitness());
             population.get(i).save("NeuralNet" + (i + 1));
@@ -128,14 +136,14 @@ public class TrainNeuralNet {
             newPopulation.add(crossOver(Parent1, Parent2));
         }
 
-        for (int i = 0; i < numberToMutate; i++) {
-            NeuralNet Parent1 = population.get(i);
-            newPopulation.add(mutate(Parent1));
-        }
-
         for (int i = newPopulation.size(); i < popsize; i++) {
             newPopulation.add(new NeuralNet());
         }
+
+        for (int i = 1; i < popsize; i++) {
+            newPopulation.set(i, mutate(newPopulation.get(i)));
+        }
+
         population = newPopulation;
 
         for (NeuralNet pop : population) {
@@ -147,22 +155,20 @@ public class TrainNeuralNet {
         int lost1 = AIplayer1.getNoOfPiecesLost();
         int lost2 = AIplayer2.getNoOfPiecesLost();
 
-        float score1 = ((9 - lost1)*5 / (8 - lost2))*10;
-        float score2 = ((9 - lost2)*5 / (8 - lost1))*10;
+        float score1 = (7 - lost1) + lost2*2;
+        float score2 = (7- lost2) + lost1*2;
 
         if (winner == AIplayer1) {
-            score1 += 3000/turn;
-            score2 -= 3000/turn;
+            score1 += 100 - turn;
         } else if (winner == AIplayer2) {
-            score2 += 3000/turn;
-            score1 -= 3000/turn;
+            score2 += 100 - turn;
         }
         
         if (player1Net < popsize){
-            population.get(player1Net).setFitness((score1 + population.get(player1Net).getFitness())/2);
+            population.get(player1Net).setFitness(population.get(player1Net).getFitness() + score1);
         }
-        if (player2Net < 13){
-            population.get(player2Net).setFitness((score2 + population.get(player2Net).getFitness())/2);
+        if (player2Net < numGamesToPlay){
+            population.get(player2Net).setFitness(population.get(player2Net).getFitness() + score2);
         }
 
         for (int i = 0; i < popsize; i++) {
@@ -180,9 +186,7 @@ public class TrainNeuralNet {
             Matrix newWeight = new Matrix(weights1.get(j).getRowDimension(), weights1.get(j).getColumnDimension());
             for (int k = 0; k < weights1.get(j).getRowDimension(); k++) {
                 for (int l = 0; l < weights1.get(j).getColumnDimension(); l++) {
-                    if (Math.random() < 0.01) {
-                        newWeight.set(k, l, (Math.random() - 0.5) * 2);
-                    } else if (Math.random() < 0.5) {
+                    if (Math.random() < 0.5) {
                         newWeight.set(k, l, weights1.get(j).get(k, l));
                     } else {
                         newWeight.set(k, l, weights2.get(j).get(k, l));
@@ -199,9 +203,7 @@ public class TrainNeuralNet {
         for (int j = 0; j < biases1.size(); j++) {
             double[] newBias = new double[biases1.get(j).length];
             for (int l = 0; l < biases1.get(j).length; l++) {
-                if (Math.random() < 0.01) {
-                    newBias[j] = (Math.random() - 0.5) * 2;
-                } else if (Math.random() < 0.5) {
+                if (Math.random() < 0.5) {
                     newBias[j] = biases1.get(j)[l];
                 } else {
                     newBias[j] = biases2.get(j)[l];

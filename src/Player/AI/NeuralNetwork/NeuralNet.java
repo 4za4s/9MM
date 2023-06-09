@@ -53,7 +53,7 @@ public class NeuralNet implements AIMove {
      * @param Filename
      */
     public NeuralNet(String Filename) {
-        String url = "src/Assets/SavedNeuralNets/" + Filename + ".txt";
+        String url = "SavedNeuralNets/" + Filename + ".txt";
         try {
             BufferedReader input = new BufferedReader(new FileReader(url));
             String line = input.readLine();
@@ -301,6 +301,10 @@ public class NeuralNet implements AIMove {
 
         ArrayList<double[]> output = RunNetWork(inputs);
 
+        // for(int i = 0; i < output.size(); i++){
+        //     System.out.println("output: " + output.get(i)[0] + " pos: " + output.get(i)[1]);
+        // }
+
         return getBestlegalPosition(output, game);
     }
 
@@ -333,7 +337,7 @@ public class NeuralNet implements AIMove {
      * @param Filename name of file to save to (not including path) 
      */
     public void save(String Filename) {
-        String url = "src/Assets/SavedNeuralNets/" + Filename + ".txt";
+        String url = "SavedNeuralNets/" + Filename + ".txt";
         StringBuilder saveString = new StringBuilder();
         saveString.append("Size:\n");
         saveString.append(hiddenLayerCount + ", " + hiddenNeuronCount + "\n");
