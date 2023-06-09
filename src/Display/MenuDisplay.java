@@ -22,8 +22,8 @@ import Game.Game;
 public class MenuDisplay extends Display {
 
     private JButton start; //start game button
-    private JButton neuralNetworkStart;
     private JLabel title; // game title
+    private JButton neuralNetworkStart;
     private JLabel player1Title;
     private JLabel player2Title;
     private JComboBox<Player> player1Type;

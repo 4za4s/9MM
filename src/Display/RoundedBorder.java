@@ -8,7 +8,7 @@ import javax.swing.border.Border;
 
 
 /**
- * Aloows for the positions to be round when they are displayed. Made using
+ * Allows for the positions to be round when they are displayed. Made using
  * advice from: https://stackoverflow.com/questions/423950/rounded-swing-jbutton-using-java
  */
 public class RoundedBorder implements Border {

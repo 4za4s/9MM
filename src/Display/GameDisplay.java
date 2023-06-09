@@ -184,7 +184,7 @@ public class GameDisplay extends Display {
     /**
      * WHether or not pieces can be selected
      */
-    public void updateSelectability(boolean selectable){
+    public void updateSelectability(Boolean selectable){
 
         Board board = game.getBoard();
         for (Position pos : board.getPositions()) {

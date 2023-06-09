@@ -183,7 +183,7 @@ public class NeuralNet implements AIMove {
         // Convert output matrix to a sorted list showing positions
         double[] outputLayerUnsorted = outputLayer.getArray()[0];
 
-        ArrayList<double[]> outputLayerSorted = listToSorrtedArrayList(outputLayerUnsorted);
+        ArrayList<double[]> outputLayerSorted = listToSortedArrayList(outputLayerUnsorted);
 
         // for (int i = 0; i < outputLayerSorted.size(); i++) {
         //     System.out.println(outputLayerSorted.get(i)[0] + " Pos: " + outputLayerSorted.get(i)[1]);
@@ -205,7 +205,7 @@ public class NeuralNet implements AIMove {
         return m;
     }
 
-    public ArrayList<double[]> listToSorrtedArrayList(double[] listToSort) {
+    public ArrayList<double[]> listToSortedArrayList(double[] listToSort) {
 
         ArrayList<double[]> arrayList = new ArrayList<double[]>();
 
