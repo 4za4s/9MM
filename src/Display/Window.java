@@ -74,6 +74,10 @@ public class Window extends JFrame {
         displayGame(new Game());
     }
 
+    /**
+     * Displays a game. Only the game will be displayed
+     * @param game gaem to display
+     */
     public void displayGame(Game game) {
         if (currentDisplay != null) {
             remove(currentDisplay);

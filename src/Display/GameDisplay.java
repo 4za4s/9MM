@@ -154,6 +154,11 @@ public class GameDisplay extends Display {
         selectionHighlights.removeHighlights();
     }
 
+
+    /**
+     * Updates all sizes of element variables (later use to create size)
+     * @param size window size to update in accordance to
+     */
     private void setBoardElementsSize(Dimension size){
 
         width = (int) size.getWidth();
@@ -182,7 +187,7 @@ public class GameDisplay extends Display {
 
 
     /**
-     * WHether or not pieces can be selected
+     * Whether or not pieces can be selected
      */
     public void updateSelectability(Boolean selectable){
 
@@ -238,6 +243,9 @@ public class GameDisplay extends Display {
         setBackground(colour);
     }
 
+    /**
+     * Exits the game
+     */
     public void exitGame(){
         game.exitGame();
         window.displayMenu();

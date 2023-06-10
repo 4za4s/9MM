@@ -19,6 +19,10 @@ import Player.AI.NeuralNetwork.NeuralNet;
 import Player.AI.NeuralNetwork.TrainNeuralNet;
 import Game.Game;
 
+
+/**
+ * Displays the pre-game menu
+ */
 public class MenuDisplay extends Display {
 
     private JButton start; //start game button
@@ -143,6 +147,9 @@ public class MenuDisplay extends Display {
         System.out.println("Training a new neural network...");
     }
 
+    /**
+     * Initiales a game
+     */
     private void startButtonPressed() {
         player1 = (Player) player1Type.getSelectedItem();
         player2 = (Player) player2Type.getSelectedItem();

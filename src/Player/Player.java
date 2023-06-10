@@ -17,7 +17,7 @@ public abstract class Player {
     private int piecesPlaced = 0; // how many pieces a player has plaed so far
     private int piecesLost = 0; // how many pieces playe has lost
     public final int maxPieces = 9; // how many pieces a player can place
-    protected boolean isAI; // whether the player is an AI or not
+    protected boolean isAI = false; // whether the player is an AI or not
 
     /**
      * Class constructor
@@ -30,6 +30,10 @@ public abstract class Player {
             pieces.add(new Piece(this));
         }
     }
+
+    /**
+     * If a player is an ai
+     */
     public boolean isAI() {
         return isAI;
     }
@@ -93,7 +97,11 @@ public abstract class Player {
         return pieces;
     }
 
-    //TODO: this function has too many arguments
+    /**
+     * Get a move
+     * @param game game to get moved based upon
+     * @return move
+     */
     public abstract Position getMove(Game game);
 
     @Override

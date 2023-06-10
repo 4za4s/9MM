@@ -22,18 +22,6 @@ class Background extends JLayeredPane {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        // // Add image background
-        // Image img;
-        // try {
-        // String url = "src/Assets/planks_birch.png";
-        // img = ImageIO.read(new File(url));
-        // g2.drawImage(img, 0,0,1300,1300, this);
-
-        // } catch (IOException e) {
-        //
-        // e.printStackTrace();
-        // }
-
         // Set stoke size
         g2.setStroke(new BasicStroke(lineWidth));
 

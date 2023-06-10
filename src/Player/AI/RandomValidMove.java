@@ -8,6 +8,9 @@ import Game.Game;
 import Game.GameState;
 import Player.Player;
 
+/**
+ * Makes a random valid move
+ */
 public class RandomValidMove implements AIMove {
 
     @Override
@@ -21,6 +24,11 @@ public class RandomValidMove implements AIMove {
     }
 
 
+    /**
+     * Gets a random position
+     * @param positions list of positions to choose from
+     * @return random position form list given
+     */
     public Position randomPosition(ArrayList<Position> positions) {
         double random = Math.random()- 0.0001;
         return positions.get((int) (random * positions.size()));
