@@ -47,7 +47,7 @@ public class MenuDisplay extends Display {
         start = new JButton("Start");
         start.setBackground(Color.white);
 
-        neuralNetworkStart = new JButton("Start Training");
+        neuralNetworkStart = new JButton("Train AI");
         neuralNetworkStart.setBackground(Color.white);
 
         title = new JLabel("Nine Man's Morris", SwingConstants.CENTER);
@@ -130,8 +130,8 @@ public class MenuDisplay extends Display {
 
         neuralNetworkStart.setBounds(size.width / 20 - neuralNetworkStartWidth / 20,
                 (int) (size.height / (1.10) - neuralNetworkStartHeight / (1.10)),
-                (int) (neuralNetworkStartWidth * (2.5)),
-                (int) (neuralNetworkStartHeight * (2.5)));
+                (int) (neuralNetworkStartWidth * (1.5)),
+                (int) (neuralNetworkStartHeight * (1.5)));
         neuralNetworkStart.setFont(new Font("Serif", Font.PLAIN, minDim / 40));
 
         title.setBounds(size.width / 2 - titleWidth / 2,
@@ -142,22 +142,22 @@ public class MenuDisplay extends Display {
         player1Title.setBounds(size.width / 60 - player1TitleWidth / 4,
                 (int) (size.height / (3.5) - player1TitleHeight / (4.5)),
                 player1TitleWidth, player1TitleHeight);
-        player1Title.setFont(new Font("Serif", Font.BOLD, minDim / 20));
+        player1Title.setFont(new Font("Serif", Font.BOLD, minDim / 25));
 
         player2Title.setBounds(size.width/60-player2TitleWidth/4, 
             (int) (size.height/(1.55)-player2TitleHeight/(2.55)), 
             player2TitleWidth, player2TitleHeight);
-        player2Title.setFont(new Font("Serif", Font.BOLD, minDim/20));
+        player2Title.setFont(new Font("Serif", Font.BOLD, minDim/25));
 
         player1ColourLabel.setBounds(size.width/60 - player1ColourLabelWidth/4,
                 (int) (size.height/(2.71) - player1ColourLabelHeight/(4.5)),
                 player1ColourLabelWidth, player1ColourLabelHeight);
-        player1ColourLabel.setFont(new Font("Serif", Font.BOLD, minDim / 20));
+        player1ColourLabel.setFont(new Font("Serif", Font.BOLD, minDim / 25));
 
         player2ColourLabel.setBounds(size.width/60-player2ColourLabelWidth/4, 
             (int) (size.height/(1.36)-player2ColourLabelHeight/(2.55)), 
             player2ColourLabelWidth, player2ColourLabelHeight);
-        player2ColourLabel.setFont(new Font("Serif", Font.BOLD, minDim/20));
+        player2ColourLabel.setFont(new Font("Serif", Font.BOLD, minDim/25));
 
         player1Type.setBounds(size.width/2-player1TypeWidth/2, 
             (int) (size.height/(3.43)-player1TypeHeight/(4.45)), 
@@ -192,7 +192,7 @@ public class MenuDisplay extends Display {
     }
 
     /**
-     * Initiales a game
+     * Initialises a game
      */
     private void startButtonPressed() {
         player1 = (Player) player1Type.getSelectedItem();
