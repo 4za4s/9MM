@@ -30,6 +30,9 @@ cd ../
 java -jar 9MM.jar
 
 
+If you have vs code and the java extension you can just ctrl-shift-p and export jar.
+
+
 All neural networks should be save in the SavedNeuralNets folder in the same directory as this jar file
 
 ## Running code
