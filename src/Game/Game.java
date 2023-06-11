@@ -69,6 +69,7 @@ public class Game {
         this(player1, player2);
         this.training = trainNeuralNet;
         this.maxGameUpdatesToWait = -1;
+        this.gameUpdatesToWait = -1;
         this.timerDelay = 1;
     }
 

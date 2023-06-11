@@ -15,7 +15,7 @@ Generate .class files:
 javac src/App/App.java src/Board/*.java src/Display/*.java src/Game/*.java src/Jama/*.java src/Jama/util/*.java src/Player/*.java src/Player/AI/*.java src/Player/AI/NeuralNetwork/*.java
 
 Generate .jar file:
-jar cvf 9MM.jar src
+jar cvf 9MM.jar src/*
 
 
 

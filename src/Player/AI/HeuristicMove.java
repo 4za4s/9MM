@@ -5,6 +5,7 @@ import Board.Position;
 import Game.Game;
 import Game.GameState;
 import Player.Player;
+import Player.AI.NeuralNetwork.NeuralNet;
 
 
 /**
@@ -13,7 +14,7 @@ import Player.Player;
 public class HeuristicMove implements AIMove {
     private Game game;
     /**
-     * Checks for a few specific scenarios, otherwise does a random move
+     * Checks for a few specific scenarios, otherwise lets neural net choose a move
      */
     @Override
     public Position getMove(Game game) {
@@ -46,8 +47,11 @@ public class HeuristicMove implements AIMove {
             return pos;
         }
 
+        //combine with neural net to make a better decision when no good moves are found
+        return new NeuralNet("TrainedNeuralNet").getMove(game);
+
         // If no good moves found make a random move
-        return new RandomValidMove().getMove(game);
+        //return new RandomValidMove().getMove(game);
     }
 
     /**
