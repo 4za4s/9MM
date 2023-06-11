@@ -11,7 +11,7 @@ import Player.Player;
  * Checks for specific situation on the board, uses this info to make moves. Plays 2 move ahead
  */
 public class HeuristicMove implements AIMove {
-    Game game;
+    private Game game;
     /**
      * Checks for a few specific scenarios, otherwise does a random move
      */
