@@ -9,7 +9,7 @@ import javax.swing.JLayeredPane;
  * Generic form for displays
  */
 public abstract class Display extends JLayeredPane {
-    Window window;
+    protected Window window;
 
     public Display(int width, int height, Window window){
         setOpaque(true);

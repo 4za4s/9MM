@@ -11,10 +11,8 @@ import Board.Piece;
 import Board.Position;
 import Display.GameDisplay;
 import Player.AIPlayer;
-import Player.HumanPlayer;
 import Player.Player;
 import Player.AI.HeuristicMove;
-import Player.AI.RandomValidMove;
 import Player.AI.NeuralNetwork.NeuralNet;
 import Player.AI.NeuralNetwork.TrainNeuralNet;
 
@@ -34,7 +32,7 @@ public class Game {
     private final int maxGameUpdatesToWait = 1; //max time to wait between game updates
     private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
     private Timer timer; //keeps track of time for game updates
-    public static final int statlemateCounter = 80; //number of moves that can happen before a stalemate
+    public static final int stalemateCounter = 80; //number of moves that can happen before a stalemate
     private TrainNeuralNet training; //training object for neural net
     
 
@@ -44,13 +42,6 @@ public class Game {
      */
     public Game() {
 
-        // this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
-        // this.players.add(new AIPlayer(Color.blue, "Player Blue", new RandomValidMove()));
-        // this.players.add(new HumanPlayer(Color.blue, "Player Blue"));
-        // this.players.add(new HumanPlayer(Color.green, "Player Green"));
-        // this.players.add(new HumanPlayer(Color.red, "Player Red"));
-        // this.players.add(new AIPlayer(Color.red, "Player Red", new RandomValidMove()));
-        // this.players.add(new AIPlayer(Color.red, "Player Red", new NeuralNet("test")));
         this(new AIPlayer(new Color(200, 0, 100, 255), "Player 1", new NeuralNet("NeuralNet1")), new AIPlayer(Color.green, "Player Green", new HeuristicMove()));
     }
 
@@ -122,39 +113,80 @@ public class Game {
 
             // Place a piece
             case PLACING:
-                // First phase of the game, players place their pieces
-                int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced();
-                Piece piece = inTurnPlayer.getPieces().get(lastPieceIndex);
+                placing(pos);
 
-                if (pos.getPiece() == null) {
-                    toTake = board.movePiece(piece, pos);
-                    inTurnPlayer.piecePlaced();
-                    if (toTake > 0) {
-                        gameState = GameState.TAKING;
-                        break;
-                    }
-
-                    // If all pieces have been placed - and it is the last player to do so
-                    if (inTurnPlayer.getNumOfPiecesPlaced() == inTurnPlayer.maxPieces
-                            && inTurnPlayer == players.get(players.size() - 1)) {
-                        gameState = GameState.SELECTING;
-
-                        //Check for opposition will have no moves on his upcoming turn
-                        checkForPossibleMoves();
-
-                        changeTurn();
-
-                        
-                        break;
-                    }
-
-                    changeTurn();
-                }
                 break;
 
             // Select a piece to move
             case SELECTING:
-                if (pos.getPiece() == null || pos.getPiece().getOwner() != inTurnPlayer) {
+                selecting(pos);
+                break;
+
+            // A piece can be moved anywhere
+            case FLYING:
+            case MOVING:
+                movement(pos);
+
+                break;
+
+            // A piece can take another piece
+            case TAKING:
+                taking(pos);
+                break;
+
+            // An unknown gamestate was given
+            default:
+                break;
+        }
+        // Check for stalemates
+       if (turnCounter >= stalemateCounter) {
+            stalemate();
+        }
+
+        updateDisplay();
+    }
+
+
+    /**
+     * Tries to place a piece in a position
+     */
+
+    private void placing(Position pos){
+        // First phase of the game, players place their pieces
+        int lastPieceIndex = inTurnPlayer.getNumOfPiecesPlaced();
+        Piece piece = inTurnPlayer.getPieces().get(lastPieceIndex);
+
+        if (pos.getPiece() == null) {
+            toTake = board.movePiece(piece, pos);
+            inTurnPlayer.piecePlaced();
+            if (toTake > 0) {
+                gameState = GameState.TAKING;
+                return;
+            }
+
+            // If all pieces have been placed - and it is the last player to do so
+            if (inTurnPlayer.getNumOfPiecesPlaced() == inTurnPlayer.maxPieces
+                    && inTurnPlayer == players.get(players.size() - 1)) {
+                gameState = GameState.SELECTING;
+
+                //Check for opposition will have no moves on his upcoming turn
+                checkForPossibleMoves();
+
+                changeTurn();
+
+                
+                return;
+            }
+
+            changeTurn();
+        }
+    }
+
+    /**
+     * Tries to select a piece in a position
+     */
+    private void selecting(Position pos){
+        if (pos.getPiece() == null || pos.getPiece().getOwner() != inTurnPlayer) {
                     selectedPiece = null;
                 } else {
                     selectedPiece = pos.getPiece();
@@ -164,99 +196,94 @@ public class Game {
                         gameState = GameState.FLYING;
                     }
                 }
-                break;
-
-            // A piece can be moved anywhere
-            case FLYING:
-            case MOVING:
-                if ((gameState == GameState.FLYING && pos.getPiece() == null) ||
-                        (gameState == GameState.MOVING
-                                && selectedPiece.getPosition().getEmptyNeighbours().contains(pos))) {
-                    // Make sure piece is moving to an empty neighbour
-                    toTake = board.movePiece(selectedPiece, pos);
-                    if (toTake > 0) {
-                        gameState = GameState.TAKING;
-                        selectedPiece = null;
-                        break;
-                    }
-                    gameState = GameState.SELECTING;
-
-                     checkForPossibleMoves();
-                    
-                    changeTurn();
-
-                   
-                    
-                    break;
-                    // If user selects a different piece belonging to him, change selection to that
-                    // piece
-                } else if (pos.getPiece() != null && selectedPiece != pos.getPiece()
-                        && pos.getPiece().getOwner() == inTurnPlayer) {
-
-                    selectedPiece = pos.getPiece();
-                } else {
-                    // Otherwise deselect piece selected
-                    gameState = GameState.SELECTING;
-                    selectedPiece = null;
-                }
-                break;
-
-            // A piece can take another piece
-            case TAKING:
-                selectedPiece = pos.getPiece();
-
-                if (board.canTakePiece(gameState, selectedPiece, inTurnPlayer, notInTurnPlayer)) {
-                    Player opponent = selectedPiece.getOwner();
-                    opponent.pieceLost();
-                    board.movePiece(selectedPiece, null);
-                    toTake--;
-                    if (opponent.getPieces().size() - opponent.getNoOfPiecesLost() < 3) {
-                        playerWins(inTurnPlayer);
-                        break;
-                    }
-
-                    // No more pieces to take this turn
-                    if (toTake <= 0) {
-
-
-                        // Win conditions (is turn of the potential winnier)
-                        checkForPossibleMoves();
-                       
-
-                        if (notInTurnPlayer.getNoOfPiecesLost() == notInTurnPlayer.maxPieces - 2) {
-                            playerWins(inTurnPlayer);
-                        }
-
-
-
-                        // Work out correct new gamestate
-                        changeTurn();
-
-                        if (inTurnPlayer.getNumOfPiecesPlaced() < inTurnPlayer.maxPieces) {
-                            gameState = GameState.PLACING;
-
-                        } else {
-                            gameState = GameState.SELECTING;
-                        }
-
-
-
-                    }
-                }
-                selectedPiece = null;
-                break;
-
-            // An unknown gamestate was given
-            default:
-                break;
-        }
-        // Check for stalemantes
-       if (turnCounter >= statlemateCounter) {
-            stalemate();
-        }
-
-        updateDisplay();
     }
+
+    /**
+     * Tries to move a piece into a position
+     */
+    private void movement(Position pos){
+        if ((gameState == GameState.FLYING && pos.getPiece() == null) ||
+            (gameState == GameState.MOVING
+            && selectedPiece.getPosition().getEmptyNeighbours().contains(pos))) {
+                // Make sure piece is moving to an empty neighbour
+                toTake = board.movePiece(selectedPiece, pos);
+                if (toTake > 0) {
+                    gameState = GameState.TAKING;
+                    selectedPiece = null;
+                    return;
+                }
+                gameState = GameState.SELECTING;
+
+                checkForPossibleMoves();
+                
+                changeTurn();
+
+            
+                
+                return;
+                // If user selects a different piece belonging to him, change selection to that
+            // piece
+        } else if (pos.getPiece() != null && selectedPiece != pos.getPiece()
+                && pos.getPiece().getOwner() == inTurnPlayer) {
+
+            selectedPiece = pos.getPiece();
+        } else {
+            // Otherwise deselect piece selected
+            gameState = GameState.SELECTING;
+            selectedPiece = null;
+        }
+    }
+
+    /**
+     * Tries to take a piece in the given position
+     */
+    private void taking(Position pos){
+        selectedPiece = pos.getPiece();
+
+        if (board.canTakePiece(gameState, selectedPiece, inTurnPlayer, notInTurnPlayer)) {
+            Player opponent = selectedPiece.getOwner();
+            opponent.pieceLost();
+            board.movePiece(selectedPiece, null);
+            toTake--;
+            if (opponent.getPieces().size() - opponent.getNoOfPiecesLost() < 3) {
+                playerWins(inTurnPlayer);
+                return;
+            }
+
+            // No more pieces to take this turn
+            if (toTake <= 0) {
+
+
+                // Win conditions (is turn of the potential winnier)
+                checkForPossibleMoves();
+                
+
+                if (notInTurnPlayer.getNoOfPiecesLost() == notInTurnPlayer.maxPieces - 2) {
+                    playerWins(inTurnPlayer);
+                }
+
+
+
+                // Work out correct new gamestate
+                changeTurn();
+
+                if (inTurnPlayer.getNumOfPiecesPlaced() < inTurnPlayer.maxPieces) {
+                    gameState = GameState.PLACING;
+
+                } else {
+                    gameState = GameState.SELECTING;
+                }
+
+
+
+            }
+        }
+        selectedPiece = null;
+    }
+
+
+
+
 
     /**
      * Checks if it is possible for a ;layer to make any moves. Important because no
@@ -267,6 +294,7 @@ public class Game {
      */
     public boolean checkForPossibleMoves() {
         if (gameState == GameState.PLACING) {
+
             return true;
         }
 
@@ -359,6 +387,9 @@ public class Game {
         }
     }
 
+    /**
+     * Updates game pieces
+     */
     private void updateGame(){
         if (inTurnPlayer.isAI() && --gameUpdatesToWait < 0){
             gameUpdatesToWait = maxGameUpdatesToWait;
@@ -384,6 +415,9 @@ public class Game {
         }
     }
 
+    /**
+     * Ends the game via stalemare
+     */
     public void stalemate(){
         System.out.println("Statemate");
         timer.stop();
@@ -397,6 +431,9 @@ public class Game {
         }
     }
 
+    /**
+     * Ends the game
+     */
     public void exitGame(){
         timer.stop();
         if (training != null){
