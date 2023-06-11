@@ -34,7 +34,7 @@ public class MenuDisplay extends Display {
     private JLabel player2ColourLabel;
     private JComboBox<Player> player1Type;
     private JComboBox<Player> player2Type;
-    private JComboBox<Color> player1ColourType;
+    private JComboBox<NamedColour> player1ColourType;
     private JComboBox<NamedColour> player2ColourType;
     private Player player1 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
     private Player player2 = new HumanPlayer(Color.green, "Player Green");
@@ -67,11 +67,12 @@ public class MenuDisplay extends Display {
         Player[] player2Choices = {new HumanPlayer(Color.CYAN, "Player Cyan"), new AIPlayer(Color.orange, "Player Orange", new HeuristicMove()), new AIPlayer(Color.magenta, "Player Magenta", new NeuralNet("NeuralNet1"))}; 
         player2Type = new JComboBox<Player>(player2Choices); 
 
-        Color[] player1Colours = {Color.BLUE, Color.CYAN, Color.GREEN, Color.LIGHT_GRAY, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED};
-        player1ColourType = new JComboBox<Color>(player1Colours); 
+        NamedColour[] playerColours = {NamedColour.BLUE, NamedColour.RED, NamedColour.YELLOW, NamedColour.MAROON, NamedColour.GREEN, NamedColour.PURPLE, NamedColour.LIGHT_SLATE_GREY, NamedColour.MAGENTA, NamedColour.BLACK , NamedColour.WHITE};
+        
+        player1ColourType = new JComboBox<NamedColour>(playerColours); 
 
-        NamedColour[] player2Colours = { NamedColour.BLUE }; //, Color.CYAN, Color.GREEN, Color.LIGHT_GRAY, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED};
-        player2ColourType = new JComboBox<NamedColour>(player2Colours); 
+        player2ColourType = new JComboBox<NamedColour>(playerColours); 
+        player2ColourType.setSelectedIndex(1);
 
         start.addActionListener(e -> startButtonPressed());
         neuralNetworkStart.addActionListener(e -> trainButtonPressed());
@@ -197,6 +198,10 @@ public class MenuDisplay extends Display {
     private void startButtonPressed() {
         player1 = (Player) player1Type.getSelectedItem();
         player2 = (Player) player2Type.getSelectedItem();
+
+        player1.setColour((Color) player1ColourType.getSelectedItem());
+        player2.setColour((Color) player2ColourType.getSelectedItem());
+
 
         Game startGame = new Game(player1, player2);
         window.displayGame(startGame);
