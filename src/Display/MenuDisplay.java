@@ -14,6 +14,7 @@ import Player.AIPlayer;
 import Player.HumanPlayer;
 import Player.Player;
 import Player.AI.HeuristicMove;
+import Player.AI.RandomValidMove;
 import Player.AI.NeuralNetwork.NeuralNet;
 import Player.AI.NeuralNetwork.TrainNeuralNet;
 import Game.Game;
@@ -63,7 +64,8 @@ public class MenuDisplay extends Display {
                 new HumanPlayer(),
                 new AIPlayer(new HeuristicMove()),
                 new AIPlayer(new NeuralNet("TrainedNeuralNet")),
-                new AIPlayer(new NeuralNet("YourNeuralNetWork")) 
+                new AIPlayer(new NeuralNet("YourNeuralNetWork")),
+                new AIPlayer(new RandomValidMove())
             };
 
         player1Type = new JComboBox<Player>(player1Choices);
@@ -72,7 +74,8 @@ public class MenuDisplay extends Display {
                 new HumanPlayer(),
                 new AIPlayer(new HeuristicMove()),
                 new AIPlayer(new NeuralNet("TrainedNeuralNet2")),
-                new AIPlayer(new NeuralNet("YourNeuralNetWork"))  
+                new AIPlayer(new NeuralNet("YourNeuralNetWork")),
+                new AIPlayer(new RandomValidMove()),
             };
 
         player2Type = new JComboBox<Player>(player2Choices);

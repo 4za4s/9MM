@@ -6,17 +6,29 @@ Saved Neural Nets are located in /SavedNeuralNets (the jar executable needs a fo
 
 Team photo and some info and the deliverable pdf from sprint 1 is in /SprintsInfo
 
+
+Currently there is a Bug for MAC where the drop down menu does not display until the screen is resized
+
 ## Creating Executable
 Project is made to run with Java 15. A jar file is included in the repo.
 
 Open a terminal in the Project folder that containt SavedNeuralNets and src
 
+Go the the folder one out from the src folder
+
+
 Generate .class files:
-javac src/App/App.java src/Board/*.java src/Display/*.java src/Game/*.java src/Jama/*.java src/Jama/util/*.java src/Player/*.java src/Player/AI/*.java src/Player/AI/NeuralNetwork/*.java
+javac src/App/App.java src/Board/*.java src/Display/*.java src/Game/*.java src/Jama/*.java src/Jama/util/*.java src/Player/*.java src/Player/AI/*.java src/Player/AI/NeuralNetwork/*.java -d bin
+
+
+Go to bin folder cd bin
 
 Generate .jar file:
-jar cvf 9MM.jar src/*
 
+jar cfm 9MM.jar Manifest.txt
+
+Exit bin folder:
+cd ../
 
 
 If you have vs code and the java extension you can just ctrl-shift-p and export jar.
@@ -24,7 +36,9 @@ If you have vs code and the java extension you can just ctrl-shift-p and export 
 All neural networks should be save in the SavedNeuralNets folder in the same directory as this jar file
 
 ## Running code
-double click 9MM.jar
+double click 9MM.jar 
+or
+java -jar 9MM.jar
 
 select your players for the game
 
