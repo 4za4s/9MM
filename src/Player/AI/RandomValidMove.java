@@ -33,4 +33,9 @@ public class RandomValidMove implements AIMove {
         double random = Math.random()- 0.0001;
         return positions.get((int) (random * positions.size()));
     }
+
+    @Override
+    public String getName() {
+        return "Random Move";
+    }
 }

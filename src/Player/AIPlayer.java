@@ -1,6 +1,5 @@
 package Player;
 
-import java.awt.Color;
 
 import Board.Position;
 import Display.NamedColour;
@@ -41,7 +40,7 @@ public class AIPlayer extends Player {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " - " + moveGenerator.getClass().getSimpleName();
+        return getClass().getSimpleName() + " - " + moveGenerator.getName();
     }
 
 }

@@ -12,4 +12,10 @@ public interface AIMove {
      * Get the (alleged) best move 
      */
     public Position getMove(Game game);
+
+    /**
+     * Gets the name
+     */
+
+    public String getName();
 }
