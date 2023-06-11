@@ -23,7 +23,7 @@ import Player.AI.RandomValidMove;
  */
 public class NeuralNet implements AIMove {
 
-    private int numInputs = 53; // Input is 
+    private int numInputs = 53; // Input is (gamestate, position AIs pieces, position opponent's pieces
     private int numOutputs = 24; // Output will be list of 24 positions and their values (positions)
 
     
