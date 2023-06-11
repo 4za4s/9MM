@@ -45,7 +45,7 @@ public class NeuralNet implements AIMove {
     }
 
     public NeuralNet() {
-        createNetwork(4, 43);
+        createNetwork(4, 32);
     }
 
     /**
@@ -88,7 +88,7 @@ public class NeuralNet implements AIMove {
 
         } catch (Exception e) {
             System.err.println("Error loading custom Neural Network");
-            createNetwork(4, 43);
+            createNetwork(4, 32);
         }
     }
 

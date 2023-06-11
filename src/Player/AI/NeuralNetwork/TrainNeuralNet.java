@@ -13,22 +13,22 @@ import Player.Player;
 import Player.AI.HeuristicMove;
 
 public class TrainNeuralNet {
-    private int popsize = 30;
+    private int popsize = 16;
     private ArrayList<NeuralNet> population = new ArrayList<NeuralNet>(popsize);
 
-    private int bestNetWorkSelection = 10;
+    private int bestNetWorkSelection = 2;
     private int WorstNetWorkSelection = 0;
-    private int numberToCrossover = 20;
+    private int numberToCrossover = 0;
     
     private int numGamesToPlay = popsize;
-    private int numGamesAgainstHueristic = 10;
+    private int numGamesAgainstHueristic = 5;
 
     private AIPlayer AIplayer1;
     private AIPlayer AIplayer2;
     private int player1Net = 0;
     private int player2Net = 1;
 
-    private double mutateRate = 0.05;
+    private double mutateRate = 0.14;
 
     private Game currentGame;
     private Window window;
@@ -72,7 +72,7 @@ public class TrainNeuralNet {
         if (player1Net == player2Net) {
             player2Net++;
         }
-        if (player2Net >= numGamesToPlay + numGamesAgainstHueristic || (player1Net >= popsize && player2Net >= numGamesToPlay + numGamesAgainstHueristic)) {
+        if (player2Net >= popsize + numGamesAgainstHueristic || (player1Net >= popsize && player2Net >= popsize)) {
             player1Net++;
             player2Net = 0;
         }
@@ -120,7 +120,7 @@ public class TrainNeuralNet {
             System.out.println(population.get(i).getFitness());
             population.get(i).save("NeuralNet" + (i + 1));
         }
-        ArrayList<NeuralNet> newPopulation = new ArrayList<NeuralNet>(popsize);
+        ArrayList<NeuralNet> newPopulation = new ArrayList<NeuralNet>();
         for (int i = 0; i < bestNetWorkSelection; i++) {
             newPopulation.add(population.get(i));
         }
@@ -130,7 +130,7 @@ public class TrainNeuralNet {
         }
 
         for (int i = 0; i < numberToCrossover; i++) {
-            NeuralNet Parent1 = population.get((int) (Math.random() * (popsize/2)));
+            NeuralNet Parent1 = population.get((int) (Math.random() * (bestNetWorkSelection)));
             NeuralNet Parent2 = population.get((int) (Math.random() * (popsize/2)));
 
             newPopulation.add(crossOver(Parent1, Parent2));
@@ -155,13 +155,13 @@ public class TrainNeuralNet {
         int lost1 = AIplayer1.getNoOfPiecesLost();
         int lost2 = AIplayer2.getNoOfPiecesLost();
 
-        float score1 = (7 - lost1) + lost2*2;
-        float score2 = (7- lost2) + lost1*2;
+        float score1 = lost2*2;
+        float score2 = lost1*2;
 
         if (winner == AIplayer1) {
-            score1 += 100 - turn;
+            score1 += 90 - turn;
         } else if (winner == AIplayer2) {
-            score2 += 100 - turn;
+            score2 += 90 - turn;
         }
         
         if (player1Net < popsize){
@@ -252,6 +252,7 @@ public class TrainNeuralNet {
         }
 
         mutated.weights = newWeights;
+        mutated.biases = newBiases;
         return mutated;
     }
 }
