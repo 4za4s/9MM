@@ -7,13 +7,19 @@ Saved Neural Nets are located in /SavedNeuralNets (the jar executable needs a fo
 Team photo and some info and the deliverable pdf from sprint 1 is in /SprintsInfo
 
 ## Creating Executable
-Project is made to run with Java 15
+Project is made to run with Java 15. A jar file is included in the repo.
+
+Open a terminal in the Project folder that containt SavedNeuralNets and src
 
 Generate .class files:
 javac src/App/App.java src/Board/*.java src/Display/*.java src/Game/*.java src/Jama/*.java src/Jama/util/*.java src/Player/*.java src/Player/AI/*.java src/Player/AI/NeuralNetwork/*.java
 
 Generate .jar file:
-jar -cvf 9MM.jar src/*
+jar cvf 9MM.jar src
+
+
+
+If you have vs code and the java extension you can just ctrl-shift-p and export jar.
 
 All neural networks should be save in the SavedNeuralNets folder in the same directory as this jar file
 
@@ -24,6 +30,6 @@ select your players for the game
 
 press start to play the game
 
-optionally you can press start training to train a Neural Network, this requires leaving the game running for long periods of time and is how we have trained our networks. PreTrained networks are included. 
+optionally you can press start training to train a Neural Network, this requires leaving the game running for long periods of time and is how we have trained our networks. PreTrained networks are included in the repo.
 
 First the game will enter piece placement mode. Then it will allow the user to move pieces around. The game is turn based.
