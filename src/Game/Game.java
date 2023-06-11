@@ -138,7 +138,7 @@ public class Game {
             default:
                 break;
         }
-        // Check for stalemantes
+        // Check for stalemates
        if (turnCounter >= stalemateCounter) {
             stalemate();
         }
