@@ -1,6 +1,5 @@
 package Player.AI.NeuralNetwork;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

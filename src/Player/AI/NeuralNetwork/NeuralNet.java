@@ -43,6 +43,9 @@ public class NeuralNet implements AIMove {
     private int hiddenLayerCount; //number of hidden layers in the NN
     private int hiddenNeuronCount; //number of neurons in each hidden layer
 
+
+    String filename; //name of neural net
+
     /**
      * Constructor
      */
@@ -59,10 +62,11 @@ public class NeuralNet implements AIMove {
 
     /**
      * Initialises neral network with a file to use as weights and biases
-     * @param Filename name of output eg "output1" . DO NOT include .txt or a /
+     * @param filename name of output eg "output1" . DO NOT include .txt or a /
      */
-    public NeuralNet(String Filename) {
-        String url = "SavedNeuralNets/" + Filename + ".txt";
+    public NeuralNet(String filename) {
+        this.filename = filename;
+        String url = "SavedNeuralNets/" + filename + ".txt";
         try {
             BufferedReader input = new BufferedReader(new FileReader(url));
             String line = input.readLine();
@@ -353,6 +357,13 @@ public class NeuralNet implements AIMove {
      * @param Filename name of file to save to (not including path) 
      */
     public void save(String Filename) {
+
+        //Save a copy of the best on with a name the menu can read
+        if (Filename == "NeuralNet1") {
+            save();
+
+        }
+
         String url = "SavedNeuralNets/" + Filename + ".txt";
         StringBuilder saveString = new StringBuilder();
         saveString.append("Size:\n");
@@ -384,7 +395,9 @@ public class NeuralNet implements AIMove {
     }
 
     public void save() {
-        save("CustomNeuralNetwork");
+        save("YourNeuralNetWork");
+
+        
     }
 
     /**
@@ -415,5 +428,10 @@ public class NeuralNet implements AIMove {
             doubleArray[i] = parseArray(stringArray[i]);
         }
         return doubleArray;
+    }
+
+        @Override
+    public String getName() {
+        return filename;
     }
 }

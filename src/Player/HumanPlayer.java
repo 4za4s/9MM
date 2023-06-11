@@ -1,9 +1,6 @@
 package Player;
 
-import java.awt.Color;
-
 import Board.Position;
-import Display.NamedColour;
 import Game.Game;
 
 /**

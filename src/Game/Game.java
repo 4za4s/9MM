@@ -1,6 +1,5 @@
 package Game;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -30,11 +29,12 @@ public class Game {
     private GameState gameState; // what state the game is in
     private Piece selectedPiece; // piece that has been selected to be moved
     private int toTake = 0; // how many pieces are left to take. In 1 turn a player can take up to 2 pieces
-    private final int MAXGAMEUPDATESTOWAIT = 1; //max time to wait between game updates
-    private int gameUpdatesToWait = MAXGAMEUPDATESTOWAIT; //how long left to wait for next game update
+    private int maxGameUpdatesToWait = 100; //max time to wait between game updates
+    private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
     private Timer timer; //keeps track of time for game updates
     public static final int STALEMATECOUNTER = 80; //number of moves that can happen before a stalemate
     private TrainNeuralNet training; //training object for neural net
+    private int timerDelay = 5;
     
 
     /**
@@ -62,9 +62,14 @@ public class Game {
         gameState = GameState.PLACING;
     }
 
+    /**
+     * Constructor for training
+     */
     public Game(Player player1, Player player2, TrainNeuralNet trainNeuralNet) {
         this(player1, player2);
         this.training = trainNeuralNet;
+        this.maxGameUpdatesToWait = -1;
+        this.timerDelay = 1;
     }
 
     /**
@@ -79,7 +84,7 @@ public class Game {
                     updateGame();
             }
         };
-        timer = new Timer(1, action); 
+        timer = new Timer(timerDelay, action); 
         timer.start();
     }
 
@@ -393,7 +398,7 @@ public class Game {
      */
     private void updateGame(){
         if (inTurnPlayer.isAI() && --gameUpdatesToWait < 0){
-            gameUpdatesToWait = MAXGAMEUPDATESTOWAIT;
+            gameUpdatesToWait = maxGameUpdatesToWait;
 
             playAction(inTurnPlayer.getMove(this));
         }
@@ -441,5 +446,6 @@ public class Game {
             training.gameOver(true, null, turnCounter);
         }
     }
+
     
 }

@@ -215,4 +215,9 @@ public class HeuristicMove implements AIMove {
         return false;
     }
 
+    @Override
+    public String getName() {
+        return "Heuristic";
+    }
+
 }

@@ -62,8 +62,8 @@ public class MenuDisplay extends Display {
         Player[] player1Choices = { 
                 new HumanPlayer(),
                 new AIPlayer(new HeuristicMove()),
-                new AIPlayer(new NeuralNet("TrainedNet1")),
-                new AIPlayer(new NeuralNet("NeuralNet1")) 
+                new AIPlayer(new NeuralNet("TrainedNeuralNet")),
+                new AIPlayer(new NeuralNet("YourNeuralNetWork")) 
             };
 
         player1Type = new JComboBox<Player>(player1Choices);
@@ -71,8 +71,8 @@ public class MenuDisplay extends Display {
         Player[] player2Choices = { 
                 new HumanPlayer(),
                 new AIPlayer(new HeuristicMove()),
-                new AIPlayer(new NeuralNet("TrainedNet1")),
-                new AIPlayer(new NeuralNet("NeuralNet1"))  
+                new AIPlayer(new NeuralNet("TrainedNeuralNet2")),
+                new AIPlayer(new NeuralNet("YourNeuralNetWork"))  
             };
 
         player2Type = new JComboBox<Player>(player2Choices);
@@ -111,28 +111,31 @@ public class MenuDisplay extends Display {
     public void resizeDisplay(Dimension size) {
         setSize(size);
         int minDim = Math.min(size.width, size.height);
+
         int startButtonWidth = size.width / 10;
         int startButtonHeight = size.height / 20;
+
         int neuralNetworkStartWidth = size.width / 10;
         int neuralNetworkStartHeight = size.height / 20;
+
         int titleWidth = size.width * 3 / 5;
         int titleHeight = size.height / 15;
-        int player1TitleWidth = size.width * 3 / 5;
-        int player1TitleHeight = size.height / 20;
-        int player2TitleWidth = size.width * 3 / 5;
-        int player2TitleHeight = size.height / 20;
-        int player1TypeWidth = size.width * 2 / 5;
-        int player1TypeHeight = size.height / 20;
-        int player2TypeWidth = size.width * 2 / 5;
-        int player2TypeHeight = size.height / 20;
-        int player1ColourLabelWidth = size.width * 3 / 5;
-        int player1ColourLabelHeight = size.height / 20;
-        int player2ColourLabelWidth = size.width * 3 / 5;
-        int player2ColourLabelHeight = size.height / 20;
-        int player1ColourTypeWidth = size.width * 2 / 5;
-        int player1ColourTypeHeight = size.height / 20;
-        int player2ColourTypeWidth = size.width * 2 / 5;
-        int player2ColourTypeHeight = size.height / 20;
+
+        int playerTitleWidth = size.width * 3 / 5;
+        int playerTitleHeight = size.height / 20;
+
+        int playerTypeWidth = size.width * 2 / 5;
+        int playerTypeHeight = size.height / 20;
+
+
+        int playerColourLabelWidth = size.width * 3 / 5;
+        int playerColourLabelHeight = size.height / 20;
+
+        int playerColourTypeWidth = size.width * 2 / 5;
+        int playerColourTypeHeight = size.height / 20;
+
+        Font dropDownIdentifierFont = new Font("Serif", Font.BOLD, minDim / 25);
+        Font dropDownMenuFont = new Font("Serif", Font.PLAIN, minDim / 45);
 
         // Set positions/sizes
         start.setBounds(size.width / 2 - startButtonWidth / 2,
@@ -152,45 +155,45 @@ public class MenuDisplay extends Display {
                 titleWidth, titleHeight);
         title.setFont(new Font("Serif", Font.BOLD, minDim / 20));
 
-        player1Title.setBounds(size.width / 60 - player1TitleWidth / 4,
-                (int) (size.height / (3.5) - player1TitleHeight / (4.5)),
-                player1TitleWidth, player1TitleHeight);
-        player1Title.setFont(new Font("Serif", Font.BOLD, minDim / 25));
+        player1Title.setBounds(size.width / 60 - playerTitleWidth / 4,
+                (int) (size.height / (3.5) - playerTitleHeight / (4.5)),
+                playerTitleWidth, playerTitleHeight);
+        player1Title.setFont(dropDownIdentifierFont);
 
-        player2Title.setBounds(size.width / 60 - player2TitleWidth / 4,
-                (int) (size.height / (1.55) - player2TitleHeight / (2.55)),
-                player2TitleWidth, player2TitleHeight);
-        player2Title.setFont(new Font("Serif", Font.BOLD, minDim / 25));
+        player2Title.setBounds(size.width / 60 - playerTitleWidth / 4,
+                (int) (size.height / (1.55) - playerTitleHeight / (2.55)),
+                playerTitleWidth, playerTitleHeight);
+        player2Title.setFont(dropDownIdentifierFont);
 
-        player1ColourLabel.setBounds(size.width / 60 - player1ColourLabelWidth / 4,
-                (int) (size.height / (2.71) - player1ColourLabelHeight / (4.5)),
-                player1ColourLabelWidth, player1ColourLabelHeight);
-        player1ColourLabel.setFont(new Font("Serif", Font.BOLD, minDim / 25));
+        player1ColourLabel.setBounds(size.width / 60 - playerColourLabelWidth / 4,
+                (int) (size.height / (2.71) - playerColourLabelHeight / (4.5)),
+                playerColourLabelWidth, playerColourLabelHeight);
+        player1ColourLabel.setFont(dropDownIdentifierFont);
 
-        player2ColourLabel.setBounds(size.width / 60 - player2ColourLabelWidth / 4,
-                (int) (size.height / (1.36) - player2ColourLabelHeight / (2.55)),
-                player2ColourLabelWidth, player2ColourLabelHeight);
-        player2ColourLabel.setFont(new Font("Serif", Font.BOLD, minDim / 25));
+        player2ColourLabel.setBounds(size.width / 60 - playerColourLabelWidth / 4,
+                (int) (size.height / (1.36) - playerColourLabelHeight / (2.55)),
+                playerColourLabelWidth, playerColourLabelHeight);
+        player2ColourLabel.setFont(dropDownIdentifierFont);
 
-        player1Type.setBounds(size.width / 2 - player1TypeWidth / 2,
-                (int) (size.height / (3.43) - player1TypeHeight / (4.45)),
-                player1TypeWidth, player1TypeHeight);
-        player1Type.setFont(new Font("Serif", Font.PLAIN, minDim / 32));
+        player1Type.setBounds(size.width / 2 - playerTypeWidth / 2,
+                (int) (size.height / (3.43) - playerTypeHeight / (4.45)),
+                playerTypeWidth, playerTypeHeight);
+        player1Type.setFont(dropDownMenuFont);
 
-        player2Type.setBounds(size.width / 2 - player2TypeWidth / 2,
-                (int) (size.height / (1.53) - player2TypeHeight / (2.45)),
-                player2TypeWidth, player2TypeHeight);
-        player2Type.setFont(new Font("Serif", Font.PLAIN, minDim / 32));
+        player2Type.setBounds(size.width / 2 - playerTypeWidth / 2,
+                (int) (size.height / (1.53) - playerTypeHeight / (2.45)),
+                playerTypeWidth, playerTypeHeight);
+        player2Type.setFont(dropDownMenuFont);
 
-        player1ColourType.setBounds(size.width / 2 - player1ColourTypeWidth / 2,
-                (int) (size.height / (2.53) - player1ColourTypeHeight / (1.45)),
-                player1ColourTypeWidth, player1ColourTypeHeight);
-        player1ColourType.setFont(new Font("Serif", Font.PLAIN, minDim / 32));
+        player1ColourType.setBounds(size.width / 2 - playerColourTypeWidth / 2,
+                (int) (size.height / (2.53) - playerColourTypeHeight / (1.45)),
+                playerColourTypeWidth, playerColourTypeHeight);
+        player1ColourType.setFont(dropDownMenuFont);
 
-        player2ColourType.setBounds(size.width / 2 - player2ColourTypeWidth / 2,
-                (int) (size.height / (1.33) - player2ColourTypeHeight / (1.45)),
-                player2ColourTypeWidth, player2ColourTypeHeight);
-        player2ColourType.setFont(new Font("Serif", Font.PLAIN, minDim / 32));
+        player2ColourType.setBounds(size.width / 2 - playerColourTypeWidth / 2,
+                (int) (size.height / (1.33) - playerColourTypeHeight / (1.45)),
+                playerColourTypeWidth, playerColourTypeHeight);
+        player2ColourType.setFont(dropDownMenuFont);
 
     }
 
