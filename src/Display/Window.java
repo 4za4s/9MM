@@ -88,9 +88,9 @@ public class Window extends JFrame {
         currentDisplay = gameDisplay;
         size = window.getContentPane().getSize();
         add(gameDisplay);
-        repaint();
-        currentDisplay.resizeDisplay(size);
         game.startGame();
+        currentDisplay.resizeDisplay(size);
+        repaint();
     }
 
     /**
@@ -106,6 +106,7 @@ public class Window extends JFrame {
         currentDisplay = menuDisplay;
         size = window.getContentPane().getSize();
         add(menuDisplay);
+        currentDisplay.resizeDisplay(size);
         repaint();
         currentDisplay.resizeDisplay(size);
     }
