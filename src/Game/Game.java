@@ -11,10 +11,8 @@ import Board.Piece;
 import Board.Position;
 import Display.GameDisplay;
 import Player.AIPlayer;
-import Player.HumanPlayer;
 import Player.Player;
 import Player.AI.HeuristicMove;
-import Player.AI.RandomValidMove;
 import Player.AI.NeuralNetwork.NeuralNet;
 import Player.AI.NeuralNetwork.TrainNeuralNet;
 
