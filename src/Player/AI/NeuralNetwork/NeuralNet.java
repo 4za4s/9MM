@@ -15,42 +15,51 @@ import Jama.Matrix;
 import Player.AI.AIMove;
 import Player.AI.RandomValidMove;
 
-//Inspiration taken from https://www.youtube.com/watch?v=VYQZ-kjP1ec&t=0s
+//
 
-//https://github.com/AJTech2002/Self-Driving-Car-Series/blob/master/Self%20Driving%20Car%20-%20Part%202%20Completed/Assets/NNet.cs
+/**
+ * A neural network. This is used to create an AI for making moves
+ * Inspiration taken from https://www.youtube.com/watch?v=VYQZ-kjP1ec
+ */
 public class NeuralNet implements AIMove {
 
-    private int numInputs = 53; // (gamestates 5 + position of our pieces 24 + position of opponents pieces 24)
-    private int numOutputs = 24; // (positions)
+    private int numInputs = 53; // Input is (gamestate, position AIs pieces, position opponent's pieces
+    private int numOutputs = 24; // Output will be list of 24 positions and their values (positions)
 
-    // 1 column input + rows
-    private Matrix inputLayer = new Matrix(1, numInputs); // TDO: make these package accessabl
+    
+    private Matrix inputLayer = new Matrix(1, numInputs);
 
     private ArrayList<Matrix> hiddenLayers = new ArrayList<Matrix>();
 
     // Will output values for all positions. Later go with the best of these
     private Matrix outputLayer = new Matrix(1, numOutputs);
 
-    public ArrayList<Matrix> weights = new ArrayList<Matrix>();
+    public ArrayList<Matrix> weights = new ArrayList<Matrix>(); //weights for the matrix
 
-    public ArrayList<double[]> biases = new ArrayList<double[]>();
+    public ArrayList<double[]> biases = new ArrayList<double[]>(); //biases for each neuron
 
     private float fitness = 0;
 
     private int hiddenLayerCount; //number of hidden layers in the NN
     private int hiddenNeuronCount; //number of neurons in each hidden layer
 
+    /**
+     * Constructor
+     */
     public NeuralNet(int hiddenLayerCount, int hiddenNeuronCount) {
         createNetwork(hiddenLayerCount, hiddenNeuronCount);
     }
 
+    /**
+     * Constructor
+     */
     public NeuralNet() {
         createNetwork(4, 43);
     }
 
     /**
      * Initialises neral network with a file to use as weights and biases
-     * @param Filename
+     * @param Filename name of output eg "output1" . DO NOT include .txt or a /
      */
     public NeuralNet(String Filename) {
         String url = "SavedNeuralNets/" + Filename + ".txt";
@@ -160,11 +169,15 @@ public class NeuralNet implements AIMove {
         biases.add(OutputBiases);
     }
 
+    /**
+     * Run the neural network
+     * @param inputs input to run the NN on
+     * @return list of position and their fitness chosen by the NN in order of fitness
+     */
     public ArrayList<double[]> RunNetWork(Double inputs[]) {
         // Create inputLayer matrix
         for (int i = 0; i < inputs.length; i++) {
             inputLayer.set(0, i, inputs[i]);
-            // System.out.println(inputs[i]);
         }
 
 
@@ -185,10 +198,6 @@ public class NeuralNet implements AIMove {
 
         ArrayList<double[]> outputLayerSorted = listToSortedArrayList(outputLayerUnsorted);
 
-        // for (int i = 0; i < outputLayerSorted.size(); i++) {
-        //     System.out.println(outputLayerSorted.get(i)[0] + " Pos: " + outputLayerSorted.get(i)[1]);
-        // }
-
         return outputLayerSorted;
 
     }
@@ -205,6 +214,11 @@ public class NeuralNet implements AIMove {
         return m;
     }
 
+    /**
+     * 
+     * @param listToSort
+     * @return
+     */
     public ArrayList<double[]> listToSortedArrayList(double[] listToSort) {
 
         ArrayList<double[]> arrayList = new ArrayList<double[]>();
@@ -224,9 +238,11 @@ public class NeuralNet implements AIMove {
         return arrayList;
     }
 
-    /**
-     * Sigmoids all values of a matrix
-     */
+     /**
+      * Sigmoids all values of a matrix
+      * @param m matrix to sigmoid
+      * @return sigmoided matrix (NOTE: matrix given will be affected, returned value is not a deepcopy)
+      */
     public Matrix sigmoidMatrix(Matrix m) {
         double[][] ar = m.getArray();
 
@@ -246,10 +262,17 @@ public class NeuralNet implements AIMove {
 
     }
 
+
+    /**
+     * Gets fittness
+     */
     public float getFitness() {
         return fitness;
     }
 
+    /**
+     * Sets fittness
+     */
     public void setFitness(float fitness) {
         this.fitness = fitness;
     }
@@ -301,22 +324,15 @@ public class NeuralNet implements AIMove {
 
         ArrayList<double[]> output = RunNetWork(inputs);
 
-        // for(int i = 0; i < output.size(); i++){
-        //     System.out.println("output: " + output.get(i)[0] + " pos: " + output.get(i)[1]);
-        // }
-
         return getBestlegalPosition(output, game);
     }
 
     /**
      * Make sure ai will not continuously try to return the same invalid position
      * 
-     * @return
+     * @return valid position
      */
     private Position getBestlegalPosition(ArrayList<double[]> outputs, Game game) {
-        // for (double out[] : outputs) {
-        //     System.out.println("position ranking: " + out[0] + "position loc: " + out[1]);
-        // }
 
         for (double out[] : outputs) {
             ArrayList<Position> possibleMoves = game.getBoard().getPossibleMoves(game.getGameState(),
