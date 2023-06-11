@@ -17,10 +17,10 @@ import Game.Game;
 public class Window extends JFrame {
     private Display currentDisplay; // what is currently being display - eg a game
     private Window window = this; // this
-    private final int minSize = 200; // minimum size the board can display as
-    private final int maxSize = 2000; // minimum size the board can display as
+    private final int MINSIZE = 200; // minimum size the board can display as
+    private final int MAXSIZE = 2000; // minimum size the board can display as
     private Dimension size; // how big this window is
-    private final Color backgroundColor = new Color(244, 224, 190); // Background colour of this window
+    private final Color BACKGROUNDCOLOR = new Color(244, 224, 190); // Background colour of this window
 
     /**
      * Class constructor
@@ -32,14 +32,14 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Display the window
-        getContentPane().setBackground(backgroundColor);
+        getContentPane().setBackground(BACKGROUNDCOLOR);
         setWindowSize();
         pack();
         setSize(size);
         setVisible(true);
         setLayout(null); // try setLayout(new GridLayout()); if bored
-        setMinimumSize(new Dimension(minSize, minSize));
-        setMaximumSize(new Dimension(maxSize, maxSize));
+        setMinimumSize(new Dimension(MINSIZE, MINSIZE));
+        setMaximumSize(new Dimension(MAXSIZE, MAXSIZE));
 
         displayMenu();
 
@@ -101,7 +101,7 @@ public class Window extends JFrame {
             remove(currentDisplay);
         }
         getContentPane().removeAll();
-        getContentPane().setBackground(backgroundColor);
+        getContentPane().setBackground(BACKGROUNDCOLOR);
         MenuDisplay menuDisplay = new MenuDisplay(getHeight(), getWidth(), this);
         currentDisplay = menuDisplay;
         size = window.getContentPane().getSize();
@@ -118,8 +118,8 @@ public class Window extends JFrame {
      */
     private void setWindowSize() {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        int frameHeight = Math.max(minSize, (int) size.getHeight() * 5 / 6);
-        int frameWidth = Math.max(minSize, frameHeight * 13 / 14);
+        int frameHeight = Math.max(MINSIZE, (int) size.getHeight() * 5 / 6);
+        int frameWidth = Math.max(MINSIZE, frameHeight * 13 / 14);
         this.setLocation((int) size.getWidth() / 2 - frameWidth / 2, (int) size.getHeight() / 2 - frameHeight / 2);
 
         this.size = new Dimension(frameWidth, frameHeight);

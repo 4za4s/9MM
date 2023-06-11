@@ -35,7 +35,7 @@ public class MenuDisplay extends Display {
     private JComboBox<Player> player1Type;
     private JComboBox<Player> player2Type;
     private JComboBox<Color> player1ColourType;
-    private JComboBox<Color> player2ColourType;
+    private JComboBox<NamedColour> player2ColourType;
     private Player player1 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
     private Player player2 = new HumanPlayer(Color.green, "Player Green");
 
@@ -70,8 +70,8 @@ public class MenuDisplay extends Display {
         Color[] player1Colours = {Color.BLUE, Color.CYAN, Color.GREEN, Color.LIGHT_GRAY, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED};
         player1ColourType = new JComboBox<Color>(player1Colours); 
 
-        Color[] player2Colours = {Color.BLUE, Color.CYAN, Color.GREEN, Color.LIGHT_GRAY, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED};
-        player2ColourType = new JComboBox<Color>(player2Colours); 
+        NamedColour[] player2Colours = { NamedColour.BLUE }; //, Color.CYAN, Color.GREEN, Color.LIGHT_GRAY, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED};
+        player2ColourType = new JComboBox<NamedColour>(player2Colours); 
 
         start.addActionListener(e -> startButtonPressed());
         neuralNetworkStart.addActionListener(e -> trainButtonPressed());

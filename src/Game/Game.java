@@ -29,10 +29,10 @@ public class Game {
     private GameState gameState; // what state the game is in
     private Piece selectedPiece; // piece that has been selected to be moved
     private int toTake = 0; // how many pieces are left to take. In 1 turn a player can take up to 2 pieces
-    private final int maxGameUpdatesToWait = 1; //max time to wait between game updates
-    private int gameUpdatesToWait = maxGameUpdatesToWait; //how long left to wait for next game update
+    private final int MAXGAMEUPDATESTOWAIT = 1; //max time to wait between game updates
+    private int gameUpdatesToWait = MAXGAMEUPDATESTOWAIT; //how long left to wait for next game update
     private Timer timer; //keeps track of time for game updates
-    public static final int stalemateCounter = 80; //number of moves that can happen before a stalemate
+    public static final int STALEMATECOUNTER = 80; //number of moves that can happen before a stalemate
     private TrainNeuralNet training; //training object for neural net
     
 
@@ -139,7 +139,7 @@ public class Game {
                 break;
         }
         // Check for stalemates
-       if (turnCounter >= stalemateCounter) {
+       if (turnCounter >= STALEMATECOUNTER) {
             stalemate();
         }
 
@@ -165,7 +165,7 @@ public class Game {
             }
 
             // If all pieces have been placed - and it is the last player to do so
-            if (inTurnPlayer.getNumOfPiecesPlaced() == inTurnPlayer.maxPieces
+            if (inTurnPlayer.getNumOfPiecesPlaced() == inTurnPlayer.MAXPIECES
                     && inTurnPlayer == players.get(players.size() - 1)) {
                 gameState = GameState.SELECTING;
 
@@ -258,7 +258,7 @@ public class Game {
                 checkForPossibleMoves();
                 
 
-                if (notInTurnPlayer.getNoOfPiecesLost() == notInTurnPlayer.maxPieces - 2) {
+                if (notInTurnPlayer.getNoOfPiecesLost() == notInTurnPlayer.MAXPIECES - 2) {
                     playerWins(inTurnPlayer);
                 }
 
@@ -267,7 +267,7 @@ public class Game {
                 // Work out correct new gamestate
                 changeTurn();
 
-                if (inTurnPlayer.getNumOfPiecesPlaced() < inTurnPlayer.maxPieces) {
+                if (inTurnPlayer.getNumOfPiecesPlaced() < inTurnPlayer.MAXPIECES) {
                     gameState = GameState.PLACING;
 
                 } else {
@@ -392,7 +392,7 @@ public class Game {
      */
     private void updateGame(){
         if (inTurnPlayer.isAI() && --gameUpdatesToWait < 0){
-            gameUpdatesToWait = maxGameUpdatesToWait;
+            gameUpdatesToWait = MAXGAMEUPDATESTOWAIT;
 
             playAction(inTurnPlayer.getMove(this));
         }

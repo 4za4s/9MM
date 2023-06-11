@@ -16,7 +16,7 @@ public abstract class Player {
     private ArrayList<Piece> pieces = new ArrayList<Piece>(); // list of pieces player owns
     private int piecesPlaced = 0; // how many pieces a player has plaed so far
     private int piecesLost = 0; // how many pieces playe has lost
-    public final int maxPieces = 9; // how many pieces a player can place
+    public final int MAXPIECES = 9; // how many pieces a player can place
     protected boolean isAI = false; // whether the player is an AI or not
 
     /**
@@ -26,7 +26,7 @@ public abstract class Player {
         this.colour = colour;
         this.playerName = playerName;
 
-        for (int i = 0; i < maxPieces; i++) {
+        for (int i = 0; i < MAXPIECES; i++) {
             pieces.add(new Piece(this));
         }
     }
@@ -108,5 +108,15 @@ public abstract class Player {
     public String toString() {
         return getClass().getSimpleName();
     }
+
+
+    /**
+     * Sets the colour
+     */
+
+     public void setColour(Color colour){
+        this.colour = colour;
+
+     }
 
 }
