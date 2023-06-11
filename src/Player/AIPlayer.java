@@ -3,6 +3,7 @@ package Player;
 import java.awt.Color;
 
 import Board.Position;
+import Display.NamedColour;
 import Game.Game;
 import Player.AI.AIMove;
 
@@ -17,11 +18,21 @@ public class AIPlayer extends Player {
     /**
      * Constructor
      */
-    public AIPlayer(Color colour, String playerName, AIMove moveGenerator) {
-        super(colour, playerName);
+    public AIPlayer(AIMove moveGenerator) {
+        super();
         this.moveGenerator = moveGenerator;
         this.isAI = true;
     }
+
+    /**
+     * Constructor
+     */
+    public AIPlayer(NamedColour colour, AIMove moveGenerator) {
+        super(colour);
+        this.moveGenerator = moveGenerator;
+        this.isAI = true;
+    }
+
 
     @Override
     public Position getMove(Game game) {

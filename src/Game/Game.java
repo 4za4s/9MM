@@ -10,6 +10,7 @@ import Board.Board;
 import Board.Piece;
 import Board.Position;
 import Display.GameDisplay;
+import Display.NamedColour;
 import Player.AIPlayer;
 import Player.Player;
 import Player.AI.HeuristicMove;
@@ -42,7 +43,7 @@ public class Game {
      */
     public Game() {
 
-        this(new AIPlayer(new Color(200, 0, 100, 255), "Player 1", new NeuralNet("NeuralNet1")), new AIPlayer(Color.green, "Player Green", new HeuristicMove()));
+        this(new AIPlayer(NamedColour.RED, new NeuralNet("NeuralNet1")), new AIPlayer(NamedColour.GREEN, new HeuristicMove()));
     }
 
     public Game(Player player1, Player player2) {

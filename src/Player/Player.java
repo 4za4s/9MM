@@ -5,13 +5,14 @@ import java.util.ArrayList;
 
 import Board.Piece;
 import Board.Position;
+import Display.NamedColour;
 import Game.Game;
 
 /**
  * One of the players of the 9MM game
  */
 public abstract class Player {
-    private Color colour; // colour of player's pieces
+    private NamedColour colour; // colour of player's pieces
     private String playerName; // name of player
     private ArrayList<Piece> pieces = new ArrayList<Piece>(); // list of pieces player owns
     private int piecesPlaced = 0; // how many pieces a player has plaed so far
@@ -22,14 +23,26 @@ public abstract class Player {
     /**
      * Class constructor
      */
-    public Player(Color colour, String playerName) {
+    public Player(NamedColour colour) {
         this.colour = colour;
-        this.playerName = playerName;
+        this.playerName = "Player " + colour.toString();
 
         for (int i = 0; i < MAXPIECES; i++) {
             pieces.add(new Piece(this));
         }
+        
     }
+
+     /**
+     * Class constructor
+     */
+    public Player() {
+        this(NamedColour.RED); //default colour
+
+
+    }
+
+
 
     /**
      * If a player is an ai
@@ -114,8 +127,9 @@ public abstract class Player {
      * Sets the colour
      */
 
-     public void setColour(Color colour){
+     public void setColour(NamedColour colour){
         this.colour = colour;
+        this.playerName = "Player " + colour.toString();
 
      }
 

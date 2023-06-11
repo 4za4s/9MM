@@ -2,7 +2,6 @@ package Display;
 
 import java.awt.Color;
 
-
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -19,13 +18,12 @@ import Player.AI.NeuralNetwork.NeuralNet;
 import Player.AI.NeuralNetwork.TrainNeuralNet;
 import Game.Game;
 
-
 /**
  * Displays the pre-game menu
  */
 public class MenuDisplay extends Display {
 
-    private JButton start; //start game button
+    private JButton start; // start game button
     private JLabel title; // game title
     private JButton neuralNetworkStart;
     private JLabel player1Title;
@@ -36,8 +34,8 @@ public class MenuDisplay extends Display {
     private JComboBox<Player> player2Type;
     private JComboBox<NamedColour> player1ColourType;
     private JComboBox<NamedColour> player2ColourType;
-    private Player player1 = new AIPlayer(Color.blue, "Player Blue", new HeuristicMove());
-    private Player player2 = new HumanPlayer(Color.green, "Player Green");
+    private Player player1;
+    private Player player2;
 
     /**
      * Class constructor
@@ -61,17 +59,31 @@ public class MenuDisplay extends Display {
         player1ColourLabel = new JLabel("Colour: ", SwingConstants.CENTER);
         player2ColourLabel = new JLabel("Colour: ", SwingConstants.CENTER);
 
-        Player[] player1Choices = {new HumanPlayer(Color.BLUE, "Player Blue"), new AIPlayer(Color.red, "Player Red", new HeuristicMove()), new AIPlayer(Color.green, "Player Green", new NeuralNet("NeuralNet1"))}; 
-        player1Type = new JComboBox<Player>(player1Choices); 
-        
-        Player[] player2Choices = {new HumanPlayer(Color.CYAN, "Player Cyan"), new AIPlayer(Color.orange, "Player Orange", new HeuristicMove()), new AIPlayer(Color.magenta, "Player Magenta", new NeuralNet("NeuralNet1"))}; 
-        player2Type = new JComboBox<Player>(player2Choices); 
+        Player[] player1Choices = { 
+                new HumanPlayer(),
+                new AIPlayer(new HeuristicMove()),
+                new AIPlayer(new NeuralNet("TrainedNet1")),
+                new AIPlayer(new NeuralNet("NeuralNet1")) 
+            };
 
-        NamedColour[] playerColours = {NamedColour.BLUE, NamedColour.RED, NamedColour.YELLOW, NamedColour.MAROON, NamedColour.GREEN, NamedColour.PURPLE, NamedColour.LIGHT_SLATE_GREY, NamedColour.MAGENTA, NamedColour.BLACK , NamedColour.WHITE};
-        
-        player1ColourType = new JComboBox<NamedColour>(playerColours); 
+        player1Type = new JComboBox<Player>(player1Choices);
 
-        player2ColourType = new JComboBox<NamedColour>(playerColours); 
+        Player[] player2Choices = { 
+                new HumanPlayer(),
+                new AIPlayer(new HeuristicMove()),
+                new AIPlayer(new NeuralNet("TrainedNet1")),
+                new AIPlayer(new NeuralNet("NeuralNet1"))  
+            };
+
+        player2Type = new JComboBox<Player>(player2Choices);
+
+        NamedColour[] playerColours = { NamedColour.BLUE, NamedColour.RED, NamedColour.YELLOW, NamedColour.MAROON,
+                NamedColour.GREEN, NamedColour.PURPLE, NamedColour.LIGHT_SLATE_GREY, NamedColour.MAGENTA,
+                NamedColour.BLACK, NamedColour.WHITE };
+
+        player1ColourType = new JComboBox<NamedColour>(playerColours);
+
+        player2ColourType = new JComboBox<NamedColour>(playerColours);
         player2ColourType.setSelectedIndex(1);
 
         start.addActionListener(e -> startButtonPressed());
@@ -79,7 +91,7 @@ public class MenuDisplay extends Display {
 
         add(player1Type);
         add(player2Type);
-        add(start); 
+        add(start);
         add(title);
         add(player1Title);
         add(player2Title);
@@ -98,29 +110,29 @@ public class MenuDisplay extends Display {
     @Override
     public void resizeDisplay(Dimension size) {
         setSize(size);
-        int minDim = Math.min( size.width, size.height);
-        int startButtonWidth = size.width/10;
-        int startButtonHeight = size.height/20;
-        int neuralNetworkStartWidth = size.width/10;
-        int neuralNetworkStartHeight = size.height/20;
-        int titleWidth = size.width*3/5;
-        int titleHeight = size.height/15;
-        int player1TitleWidth = size.width*3/5;
-        int player1TitleHeight = size.height/20;
-        int player2TitleWidth = size.width*3/5;
-        int player2TitleHeight = size.height/20;
-        int player1TypeWidth = size.width*2/5;
-        int player1TypeHeight = size.height/20;
-        int player2TypeWidth = size.width*2/5;
-        int player2TypeHeight = size.height/20;
-        int player1ColourLabelWidth = size.width*3/5;
-        int player1ColourLabelHeight = size.height/20;
-        int player2ColourLabelWidth = size.width*3/5;
-        int player2ColourLabelHeight = size.height/20;
-        int player1ColourTypeWidth = size.width * 2/5;
-        int player1ColourTypeHeight = size.height/20;
-        int player2ColourTypeWidth = size.width * 2/5;
-        int player2ColourTypeHeight = size.height/20;
+        int minDim = Math.min(size.width, size.height);
+        int startButtonWidth = size.width / 10;
+        int startButtonHeight = size.height / 20;
+        int neuralNetworkStartWidth = size.width / 10;
+        int neuralNetworkStartHeight = size.height / 20;
+        int titleWidth = size.width * 3 / 5;
+        int titleHeight = size.height / 15;
+        int player1TitleWidth = size.width * 3 / 5;
+        int player1TitleHeight = size.height / 20;
+        int player2TitleWidth = size.width * 3 / 5;
+        int player2TitleHeight = size.height / 20;
+        int player1TypeWidth = size.width * 2 / 5;
+        int player1TypeHeight = size.height / 20;
+        int player2TypeWidth = size.width * 2 / 5;
+        int player2TypeHeight = size.height / 20;
+        int player1ColourLabelWidth = size.width * 3 / 5;
+        int player1ColourLabelHeight = size.height / 20;
+        int player2ColourLabelWidth = size.width * 3 / 5;
+        int player2ColourLabelHeight = size.height / 20;
+        int player1ColourTypeWidth = size.width * 2 / 5;
+        int player1ColourTypeHeight = size.height / 20;
+        int player2ColourTypeWidth = size.width * 2 / 5;
+        int player2ColourTypeHeight = size.height / 20;
 
         // Set positions/sizes
         start.setBounds(size.width / 2 - startButtonWidth / 2,
@@ -145,41 +157,41 @@ public class MenuDisplay extends Display {
                 player1TitleWidth, player1TitleHeight);
         player1Title.setFont(new Font("Serif", Font.BOLD, minDim / 25));
 
-        player2Title.setBounds(size.width/60-player2TitleWidth/4, 
-            (int) (size.height/(1.55)-player2TitleHeight/(2.55)), 
-            player2TitleWidth, player2TitleHeight);
-        player2Title.setFont(new Font("Serif", Font.BOLD, minDim/25));
+        player2Title.setBounds(size.width / 60 - player2TitleWidth / 4,
+                (int) (size.height / (1.55) - player2TitleHeight / (2.55)),
+                player2TitleWidth, player2TitleHeight);
+        player2Title.setFont(new Font("Serif", Font.BOLD, minDim / 25));
 
-        player1ColourLabel.setBounds(size.width/60 - player1ColourLabelWidth/4,
-                (int) (size.height/(2.71) - player1ColourLabelHeight/(4.5)),
+        player1ColourLabel.setBounds(size.width / 60 - player1ColourLabelWidth / 4,
+                (int) (size.height / (2.71) - player1ColourLabelHeight / (4.5)),
                 player1ColourLabelWidth, player1ColourLabelHeight);
         player1ColourLabel.setFont(new Font("Serif", Font.BOLD, minDim / 25));
 
-        player2ColourLabel.setBounds(size.width/60-player2ColourLabelWidth/4, 
-            (int) (size.height/(1.36)-player2ColourLabelHeight/(2.55)), 
-            player2ColourLabelWidth, player2ColourLabelHeight);
-        player2ColourLabel.setFont(new Font("Serif", Font.BOLD, minDim/25));
+        player2ColourLabel.setBounds(size.width / 60 - player2ColourLabelWidth / 4,
+                (int) (size.height / (1.36) - player2ColourLabelHeight / (2.55)),
+                player2ColourLabelWidth, player2ColourLabelHeight);
+        player2ColourLabel.setFont(new Font("Serif", Font.BOLD, minDim / 25));
 
-        player1Type.setBounds(size.width/2-player1TypeWidth/2, 
-            (int) (size.height/(3.43)-player1TypeHeight/(4.45)), 
-            player1TypeWidth, player1TypeHeight);
-        player1Type.setFont(new Font("Serif", Font.PLAIN, minDim/32));
+        player1Type.setBounds(size.width / 2 - player1TypeWidth / 2,
+                (int) (size.height / (3.43) - player1TypeHeight / (4.45)),
+                player1TypeWidth, player1TypeHeight);
+        player1Type.setFont(new Font("Serif", Font.PLAIN, minDim / 32));
 
-        player2Type.setBounds(size.width/2-player2TypeWidth/2, 
-            (int) (size.height/(1.53)-player2TypeHeight/(2.45)), 
-            player2TypeWidth, player2TypeHeight);
-        player2Type.setFont(new Font("Serif", Font.PLAIN, minDim/32));
+        player2Type.setBounds(size.width / 2 - player2TypeWidth / 2,
+                (int) (size.height / (1.53) - player2TypeHeight / (2.45)),
+                player2TypeWidth, player2TypeHeight);
+        player2Type.setFont(new Font("Serif", Font.PLAIN, minDim / 32));
 
-        player1ColourType.setBounds(size.width/2-player1ColourTypeWidth/2, 
-            (int) (size.height/(2.53)-player1ColourTypeHeight/(1.45)), 
-            player1ColourTypeWidth, player1ColourTypeHeight);
-        player1ColourType.setFont(new Font("Serif", Font.PLAIN, minDim/32));
+        player1ColourType.setBounds(size.width / 2 - player1ColourTypeWidth / 2,
+                (int) (size.height / (2.53) - player1ColourTypeHeight / (1.45)),
+                player1ColourTypeWidth, player1ColourTypeHeight);
+        player1ColourType.setFont(new Font("Serif", Font.PLAIN, minDim / 32));
 
-        player2ColourType.setBounds(size.width/2-player2ColourTypeWidth/2, 
-            (int) (size.height/(1.33)-player2ColourTypeHeight/(1.45)), 
-            player2ColourTypeWidth, player2ColourTypeHeight);
-        player2ColourType.setFont(new Font("Serif", Font.PLAIN, minDim/32));
-        
+        player2ColourType.setBounds(size.width / 2 - player2ColourTypeWidth / 2,
+                (int) (size.height / (1.33) - player2ColourTypeHeight / (1.45)),
+                player2ColourTypeWidth, player2ColourTypeHeight);
+        player2ColourType.setFont(new Font("Serif", Font.PLAIN, minDim / 32));
+
     }
 
     /**
@@ -199,9 +211,8 @@ public class MenuDisplay extends Display {
         player1 = (Player) player1Type.getSelectedItem();
         player2 = (Player) player2Type.getSelectedItem();
 
-        player1.setColour((Color) player1ColourType.getSelectedItem());
-        player2.setColour((Color) player2ColourType.getSelectedItem());
-
+        player1.setColour((NamedColour) player1ColourType.getSelectedItem());
+        player2.setColour((NamedColour) player2ColourType.getSelectedItem());
 
         Game startGame = new Game(player1, player2);
         window.displayGame(startGame);

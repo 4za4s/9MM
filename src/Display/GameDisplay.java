@@ -177,7 +177,7 @@ public class GameDisplay extends Display {
         boardXPosStart = width / 2  - gap * 3 ;
         boardYPosStart = height / 2  - gap * 3 ;
 
-        fontSize = minDim / 50;
+        fontSize = minDim / 60;
 
         pieceCounterWidth = minDim / 17;
         pieceCounterHeight = (int) (pieceCounterWidth * 3.8);

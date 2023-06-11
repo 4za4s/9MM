@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import Display.NamedColour;
 import Display.Window;
 import Game.Game;
 import Jama.Matrix;
@@ -48,8 +49,8 @@ public class TrainNeuralNet {
      * Start training
      */
     public void start() {
-        AIplayer1 = new AIPlayer(Color.blue, "Player Blue", population.get(player1Net));
-        AIplayer2 = new AIPlayer(Color.red, "Player Red", population.get(player2Net));
+        AIplayer1 = new AIPlayer(NamedColour.BLUE, population.get(player1Net));
+        AIplayer2 = new AIPlayer(NamedColour.RED,  population.get(player2Net));
         currentGame = new Game(AIplayer1, AIplayer2, this);
         updateDisplay();
     }
@@ -84,15 +85,15 @@ public class TrainNeuralNet {
         }
 
         if (player1Net >= popsize) {
-            AIplayer1 = new AIPlayer(Color.green, "Player Green", new HeuristicMove());;
+            AIplayer1 = new AIPlayer(NamedColour.GREEN,  new HeuristicMove());
         } else {
-            AIplayer1 = new AIPlayer(Color.blue, "Player Blue", population.get(player1Net));
+            AIplayer1 = new AIPlayer(NamedColour.BLUE,  population.get(player1Net));
         }
 
         if (player2Net >= numGamesToPlay) {
-            AIplayer2 = new AIPlayer(Color.green, "Player Green", new HeuristicMove());;
+            AIplayer2 = new AIPlayer(NamedColour.GREEN,  new HeuristicMove());;
         } else {
-            AIplayer2 = new AIPlayer(Color.red, "Player Red", population.get(player2Net));
+            AIplayer2 = new AIPlayer(NamedColour.RED, population.get(player2Net));
         }
         currentGame = new Game(AIplayer1, AIplayer2, this);
         updateDisplay();

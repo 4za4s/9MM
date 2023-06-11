@@ -15,7 +15,7 @@ public  class NamedColour extends java.awt.Color {
 
     public static final NamedColour PURPLE = new NamedColour( 127,0,255, "Purple");
 
-    public static final NamedColour LIGHT_SLATE_GREY = new NamedColour( 119,136,153, "Light Slate Grey");
+    public static final NamedColour LIGHT_SLATE_GREY = new NamedColour( 119,136,153, "Grey");
 
     public static final NamedColour MAGENTA = new NamedColour( 255,0,255, "Magenta");
 
